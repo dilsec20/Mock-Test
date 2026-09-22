@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results — MockPrep</title>
+  <meta name="description" content="View your mock test results and review answers">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="logo-icon">🎯</span>
+      <span>MockPrep</span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="results.html">My Results</a>
+    </div>
+  </nav>
+
+  <!-- Results Content -->
+  <div class="container-narrow" style="padding-top: var(--space-xl); padding-bottom: var(--space-3xl);">
+
+    <!-- No Result / History View -->
+    <div id="no-result-view" class="hidden">
+      <div class="results-hero">
+        <div style="font-size: 4rem; margin-bottom: var(--space-md);">📊</div>
+        <h2>Your Test Results</h2>
+        <p class="text-muted" style="margin-top: var(--space-sm);">Complete a mock test to see your results here</p>
+        <a href="index.html" class="btn btn-primary btn-lg" style="margin-top: var(--space-xl);">🚀 Take a Mock Test</a>
+      </div>
+
+      <!-- History -->
+      <div id="history-section" class="hidden" style="margin-top: var(--space-2xl);">
+        <h3 style="margin-bottom: var(--space-lg);">📋 Past Attempts</h3>
+        <div id="history-list"></div>
+      </div>
+    </div>
+
+    <!-- Result Detail View -->
+    <div id="result-view" class="hidden">
+      <!-- Score Hero -->
+      <div class="results-hero">
+        <div class="score-circle">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00d4ff" />
+                <stop offset="100%" style="stop-color:#7c3aed" />
+              </linearGradient>
+            </defs>
+            <circle class="bg-ring" cx="100" cy="100" r="90" />
+            <circle class="progress-ring" id="score-ring" cx="100" cy="100" r="90" />
+          </svg>
+          <div class="score-text">
+            <div class="score-percent" id="score-percent">0%</div>
+            <div class="score-label">Score</div>
+          </div>
+        </div>
+
+        <h2 id="result-title">Test Results</h2>
+        <p class="text-muted" id="result-subtitle"></p>
+      </div>
+
+      <!-- Score Summary Cards -->
+      <div class="score-summary-grid" id="score-summary">
+        <!-- Injected by JS -->
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
+        <button class="tab-btn" onclick="switchTab('review')">📝 Review Answers</button>
+        <button class="tab-btn" onclick="switchTab('history')">📋 History</button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div class="tab-content active" id="tab-overview">
+        <h3 style="margin-bottom: var(--space-md);">Topic-wise Performance</h3>
+        <div class="section-breakdown" id="topic-breakdown">
+          <!-- Injected by JS -->
+        </div>
+
+        <div style="margin-top: var(--space-xl);">
+          <h3 style="margin-bottom: var(--space-md);">📚 Study Recommendations</h3>
+          <div id="recommendations" class="glass-card">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Review Tab -->
+      <div class="tab-content" id="tab-review">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+          <h3>Answer Review</h3>
+          <div style="display: flex; gap: var(--space-sm);">
+            <button class="btn btn-sm btn-ghost" onclick="filterReview('all')">All</button>
+            <button class="btn btn-sm btn-ghost" onclick="filterReview('incorrect')">❌ Incorrect</button>
+            <button class="btn btn-sm btn-ghost" onclick="filterReview('correct')">✅ Correct</button>
+            <button class="btn btn-sm btn-ghost" onclick="filterReview('skipped')">⬜ Skipped</button>
+          </div>
+        </div>
+        <div id="review-list">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-content" id="tab-history">
+        <h3 style="margin-bottom: var(--space-lg);">📋 All Past Attempts</h3>
+        <div id="full-history-list"></div>
+      </div>
+
+      <!-- Actions -->
+      <div style="text-align: center; margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-glass);">
+        <a href="index.html" class="btn btn-primary btn-lg">🔄 Take Another Test</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/results.js"></script>
+</body>
+</html>
