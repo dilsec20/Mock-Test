@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Communication Speaking — MockPrep</title>
+  <meta name="description" content="Practice Accenture Communication Speaking Assessment in real Pearson test format">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
+  <style>
+    /* ── Communication Speaking Specific Styles ── */
+    .comm-container { max-width: 800px; margin: 0 auto; padding: var(--space-xl) var(--space-md); padding-top: 80px; }
+
+    /* Part Header */
+    .part-header { text-align: center; margin-bottom: var(--space-xl); }
+    .part-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 99px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: var(--space-md); }
+    .part-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .part-instructions { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; margin: 0 auto; }
+
+    /* Progress Bar */
+    .comm-progress { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-xl); }
+    .comm-progress-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--bg-glass); overflow: hidden; }
+    .comm-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); transition: width 0.4s ease; }
+    .comm-progress-text { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; min-width: 60px; text-align: right; }
+
+    /* Question Card */
+    .comm-card { background: var(--bg-glass); border: 1px solid var(--border-glass); backdrop-filter: blur(20px); border-radius: 16px; padding: var(--space-xl); margin-bottom: var(--space-lg); position: relative; }
+    .comm-card-number { position: absolute; top: var(--space-md); left: var(--space-md); font-size: 0.75rem; color: var(--text-dim); font-weight: 600; }
+
+    /* Text Display */
+    .comm-text-display { font-size: 1.25rem; line-height: 1.8; text-align: center; padding: var(--space-lg); color: var(--text-primary); font-weight: 500; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+    .comm-text-display.story { font-size: 1rem; text-align: left; line-height: 1.9; }
+
+    /* Recording Controls */
+    .comm-controls { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); margin-top: var(--space-lg); }
+
+    /* Mic Button */
+    .mic-btn { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--border-glass); background: var(--bg-glass); color: var(--text-primary); font-size: 2rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; position: relative; }
+    .mic-btn:hover { background: rgba(0, 212, 255, 0.1); border-color: var(--accent-primary); }
+    .mic-btn.recording { background: rgba(239, 68, 68, 0.15); border-color: #ef4444; animation: pulse-ring 1.5s infinite; }
+    .mic-btn.recording::before { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(239, 68, 68, 0.3); animation: pulse-ring 1.5s infinite; }
+    @keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+
+    .mic-label { font-size: 0.85rem; color: var(--text-muted); }
+    .mic-label.recording { color: #ef4444; font-weight: 600; }
+
+    /* Timer Circle */
+    .comm-timer { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+    .comm-timer.warning { color: #f59e0b; }
+    .comm-timer.danger { color: #ef4444; }
+
+    /* Recognized Text */
+    .recognized-text { width: 100%; min-height: 60px; padding: var(--space-md); border-radius: 12px; background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.15); color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; text-align: center; margin-top: var(--space-sm); }
+    .recognized-text.empty { color: var(--text-dim); font-style: italic; }
+    .recognized-text .match { color: #22c55e; }
+    .recognized-text .mismatch { color: #ef4444; text-decoration: underline; }
+
+    /* Accuracy Badge */
+    .accuracy-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 99px; font-size: 0.85rem; font-weight: 700; margin-top: var(--space-sm); }
+    .accuracy-badge.high { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+    .accuracy-badge.medium { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .accuracy-badge.low { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    /* Sentence Build */
+    .sb-words-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: var(--space-lg); min-height: 60px; }
+    .sb-word { padding: 8px 16px; border-radius: 8px; background: var(--bg-glass); border: 1px solid var(--border-glass); cursor: pointer; font-size: 1rem; font-weight: 500; color: var(--text-primary); transition: all 0.2s ease; user-select: none; }
+    .sb-word:hover { border-color: var(--accent-primary); background: rgba(0, 212, 255, 0.1); }
+    .sb-word.selected { opacity: 0.3; pointer-events: none; }
+
+    .sb-answer-area { min-height: 60px; padding: var(--space-md); border-radius: 12px; border: 2px dashed var(--border-glass); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-bottom: var(--space-md); transition: border-color 0.3s ease; }
+    .sb-answer-area.active { border-color: var(--accent-primary); }
+    .sb-answer-word { padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.15)); border: 1px solid rgba(0, 212, 255, 0.3); cursor: pointer; font-size: 1rem; font-weight: 500; color: var(--text-primary); animation: fadeInScale 0.2s ease; }
+    .sb-answer-word:hover { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+    @keyframes fadeInScale { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Play Button */
+    .play-btn { padding: 10px 24px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border: none; color: white; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
+    .play-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3); }
+    .play-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Nav Buttons */
+    .comm-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-xl); }
+    .comm-nav-btn { padding: 10px 24px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-glass); color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
+    .comm-nav-btn:hover { background: rgba(0, 212, 255, 0.1); border-color: var(--accent-primary); }
+    .comm-nav-btn.primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border: none; color: white; }
+    .comm-nav-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3); }
+
+    /* Model Answer */
+    .model-answer { margin-top: var(--space-md); padding: var(--space-md); border-radius: 12px; background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.15); }
+    .model-answer-label { font-size: 0.75rem; color: #22c55e; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .model-answer-text { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+    /* Hint */
+    .hint-text { font-size: 0.85rem; color: var(--text-dim); font-style: italic; margin-top: var(--space-sm); text-align: center; }
+
+    /* Setup Screen */
+    .setup-screen { text-align: center; padding: var(--space-2xl); }
+    .setup-icon { font-size: 5rem; margin-bottom: var(--space-lg); }
+    .setup-title { font-size: 2rem; font-weight: 700; margin-bottom: var(--space-sm); }
+    .setup-desc { color: var(--text-muted); max-width: 500px; margin: 0 auto var(--space-xl); }
+    .setup-parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); text-align: left; margin-bottom: var(--space-xl); max-width: 600px; margin-left: auto; margin-right: auto; }
+    .setup-part { padding: var(--space-md); border-radius: 12px; background: var(--bg-glass); border: 1px solid var(--border-glass); }
+    .setup-part-label { font-weight: 700; font-size: 0.85rem; color: var(--accent-primary); margin-bottom: 4px; }
+    .setup-part-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Mic permission */
+    .mic-status { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 99px; font-size: 0.85rem; margin-bottom: var(--space-lg); }
+    .mic-status.granted { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+    .mic-status.denied { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .mic-status.pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+    /* Score Summary */
+    .comm-score-hero { text-align: center; padding: var(--space-2xl) 0; }
+    .comm-score-circle { width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1)); border: 4px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto var(--space-lg); }
+    .comm-score-circle.high { border-color: #22c55e; }
+    .comm-score-circle.medium { border-color: #f59e0b; }
+    .comm-score-circle.low { border-color: #ef4444; }
+    .comm-score-value { font-size: 2.5rem; font-weight: 800; }
+    .comm-score-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .comm-part-scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-md); margin: var(--space-xl) 0; }
+    .comm-part-score { padding: var(--space-md); border-radius: 12px; background: var(--bg-glass); border: 1px solid var(--border-glass); text-align: center; }
+    .comm-part-score-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+    .comm-part-score-value { font-size: 1.5rem; font-weight: 700; }
+
+    /* Overall timer */
+    .overall-timer { position: fixed; top: 70px; right: 20px; padding: 8px 16px; border-radius: 12px; background: var(--bg-glass); border: 1px solid var(--border-glass); backdrop-filter: blur(20px); font-weight: 700; font-variant-numeric: tabular-nums; z-index: 100; display: flex; align-items: center; gap: 8px; }
+    .overall-timer .timer-icon { font-size: 1rem; }
+
+    /* Browser not supported */
+    .not-supported { text-align: center; padding: var(--space-2xl); }
+    .not-supported h2 { color: #ef4444; margin-bottom: var(--space-md); }
+
+    /* Speaking indicator */
+    .speaking-indicator { display: flex; align-items: center; gap: 4px; justify-content: center; height: 30px; }
+    .speaking-bar { width: 4px; border-radius: 2px; background: var(--accent-primary); animation: speaking-wave 0.8s ease-in-out infinite; }
+    .speaking-bar:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .speaking-bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+    .speaking-bar:nth-child(3) { height: 16px; animation-delay: 0.2s; }
+    .speaking-bar:nth-child(4) { height: 24px; animation-delay: 0.3s; }
+    .speaking-bar:nth-child(5) { height: 12px; animation-delay: 0.4s; }
+    @keyframes speaking-wave { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.2); } }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="logo-icon">🎯</span>
+      <span>MockPrep</span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="results.html">My Results</a>
+    </div>
+  </nav>
+
+  <div class="comm-container">
+
+    <!-- Browser Not Supported -->
+    <div id="not-supported-view" class="not-supported hidden">
+      <div style="font-size: 4rem; margin-bottom: var(--space-md);">⚠️</div>
+      <h2>Browser Not Supported</h2>
+      <p class="text-muted">This speaking assessment requires the Web Speech API which is best supported in <strong>Google Chrome</strong>.</p>
+      <p class="text-muted" style="margin-top: var(--space-sm);">Please open this page in Chrome to continue.</p>
+      <a href="index.html" class="btn btn-primary btn-lg" style="margin-top: var(--space-xl);">← Back to Home</a>
+    </div>
+
+    <!-- Setup Screen -->
+    <div id="setup-view">
+      <div class="setup-screen">
+        <div class="setup-icon">🎙️</div>
+        <h1 class="setup-title">Communication Speaking Test</h1>
+        <p class="setup-desc">Practice the Accenture Communication Assessment in the real Pearson/Versant format. This test uses your microphone to evaluate your spoken English.</p>
+
+        <div id="mic-status" class="mic-status pending">⏳ Checking microphone...</div>
+
+        <div class="setup-parts">
+          <div class="setup-part">
+            <div class="setup-part-label">Part A — Reading</div>
+            <div class="setup-part-desc">8 sentences to read aloud</div>
+          </div>
+          <div class="setup-part">
+            <div class="setup-part-label">Part B — Repeat</div>
+            <div class="setup-part-desc">16 sentences to listen & repeat</div>
+          </div>
+          <div class="setup-part">
+            <div class="setup-part-label">Part C — Questions</div>
+            <div class="setup-part-desc">24 short answer questions</div>
+          </div>
+          <div class="setup-part">
+            <div class="setup-part-label">Part D — Sentence Builds</div>
+            <div class="setup-part-desc">10 jumbled word rearrangements</div>
+          </div>
+          <div class="setup-part">
+            <div class="setup-part-label">Part E — Story Retelling</div>
+            <div class="setup-part-desc">3 short stories to retell</div>
+          </div>
+          <div class="setup-part">
+            <div class="setup-part-label">Part F — Open Questions</div>
+            <div class="setup-part-desc">2 open-ended questions</div>
+          </div>
+        </div>
+
+        <button id="start-test-btn" class="play-btn" style="font-size: 1.1rem; padding: 14px 32px;" onclick="startTest()" disabled>
+          🎙️ Start Speaking Test
+        </button>
+        <p style="margin-top: var(--space-sm); font-size: 0.8rem; color: var(--text-dim);">Make sure you're in a quiet environment with a working microphone</p>
+      </div>
+    </div>
+
+    <!-- Test View -->
+    <div id="test-view" class="hidden">
+      <!-- Overall Timer -->
+      <div class="overall-timer">
+        <span class="timer-icon">⏱️</span>
+        <span id="overall-timer-display">20:00</span>
+      </div>
+
+      <!-- Part Header -->
+      <div class="part-header">
+        <div class="part-badge" id="part-badge">PART A</div>
+        <div class="part-title" id="part-title">Reading</div>
+        <div class="part-instructions" id="part-instructions">Read the sentence aloud clearly at a moderate pace.</div>
+      </div>
+
+      <!-- Progress -->
+      <div class="comm-progress">
+        <div class="comm-progress-bar">
+          <div class="comm-progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="comm-progress-text" id="progress-text">1 / 8</div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="comm-card" id="question-card">
+        <div class="comm-card-number" id="card-number">Q1</div>
+
+        <!-- Text to read/listen -->
+        <div class="comm-text-display" id="text-display">
+          Loading...
+        </div>
+
+        <!-- Play button (for Repeat/Story) -->
+        <div style="text-align: center; margin: var(--space-md) 0;" id="play-container" class="hidden">
+          <button class="play-btn" id="play-audio-btn" onclick="playAudio()">
+            🔊 Listen
+          </button>
+          <div class="speaking-indicator hidden" id="speaking-indicator">
+            <div class="speaking-bar"></div>
+            <div class="speaking-bar"></div>
+            <div class="speaking-bar"></div>
+            <div class="speaking-bar"></div>
+            <div class="speaking-bar"></div>
+          </div>
+        </div>
+
+        <!-- Sentence Build Area -->
+        <div id="sb-area" class="hidden">
+          <div class="sb-answer-area" id="sb-answer-area">
+            <span style="color: var(--text-dim); font-size: 0.9rem;">Click words below to build the sentence</span>
+          </div>
+          <div class="sb-words-container" id="sb-words-container"></div>
+        </div>
+
+        <!-- Recording Controls (for Reading/Repeat/Questions/Stories/Open) -->
+        <div class="comm-controls" id="recording-controls">
+          <!-- Timer for this question -->
+          <div class="comm-timer" id="question-timer">0:30</div>
+
+          <!-- Mic Button -->
+          <button class="mic-btn" id="mic-btn" onclick="toggleRecording()">🎤</button>
+          <div class="mic-label" id="mic-label">Click to start recording</div>
+
+          <!-- Recognized Text -->
+          <div class="recognized-text empty" id="recognized-text">Your speech will appear here...</div>
+
+          <!-- Accuracy -->
+          <div id="accuracy-container" class="hidden">
+            <div class="accuracy-badge" id="accuracy-badge">✓ 95% match</div>
+          </div>
+        </div>
+
+        <!-- Model Answer (for Questions) -->
+        <div class="model-answer hidden" id="model-answer">
+          <div class="model-answer-label">💡 Model Answer</div>
+          <div class="model-answer-text" id="model-answer-text"></div>
+        </div>
+
+        <!-- Hint (for Open Questions) -->
+        <div class="hint-text hidden" id="hint-text"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="comm-nav">
+        <button class="comm-nav-btn" id="skip-btn" onclick="skipQuestion()">Skip →</button>
+        <button class="comm-nav-btn primary" id="next-btn" onclick="nextItem()">Next →</button>
+      </div>
+    </div>
+
+    <!-- Results View -->
+    <div id="results-view" class="hidden">
+      <div class="comm-score-hero">
+        <div class="comm-score-circle" id="score-circle">
+          <div class="comm-score-value" id="final-score">0%</div>
+          <div class="comm-score-label">Overall</div>
+        </div>
+        <h2>Communication Assessment Complete!</h2>
+        <p class="text-muted" id="result-subtitle">Practice makes perfect — keep improving!</p>
+      </div>
+
+      <div class="comm-part-scores" id="part-scores"></div>
+
+      <div style="text-align: center; margin-top: var(--space-xl);">
+        <a href="index.html" class="btn btn-primary btn-lg">🏠 Back to Home</a>
+        <button class="comm-nav-btn" style="margin-left: var(--space-md);" onclick="location.reload()">🔄 Retake</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="data/accenture-data.js"></script>
+  <script src="js/comm-engine.js"></script>
+</body>
+</html>

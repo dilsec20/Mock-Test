@@ -38,7 +38,8 @@ function renderSectionSelector() {
   document.getElementById('company-name-display').textContent = data.company + ' — Select a section to practice';
 
   const container = document.getElementById('section-options');
-  const testableSections = data.sections.filter(s => !s.isExternal);
+  const testableSections = data.sections.filter(s => !s.isExternal && !s.isSpeaking);
+  const speakingSection = data.sections.find(s => s.isSpeaking);
   const codingSection = data.sections.find(s => s.isExternal);
 
   let html = '';
@@ -47,14 +48,14 @@ function renderSectionSelector() {
   html += `
     <div class="section-option" data-section="full" onclick="selectSection('full')">
       <div class="section-icon">🎯</div>
-      <h4>Full Mock Test</h4>
+      <h4>Full Mock Test (MCQ)</h4>
       <div class="section-meta">
-        All sections combined • ${testableSections.reduce((sum, s) => sum + s.questions, 0)} questions • ${testableSections.reduce((sum, s) => sum + s.duration, 0)} min
+        All written sections combined • ${testableSections.reduce((sum, s) => sum + s.questions, 0)} questions • ${testableSections.reduce((sum, s) => sum + s.duration, 0)} min
       </div>
     </div>
   `;
 
-  // Individual sections
+  // Individual MCQ sections
   testableSections.forEach(section => {
     html += `
       <div class="section-option" data-section="${section.id}" onclick="selectSection('${section.id}')">
@@ -66,6 +67,19 @@ function renderSectionSelector() {
       </div>
     `;
   });
+
+  // Speaking section (Pearson/Versant audio assessment)
+  if (speakingSection) {
+    html += `
+      <div class="section-option" data-section="${speakingSection.id}" onclick="selectSection('${speakingSection.id}')">
+        <div class="section-icon">${speakingSection.icon}</div>
+        <h4>${speakingSection.name} <span style="font-size: 0.65rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; padding: 2px 8px; border-radius: 99px; margin-left: 6px; font-weight: 700;">REAL FORMAT</span></h4>
+        <div class="section-meta">
+          ${speakingSection.questions} questions • ${speakingSection.duration} min • Spoken audio assessment with mic: Reading, Repeat, Q&A, Sentence Builds, Stories
+        </div>
+      </div>
+    `;
+  }
 
   // Coding section (external)
   if (codingSection) {
@@ -104,14 +118,20 @@ function beginTest() {
     return;
   }
 
+  // Handle speaking section separately (redirects to dedicated speech engine)
+  if (testState.selectedSection === 'communication_speaking') {
+    window.location.href = `comm-test.html?company=${testState.company}`;
+    return;
+  }
+
   // Load questions based on selected section
   const data = testState.companyData;
 
   if (testState.selectedSection === 'full') {
-    // Combine all testable sections
+    // Combine all written testable sections (excluding speaking & coding)
     testState.questions = [];
     let totalTime = 0;
-    data.sections.filter(s => !s.isExternal).forEach(section => {
+    data.sections.filter(s => !s.isExternal && !s.isSpeaking).forEach(section => {
       const sectionQuestions = data.questionBank[section.id] || [];
       // Shuffle and pick the right number
       const picked = shuffleArray([...sectionQuestions]).slice(0, section.questions);
@@ -459,7 +479,7 @@ function calculateResults() {
     percentage,
     timeTaken,
     totalTime: (testState.selectedSection === 'full'
-      ? testState.companyData.sections.filter(s => !s.isExternal).reduce((s, sec) => s + sec.duration, 0)
+      ? testState.companyData.sections.filter(s => !s.isExternal && !s.isSpeaking).reduce((s, sec) => s + sec.duration, 0)
       : testState.companyData.sections.find(s => s.id === testState.selectedSection)?.duration || 0) * 60,
     topicScores,
     questionResults

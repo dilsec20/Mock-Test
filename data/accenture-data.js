@@ -22,17 +22,34 @@ window.COMPANY_DATA["accenture"] = {
       ]
     },
     {
-      "id": "communication",
-      "name": "Communication Assessment",
-      "icon": "🗣️",
+      "id": "communication_grammar",
+      "name": "Communication Grammar (MCQ)",
+      "icon": "📝",
       "questions": 20,
       "duration": 15,
-      "description": "Grammar, Sentence Building, Error Correction, Vocabulary",
+      "description": "Grammar, Error Correction, Vocabulary — MCQ Practice",
       "topics": [
         "Grammar",
         "Sentence Building",
         "Error Correction"
       ]
+    },
+    {
+      "id": "communication_speaking",
+      "name": "Communication Speaking (Pearson Format)",
+      "icon": "🎙️",
+      "questions": 63,
+      "duration": 20,
+      "description": "Read Aloud, Repeat, Questions, Sentence Builds, Story Retelling — Real Exam Format",
+      "topics": [
+        "Reading",
+        "Repeat",
+        "Questions",
+        "Sentence Builds",
+        "Story Retelling",
+        "Open Questions"
+      ],
+      "isSpeaking": true
     },
     {
       "id": "cognitive",
@@ -4779,7 +4796,1467 @@ window.COMPANY_DATA["accenture"] = {
         "explanation": "a&&!b = true&&true = 1. !a||b = false||false = 0"
       }
     ],
-    "communication": [
+    "cognitive": [
+      {
+        "id": "g1",
+        "topic": "Number Series",
+        "question": "Find the next number in the series: 2, 6, 12, 20, 30, ?",
+        "options": [
+          "40",
+          "42",
+          "44",
+          "36"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 4, 6, 8, 10, 12. Second differences are constant (2). Next: 30 + 12 = 42"
+      },
+      {
+        "id": "g2",
+        "topic": "Number Series",
+        "question": "Find the next number in the series: 3, 6, 12, 24, 48, ?",
+        "options": [
+          "72",
+          "84",
+          "96",
+          "60"
+        ],
+        "answer": 2,
+        "explanation": "Geometric series: each number × 2. 48 × 2 = 96"
+      },
+      {
+        "id": "g3",
+        "topic": "Number Series",
+        "question": "Find the missing number: 2, 5, 10, 17, __, 37",
+        "options": [
+          "24",
+          "26",
+          "28",
+          "25"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 3, 5, 7, 9, 11. Pattern: odd numbers. 17 + 9 = 26"
+      },
+      {
+        "id": "g4",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 1, 2, 3, 5, 8, 13, ?",
+        "options": [
+          "18",
+          "20",
+          "21",
+          "16"
+        ],
+        "answer": 2,
+        "explanation": "Fibonacci series: each number = sum of previous two. 8 + 13 = 21"
+      },
+      {
+        "id": "g5",
+        "topic": "Arithmetic",
+        "question": "What is 47 × 11?",
+        "options": [
+          "507",
+          "517",
+          "527",
+          "497"
+        ],
+        "answer": 1,
+        "explanation": "Trick: 47 × 11 = 4(4+7)7 = 4(11)7 → carry the 1 → 517"
+      },
+      {
+        "id": "g6",
+        "topic": "Arithmetic",
+        "question": "What is the sum of first 20 natural numbers?",
+        "options": [
+          "190",
+          "200",
+          "210",
+          "220"
+        ],
+        "answer": 2,
+        "explanation": "Formula: n(n+1)/2 = 20 × 21 / 2 = 210"
+      },
+      {
+        "id": "g7",
+        "topic": "Arithmetic",
+        "question": "If 35² = ?",
+        "options": [
+          "1125",
+          "1225",
+          "1325",
+          "1025"
+        ],
+        "answer": 1,
+        "explanation": "Trick for squaring numbers ending in 5: 3×4 = 12, append 25 → 1225"
+      },
+      {
+        "id": "g8",
+        "topic": "Arithmetic",
+        "question": "68 × 5 = ?",
+        "options": [
+          "330",
+          "335",
+          "340",
+          "345"
+        ],
+        "answer": 2,
+        "explanation": "Trick: n × 5 = n/2 × 10. 68/2 = 34, × 10 = 340"
+      },
+      {
+        "id": "g9",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 4, 9, 16, 25, ?",
+        "options": [
+          "30",
+          "35",
+          "36",
+          "49"
+        ],
+        "answer": 2,
+        "explanation": "Perfect squares: 1², 2², 3², 4², 5², 6² = 36"
+      },
+      {
+        "id": "g10",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 8, 27, 64, 125, ?",
+        "options": [
+          "196",
+          "200",
+          "216",
+          "250"
+        ],
+        "answer": 2,
+        "explanation": "Perfect cubes: 1³, 2³, 3³, 4³, 5³, 6³ = 216"
+      },
+      {
+        "id": "g11",
+        "topic": "Patterns",
+        "question": "Which number doesn't belong: 2, 3, 5, 7, 9, 11, 13?",
+        "options": [
+          "2",
+          "9",
+          "11",
+          "3"
+        ],
+        "answer": 1,
+        "explanation": "All are prime numbers EXCEPT 9 (9 = 3 × 3, not prime)."
+      },
+      {
+        "id": "g12",
+        "topic": "Arithmetic",
+        "question": "What is 15% of 240?",
+        "options": [
+          "24",
+          "30",
+          "36",
+          "48"
+        ],
+        "answer": 2,
+        "explanation": "15% of 240 = (15/100) × 240 = 0.15 × 240 = 36"
+      },
+      {
+        "id": "g13",
+        "topic": "Arithmetic",
+        "question": "A train travels 120 km in 2 hours. What is its speed in km/h?",
+        "options": [
+          "40",
+          "50",
+          "60",
+          "80"
+        ],
+        "answer": 2,
+        "explanation": "Speed = Distance / Time = 120 / 2 = 60 km/h"
+      },
+      {
+        "id": "g14",
+        "topic": "Number Series",
+        "question": "Find the next number: 5, 10, 20, 40, 80, ?",
+        "options": [
+          "100",
+          "120",
+          "160",
+          "140"
+        ],
+        "answer": 2,
+        "explanation": "Each number is doubled: 80 × 2 = 160"
+      },
+      {
+        "id": "g15",
+        "topic": "Patterns",
+        "question": "If CLOUD = 48, RAIN = 42, then SUN = ?",
+        "options": [
+          "52",
+          "54",
+          "57",
+          "45"
+        ],
+        "answer": 2,
+        "explanation": "Sum of positions: C(3)+L(12)+O(15)+U(21)+D(4)=55... Actually using A=1 system: S(19)+U(21)+N(14)=54. Wait — CLOUD=C(3)+L(12)+O(15)+U(21)+D(4)=55≠48. Let's use position sum: S=19, U=21, N=14 → 19+21+14 = 54. But given CLOUD=48 and RAIN=42, let me check: R(18)+A(1)+I(9)+N(14)=42 ✓. C(3)+L(12)+O(15)+U(21)+D(4)=55≠48. Using different system: each letter = position×1, but CLOUD gives 48 with some offset. S+U+N = 19+21+14=54."
+      },
+      {
+        "id": "g16",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 4, 9, 16, 25, ?",
+        "options": [
+          "30",
+          "36",
+          "49",
+          "35"
+        ],
+        "answer": 1,
+        "explanation": "Perfect squares: 1², 2², 3², 4², 5², 6² = 36"
+      },
+      {
+        "id": "g17",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 1, 2, 3, 5, 8, 13, ?",
+        "options": [
+          "18",
+          "20",
+          "21",
+          "15"
+        ],
+        "answer": 2,
+        "explanation": "Fibonacci: each number is sum of previous two. 8+13 = 21"
+      },
+      {
+        "id": "g18",
+        "topic": "Number Series",
+        "question": "Find the next number: 3, 6, 12, 24, 48, ?",
+        "options": [
+          "72",
+          "96",
+          "60",
+          "84"
+        ],
+        "answer": 1,
+        "explanation": "Each number doubles: ×2. 48 × 2 = 96"
+      },
+      {
+        "id": "g19",
+        "topic": "Number Series",
+        "question": "Find the next number: 2, 3, 5, 7, 11, 13, ?",
+        "options": [
+          "15",
+          "16",
+          "17",
+          "19"
+        ],
+        "answer": 2,
+        "explanation": "Prime numbers: 2, 3, 5, 7, 11, 13, 17"
+      },
+      {
+        "id": "g20",
+        "topic": "Number Series",
+        "question": "Find the next number: 100, 95, 85, 70, 50, ?",
+        "options": [
+          "30",
+          "25",
+          "20",
+          "35"
+        ],
+        "answer": 1,
+        "explanation": "Differences: -5, -10, -15, -20, -25. Next: 50 - 25 = 25"
+      },
+      {
+        "id": "g21",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 8, 27, 64, 125, ?",
+        "options": [
+          "150",
+          "196",
+          "216",
+          "225"
+        ],
+        "answer": 2,
+        "explanation": "Perfect cubes: 1³, 2³, 3³, 4³, 5³, 6³ = 216"
+      },
+      {
+        "id": "g22",
+        "topic": "Number Series",
+        "question": "Find the next number: 2, 6, 18, 54, 162, ?",
+        "options": [
+          "324",
+          "486",
+          "500",
+          "648"
+        ],
+        "answer": 1,
+        "explanation": "Geometric: ×3 each time. 162 × 3 = 486"
+      },
+      {
+        "id": "g23",
+        "topic": "Number Series",
+        "question": "Find the next number: 5, 10, 20, 35, 55, ?",
+        "options": [
+          "70",
+          "75",
+          "80",
+          "85"
+        ],
+        "answer": 2,
+        "explanation": "Differences: 5, 10, 15, 20, 25. Next: 55 + 25 = 80"
+      },
+      {
+        "id": "g24",
+        "topic": "Number Series",
+        "question": "Find the next number: 4, 7, 12, 19, 28, ?",
+        "options": [
+          "35",
+          "37",
+          "39",
+          "41"
+        ],
+        "answer": 2,
+        "explanation": "Differences: 3, 5, 7, 9, 11. Next: 28 + 11 = 39"
+      },
+      {
+        "id": "g25",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 2, 4, 7, 11, 16, ?",
+        "options": [
+          "20",
+          "22",
+          "24",
+          "21"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 1, 2, 3, 4, 5, 6. Next: 16 + 6 = 22"
+      },
+      {
+        "id": "g26",
+        "topic": "Number Series",
+        "question": "Find the missing number: 3, 9, 27, ?, 243",
+        "options": [
+          "54",
+          "81",
+          "108",
+          "162"
+        ],
+        "answer": 1,
+        "explanation": "Geometric: ×3. 3→9→27→81→243"
+      },
+      {
+        "id": "g27",
+        "topic": "Number Series",
+        "question": "Find the next number: 1, 3, 6, 10, 15, 21, ?",
+        "options": [
+          "25",
+          "27",
+          "28",
+          "30"
+        ],
+        "answer": 2,
+        "explanation": "Triangular numbers. Differences: 2,3,4,5,6,7. Next: 21+7 = 28"
+      },
+      {
+        "id": "g28",
+        "topic": "Number Series",
+        "question": "Find the next number: 2, 5, 10, 17, 26, ?",
+        "options": [
+          "35",
+          "37",
+          "33",
+          "39"
+        ],
+        "answer": 1,
+        "explanation": "Pattern: n²+1. For n=1: 2, n=2: 5, n=3: 10, n=4: 17, n=5: 26, n=6: 37"
+      },
+      {
+        "id": "g29",
+        "topic": "Number Series",
+        "question": "Find the next number: 0, 1, 1, 2, 4, 7, 13, ?",
+        "options": [
+          "20",
+          "22",
+          "24",
+          "26"
+        ],
+        "answer": 2,
+        "explanation": "Tribonacci-like: each = sum of previous 3. 4+7+13 = 24"
+      },
+      {
+        "id": "g30",
+        "topic": "Number Series",
+        "question": "Find the next number: 7, 14, 28, 56, ?",
+        "options": [
+          "84",
+          "98",
+          "112",
+          "128"
+        ],
+        "answer": 2,
+        "explanation": "×2 each time. 56 × 2 = 112"
+      },
+      {
+        "id": "g31",
+        "topic": "Quick Math",
+        "question": "What is 15% of 200?",
+        "options": [
+          "15",
+          "20",
+          "25",
+          "30"
+        ],
+        "answer": 3,
+        "explanation": "15% × 200 = 0.15 × 200 = 30"
+      },
+      {
+        "id": "g32",
+        "topic": "Quick Math",
+        "question": "If an item costs ₹500 and gets a 20% discount, what is the final price?",
+        "options": [
+          "₹400",
+          "₹450",
+          "₹380",
+          "₹420"
+        ],
+        "answer": 0,
+        "explanation": "20% of 500 = 100. Final: 500 - 100 = ₹400"
+      },
+      {
+        "id": "g33",
+        "topic": "Quick Math",
+        "question": "What is 12 × 15?",
+        "options": [
+          "160",
+          "170",
+          "175",
+          "180"
+        ],
+        "answer": 3,
+        "explanation": "12 × 15 = 12 × 10 + 12 × 5 = 120 + 60 = 180"
+      },
+      {
+        "id": "g34",
+        "topic": "Quick Math",
+        "question": "What is 25% of 80?",
+        "options": [
+          "15",
+          "20",
+          "25",
+          "30"
+        ],
+        "answer": 1,
+        "explanation": "25% = ¼. 80 ÷ 4 = 20"
+      },
+      {
+        "id": "g35",
+        "topic": "Quick Math",
+        "question": "If 3x + 7 = 22, what is x?",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "answer": 2,
+        "explanation": "3x = 22 - 7 = 15. x = 15/3 = 5"
+      },
+      {
+        "id": "g36",
+        "topic": "Quick Math",
+        "question": "What is the average of 12, 15, 18, 21, 24?",
+        "options": [
+          "16",
+          "17",
+          "18",
+          "19"
+        ],
+        "answer": 2,
+        "explanation": "Sum = 90. Average = 90/5 = 18. Or middle of evenly spaced: 18"
+      },
+      {
+        "id": "g37",
+        "topic": "Quick Math",
+        "question": "A train travels 240 km in 4 hours. What is its speed?",
+        "options": [
+          "40 km/h",
+          "50 km/h",
+          "55 km/h",
+          "60 km/h"
+        ],
+        "answer": 3,
+        "explanation": "Speed = Distance/Time = 240/4 = 60 km/h"
+      },
+      {
+        "id": "g38",
+        "topic": "Quick Math",
+        "question": "What is 144 ÷ 12?",
+        "options": [
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "answer": 2,
+        "explanation": "144 ÷ 12 = 12. Also: 12² = 144"
+      },
+      {
+        "id": "g39",
+        "topic": "Quick Math",
+        "question": "If A can do a job in 6 days and B can do it in 12 days, how long together?",
+        "options": [
+          "2 days",
+          "3 days",
+          "4 days",
+          "5 days"
+        ],
+        "answer": 2,
+        "explanation": "A's rate: 1/6, B's rate: 1/12. Combined: 1/6+1/12 = 3/12 = 1/4. Time = 4 days"
+      },
+      {
+        "id": "g40",
+        "topic": "Quick Math",
+        "question": "What is √225?",
+        "options": [
+          "13",
+          "14",
+          "15",
+          "16"
+        ],
+        "answer": 2,
+        "explanation": "15 × 15 = 225. So √225 = 15"
+      },
+      {
+        "id": "g41",
+        "topic": "Quick Math",
+        "question": "Simplify: 2/3 + 1/4",
+        "options": [
+          "3/7",
+          "5/12",
+          "11/12",
+          "7/12"
+        ],
+        "answer": 2,
+        "explanation": "LCM of 3 and 4 is 12. 8/12 + 3/12 = 11/12"
+      },
+      {
+        "id": "g42",
+        "topic": "Quick Math",
+        "question": "What is 30% of 150?",
+        "options": [
+          "35",
+          "40",
+          "45",
+          "50"
+        ],
+        "answer": 2,
+        "explanation": "30% × 150 = 0.3 × 150 = 45"
+      },
+      {
+        "id": "g43",
+        "topic": "Quick Math",
+        "question": "A product marked at ₹800 is sold at ₹680. What is the discount %?",
+        "options": [
+          "10%",
+          "12%",
+          "15%",
+          "20%"
+        ],
+        "answer": 2,
+        "explanation": "Discount = 800-680 = 120. Percentage = (120/800)×100 = 15%"
+      },
+      {
+        "id": "g44",
+        "topic": "Quick Math",
+        "question": "What is 17 × 13?",
+        "options": [
+          "201",
+          "211",
+          "221",
+          "231"
+        ],
+        "answer": 2,
+        "explanation": "17 × 13 = (17 × 10) + (17 × 3) = 170 + 51 = 221"
+      },
+      {
+        "id": "g45",
+        "topic": "Quick Math",
+        "question": "If the ratio of boys to girls is 3:5 and there are 24 boys, how many girls?",
+        "options": [
+          "30",
+          "35",
+          "40",
+          "45"
+        ],
+        "answer": 2,
+        "explanation": "3 parts = 24, so 1 part = 8. Girls = 5 × 8 = 40"
+      },
+      {
+        "id": "g46",
+        "topic": "Pattern Recognition",
+        "question": "What comes next: A, C, E, G, ?",
+        "options": [
+          "H",
+          "I",
+          "J",
+          "K"
+        ],
+        "answer": 1,
+        "explanation": "Alternate letters: A(1), C(3), E(5), G(7), I(9). Skip one each time."
+      },
+      {
+        "id": "g47",
+        "topic": "Pattern Recognition",
+        "question": "What comes next: Z, X, V, T, ?",
+        "options": [
+          "S",
+          "R",
+          "Q",
+          "P"
+        ],
+        "answer": 1,
+        "explanation": "Reverse alphabets, skipping one: Z, X, V, T, R"
+      },
+      {
+        "id": "g48",
+        "topic": "Pattern Recognition",
+        "question": "Complete the pattern: 2, A, 4, C, 6, E, 8, ?",
+        "options": [
+          "F",
+          "G",
+          "H",
+          "I"
+        ],
+        "answer": 1,
+        "explanation": "Numbers: 2,4,6,8 (even). Letters: A,C,E,G (odd positions). Next letter: G"
+      },
+      {
+        "id": "g49",
+        "topic": "Pattern Recognition",
+        "question": "Which number doesn't belong: 2, 3, 5, 7, 9, 11",
+        "options": [
+          "2",
+          "3",
+          "9",
+          "11"
+        ],
+        "answer": 2,
+        "explanation": "All are prime except 9 (9 = 3×3). 9 doesn't belong."
+      },
+      {
+        "id": "g50",
+        "topic": "Pattern Recognition",
+        "question": "If Monday = 1, Tuesday = 2, ..., what is the 15th day?",
+        "options": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Sunday"
+        ],
+        "answer": 0,
+        "explanation": "15 ÷ 7 = 2 remainder 1. Day 1 = Monday. So 15th day = Monday"
+      },
+      {
+        "id": "g51",
+        "topic": "Pattern Recognition",
+        "question": "Which number doesn't belong: 4, 9, 16, 24, 36",
+        "options": [
+          "4",
+          "9",
+          "24",
+          "36"
+        ],
+        "answer": 2,
+        "explanation": "4=2², 9=3², 16=4², 36=6² are perfect squares. 24 is not a perfect square."
+      },
+      {
+        "id": "g52",
+        "topic": "Pattern Recognition",
+        "question": "Complete: 1, 4, 2, 5, 3, 6, 4, ?",
+        "options": [
+          "5",
+          "7",
+          "8",
+          "9"
+        ],
+        "answer": 1,
+        "explanation": "Two interleaved sequences: 1,2,3,4 and 4,5,6,7. Next from second: 7"
+      },
+      {
+        "id": "g53",
+        "topic": "Pattern Recognition",
+        "question": "If CAT = 24, DOG = ?",
+        "options": [
+          "26",
+          "38",
+          "40",
+          "34"
+        ],
+        "answer": 0,
+        "explanation": "C(3)+A(1)+T(20)=24. D(4)+O(15)+G(7)=26"
+      },
+      {
+        "id": "g54",
+        "topic": "Pattern Recognition",
+        "question": "What comes next: 1, 2, 6, 24, 120, ?",
+        "options": [
+          "240",
+          "620",
+          "720",
+          "600"
+        ],
+        "answer": 2,
+        "explanation": "Factorials: 1!, 2!, 3!, 4!, 5!, 6! = 720"
+      },
+      {
+        "id": "g55",
+        "topic": "Pattern Recognition",
+        "question": "Mirror image of 3:15 on a clock shows:",
+        "options": [
+          "8:45",
+          "9:45",
+          "8:15",
+          "9:15"
+        ],
+        "answer": 0,
+        "explanation": "Mirror of clock: subtract from 12:00 for hours, from 60 for minutes. 12-3=9, but mirror reflection gives 8:45."
+      },
+      {
+        "id": "g56",
+        "topic": "Quick Math",
+        "question": "What is the simple interest on ₹10,000 at 5% for 2 years?",
+        "options": [
+          "₹500",
+          "₹750",
+          "₹1000",
+          "₹1500"
+        ],
+        "answer": 2,
+        "explanation": "SI = P×R×T/100 = 10000×5×2/100 = ₹1000"
+      },
+      {
+        "id": "g57",
+        "topic": "Quick Math",
+        "question": "What is the HCF of 12 and 18?",
+        "options": [
+          "2",
+          "3",
+          "6",
+          "9"
+        ],
+        "answer": 2,
+        "explanation": "Factors of 12: 1,2,3,4,6,12. Factors of 18: 1,2,3,6,9,18. HCF = 6"
+      },
+      {
+        "id": "g58",
+        "topic": "Quick Math",
+        "question": "What is the LCM of 4 and 6?",
+        "options": [
+          "8",
+          "10",
+          "12",
+          "24"
+        ],
+        "answer": 2,
+        "explanation": "Multiples of 4: 4,8,12,16... Multiples of 6: 6,12,18... LCM = 12"
+      },
+      {
+        "id": "g59",
+        "topic": "Quick Math",
+        "question": "Convert 0.75 to a fraction:",
+        "options": [
+          "3/4",
+          "7/5",
+          "3/5",
+          "7/10"
+        ],
+        "answer": 0,
+        "explanation": "0.75 = 75/100 = 3/4"
+      },
+      {
+        "id": "g60",
+        "topic": "Quick Math",
+        "question": "What is 2⁸?",
+        "options": [
+          "128",
+          "256",
+          "512",
+          "64"
+        ],
+        "answer": 1,
+        "explanation": "2⁸ = 256. Quick: 2⁴=16, 2⁸=16×16=256"
+      },
+      {
+        "id": "g61",
+        "topic": "Number Series",
+        "question": "Find the next: 11, 13, 17, 19, 23, 29, ?",
+        "options": [
+          "31",
+          "33",
+          "35",
+          "37"
+        ],
+        "answer": 0,
+        "explanation": "Prime numbers: 11,13,17,19,23,29,31"
+      },
+      {
+        "id": "g62",
+        "topic": "Number Series",
+        "question": "Find the next: 1, 3, 7, 15, 31, ?",
+        "options": [
+          "47",
+          "55",
+          "63",
+          "60"
+        ],
+        "answer": 2,
+        "explanation": "Pattern: 2ⁿ-1. Or: ×2+1 each time. 31×2+1 = 63"
+      },
+      {
+        "id": "g63",
+        "topic": "Number Series",
+        "question": "Find the next: 10, 11, 13, 16, 20, ?",
+        "options": [
+          "24",
+          "25",
+          "26",
+          "27"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 1,2,3,4,5. Next: 20+5 = 25"
+      },
+      {
+        "id": "g64",
+        "topic": "Number Series",
+        "question": "Find the next: 2, 3, 5, 8, 12, 17, ?",
+        "options": [
+          "22",
+          "23",
+          "24",
+          "25"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 1,2,3,4,5,6. Next: 17+6 = 23"
+      },
+      {
+        "id": "g65",
+        "topic": "Number Series",
+        "question": "Find the odd one out: 8, 27, 64, 100, 125",
+        "options": [
+          "8",
+          "27",
+          "100",
+          "125"
+        ],
+        "answer": 2,
+        "explanation": "8=2³, 27=3³, 64=4³, 125=5³ are cubes. 100 = 10² is not a cube."
+      },
+      {
+        "id": "g66",
+        "topic": "Quick Math",
+        "question": "A shopkeeper buys at ₹400 and sells at ₹500. Profit %?",
+        "options": [
+          "20%",
+          "25%",
+          "30%",
+          "10%"
+        ],
+        "answer": 1,
+        "explanation": "Profit = 100. Profit% = (100/400)×100 = 25%"
+      },
+      {
+        "id": "g67",
+        "topic": "Quick Math",
+        "question": "What is the value of 999 × 99?",
+        "options": [
+          "98901",
+          "98001",
+          "99901",
+          "98991"
+        ],
+        "answer": 0,
+        "explanation": "999×99 = 999×(100-1) = 99900-999 = 98901"
+      },
+      {
+        "id": "g68",
+        "topic": "Quick Math",
+        "question": "If 8 workers can finish a job in 6 days, how many days for 12 workers?",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "Total work = 8×6 = 48 man-days. 48/12 = 4 days"
+      },
+      {
+        "id": "g69",
+        "topic": "Quick Math",
+        "question": "What is 45% of 200?",
+        "options": [
+          "80",
+          "85",
+          "90",
+          "95"
+        ],
+        "answer": 2,
+        "explanation": "45% × 200 = 0.45 × 200 = 90"
+      },
+      {
+        "id": "g70",
+        "topic": "Quick Math",
+        "question": "If x:y = 2:3 and y:z = 4:5, what is x:z?",
+        "options": [
+          "2:5",
+          "8:15",
+          "6:10",
+          "4:5"
+        ],
+        "answer": 1,
+        "explanation": "Make y common: x:y = 8:12, y:z = 12:15. So x:z = 8:15"
+      },
+      {
+        "id": "g71",
+        "topic": "Pattern Recognition",
+        "question": "Complete: AB, CD, EF, GH, ?",
+        "options": [
+          "HI",
+          "IJ",
+          "JK",
+          "KL"
+        ],
+        "answer": 1,
+        "explanation": "Consecutive letter pairs: AB, CD, EF, GH, IJ"
+      },
+      {
+        "id": "g72",
+        "topic": "Pattern Recognition",
+        "question": "If COMPUTER = 111, what is LAPTOP?",
+        "options": [
+          "61",
+          "71",
+          "81",
+          "91"
+        ],
+        "answer": 1,
+        "explanation": "Sum of positions: C(3)+O(15)+M(13)+P(16)+U(21)+T(20)+E(5)+R(18)=111. L(12)+A(1)+P(16)+T(20)+O(15)+P(16)=80... actually let's recalculate. The pattern might be different. L+A+P+T+O+P = 12+1+16+20+15+16 = 80. Hmm, but 71 could use a ×1 scheme with the number of letters factored. Answer is 71 using a modified scheme."
+      },
+      {
+        "id": "g73",
+        "topic": "Pattern Recognition",
+        "question": "Find the next: AZ, BY, CX, DW, ?",
+        "options": [
+          "EU",
+          "EV",
+          "EW",
+          "EX"
+        ],
+        "answer": 1,
+        "explanation": "First letter: A→B→C→D→E. Second letter: Z→Y→X→W→V. Next: EV"
+      },
+      {
+        "id": "g74",
+        "topic": "Pattern Recognition",
+        "question": "Which number replaces ?: 6 : 36 :: 8 : ?",
+        "options": [
+          "48",
+          "56",
+          "64",
+          "72"
+        ],
+        "answer": 2,
+        "explanation": "6² = 36. So 8² = 64. Pattern is n : n²"
+      },
+      {
+        "id": "g75",
+        "topic": "Pattern Recognition",
+        "question": "Find the odd one: Apple, Mango, Carrot, Banana",
+        "options": [
+          "Apple",
+          "Mango",
+          "Carrot",
+          "Banana"
+        ],
+        "answer": 2,
+        "explanation": "Apple, Mango, Banana are fruits. Carrot is a vegetable."
+      },
+      {
+        "id": "g76",
+        "topic": "Quick Math",
+        "question": "What is 3/5 as a percentage?",
+        "options": [
+          "50%",
+          "55%",
+          "60%",
+          "65%"
+        ],
+        "answer": 2,
+        "explanation": "3/5 = 0.6 = 60%"
+      },
+      {
+        "id": "g77",
+        "topic": "Quick Math",
+        "question": "Find the area of a rectangle with length 12cm and width 5cm:",
+        "options": [
+          "34 cm²",
+          "60 cm²",
+          "17 cm²",
+          "120 cm²"
+        ],
+        "answer": 1,
+        "explanation": "Area = length × width = 12 × 5 = 60 cm²"
+      },
+      {
+        "id": "g78",
+        "topic": "Quick Math",
+        "question": "What is the perimeter of a square with side 7cm?",
+        "options": [
+          "14 cm",
+          "21 cm",
+          "28 cm",
+          "49 cm"
+        ],
+        "answer": 2,
+        "explanation": "Perimeter = 4 × side = 4 × 7 = 28 cm"
+      },
+      {
+        "id": "g79",
+        "topic": "Quick Math",
+        "question": "If a car travels at 80 km/h, how far does it go in 2.5 hours?",
+        "options": [
+          "160 km",
+          "180 km",
+          "200 km",
+          "220 km"
+        ],
+        "answer": 2,
+        "explanation": "Distance = Speed × Time = 80 × 2.5 = 200 km"
+      },
+      {
+        "id": "g80",
+        "topic": "Quick Math",
+        "question": "What is 18² ?",
+        "options": [
+          "224",
+          "284",
+          "324",
+          "364"
+        ],
+        "answer": 2,
+        "explanation": "18² = (20-2)² = 400-80+4 = 324. Or: 18×18 = 324"
+      },
+      {
+        "id": "g81",
+        "topic": "Number Series",
+        "question": "Find the next: 1, 3, 9, 27, 81, ?",
+        "options": [
+          "162",
+          "216",
+          "243",
+          "324"
+        ],
+        "answer": 2,
+        "explanation": "×3 each time (powers of 3). 81 × 3 = 243"
+      },
+      {
+        "id": "g82",
+        "topic": "Number Series",
+        "question": "Find the next: 0, 2, 8, 18, 32, ?",
+        "options": [
+          "40",
+          "48",
+          "50",
+          "52"
+        ],
+        "answer": 2,
+        "explanation": "Pattern: 2×0², 2×1², 2×2², 2×3², 2×4², 2×5² = 50"
+      },
+      {
+        "id": "g83",
+        "topic": "Number Series",
+        "question": "Find the next: 5, 11, 23, 47, 95, ?",
+        "options": [
+          "180",
+          "185",
+          "190",
+          "191"
+        ],
+        "answer": 3,
+        "explanation": "×2 + 1 each time. 95×2+1 = 191"
+      },
+      {
+        "id": "g84",
+        "topic": "Number Series",
+        "question": "Find the next: 1, 5, 14, 30, 55, ?",
+        "options": [
+          "85",
+          "91",
+          "100",
+          "105"
+        ],
+        "answer": 1,
+        "explanation": "Differences: 4,9,16,25,36 (squares). 55+36 = 91"
+      },
+      {
+        "id": "g85",
+        "topic": "Number Series",
+        "question": "Find the next: 4, 5, 7, 10, 14, ?",
+        "options": [
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "answer": 2,
+        "explanation": "Differences: 1,2,3,4,5. Next: 14+5 = 19"
+      },
+      {
+        "id": "g86",
+        "topic": "Quick Math",
+        "question": "What is the compound interest on ₹1000 at 10% for 2 years?",
+        "options": [
+          "₹200",
+          "₹210",
+          "₹220",
+          "₹250"
+        ],
+        "answer": 1,
+        "explanation": "Year 1: 1000×0.1=100. Year 2: 1100×0.1=110. Total CI = 210. Or: 1000(1.1²-1) = 210"
+      },
+      {
+        "id": "g87",
+        "topic": "Quick Math",
+        "question": "What is 999 + 999 + 999?",
+        "options": [
+          "2997",
+          "2979",
+          "2799",
+          "3997"
+        ],
+        "answer": 0,
+        "explanation": "999 × 3 = 3000 - 3 = 2997"
+      },
+      {
+        "id": "g88",
+        "topic": "Quick Math",
+        "question": "What is the cube root of 343?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "answer": 2,
+        "explanation": "7³ = 7 × 7 × 7 = 343"
+      },
+      {
+        "id": "g89",
+        "topic": "Quick Math",
+        "question": "A is 40% of B. B is what percent of A?",
+        "options": [
+          "40%",
+          "150%",
+          "200%",
+          "250%"
+        ],
+        "answer": 3,
+        "explanation": "A = 0.4B. So B = A/0.4 = 2.5A = 250% of A"
+      },
+      {
+        "id": "g90",
+        "topic": "Quick Math",
+        "question": "If x² - 5x + 6 = 0, what are the values of x?",
+        "options": [
+          "1, 6",
+          "2, 3",
+          "-2, -3",
+          "1, 5"
+        ],
+        "answer": 1,
+        "explanation": "x² - 5x + 6 = (x-2)(x-3) = 0. x = 2 or x = 3"
+      },
+      {
+        "id": "g91",
+        "topic": "Pattern Recognition",
+        "question": "What comes next: MON, TUE, WED, THU, ?",
+        "options": [
+          "FRI",
+          "SAT",
+          "SUN",
+          "MON"
+        ],
+        "answer": 0,
+        "explanation": "Days of the week: Monday, Tuesday, Wednesday, Thursday, Friday"
+      },
+      {
+        "id": "g92",
+        "topic": "Pattern Recognition",
+        "question": "Find the odd one: 121, 144, 169, __(150)__, 196",
+        "options": [
+          "121",
+          "144",
+          "150",
+          "196"
+        ],
+        "answer": 2,
+        "explanation": "121=11², 144=12², 169=13², 196=14². 150 is not a perfect square."
+      },
+      {
+        "id": "g93",
+        "topic": "Number Series",
+        "question": "Find the next: 2, 6, 14, 30, 62, ?",
+        "options": [
+          "94",
+          "110",
+          "126",
+          "128"
+        ],
+        "answer": 2,
+        "explanation": "×2+2 each time. 62×2+2 = 126"
+      },
+      {
+        "id": "g94",
+        "topic": "Number Series",
+        "question": "Find the next: 99, 92, 84, 75, 65, ?",
+        "options": [
+          "54",
+          "55",
+          "56",
+          "50"
+        ],
+        "answer": 0,
+        "explanation": "Differences: -7, -8, -9, -10, -11. Next: 65-11 = 54"
+      },
+      {
+        "id": "g95",
+        "topic": "Quick Math",
+        "question": "What is 37.5% of 240?",
+        "options": [
+          "80",
+          "85",
+          "90",
+          "100"
+        ],
+        "answer": 2,
+        "explanation": "37.5% = 3/8. 240 × 3/8 = 90"
+      },
+      {
+        "id": "g96",
+        "topic": "Quick Math",
+        "question": "If CP = ₹200 and SP = ₹180, what is the loss%?",
+        "options": [
+          "5%",
+          "8%",
+          "10%",
+          "20%"
+        ],
+        "answer": 2,
+        "explanation": "Loss = 200-180 = 20. Loss% = (20/200)×100 = 10%"
+      },
+      {
+        "id": "g97",
+        "topic": "Quick Math",
+        "question": "What is the mean of first 10 natural numbers?",
+        "options": [
+          "5",
+          "5.5",
+          "6",
+          "10"
+        ],
+        "answer": 1,
+        "explanation": "Sum = 10×11/2 = 55. Mean = 55/10 = 5.5"
+      },
+      {
+        "id": "g98",
+        "topic": "Pattern Recognition",
+        "question": "Which doesn't belong: 2, 5, 10, 17, 28, 37",
+        "options": [
+          "10",
+          "17",
+          "28",
+          "37"
+        ],
+        "answer": 2,
+        "explanation": "Pattern: n²+1. 1+1=2, 4+1=5, 9+1=10, 16+1=17, 25+1=26, 36+1=37. 28 should be 26."
+      },
+      {
+        "id": "g99",
+        "topic": "Quick Math",
+        "question": "What is the value of 0.1 × 0.01 × 100?",
+        "options": [
+          "0.01",
+          "0.1",
+          "1",
+          "10"
+        ],
+        "answer": 1,
+        "explanation": "0.1 × 0.01 = 0.001. 0.001 × 100 = 0.1"
+      },
+      {
+        "id": "g100",
+        "topic": "Quick Math",
+        "question": "How many seconds in 1.5 hours?",
+        "options": [
+          "5000",
+          "5400",
+          "6000",
+          "9000"
+        ],
+        "answer": 1,
+        "explanation": "1.5 hours = 90 minutes = 90 × 60 = 5400 seconds"
+      }
+    ],
+    "coding": [
+      {
+        "id": "code1",
+        "title": "Replace Elements with Nearest Smaller on Right",
+        "difficulty": "Medium",
+        "topics": [
+          "Arrays",
+          "Stack"
+        ],
+        "link": "https://www.geeksforgeeks.org/next-smaller-element/",
+        "description": "Given an array, replace every element with the nearest smaller element on its right side."
+      },
+      {
+        "id": "code2",
+        "title": "Product of Array Elements at Even Positions",
+        "difficulty": "Easy",
+        "topics": [
+          "Arrays"
+        ],
+        "link": "https://www.geeksforgeeks.org/product-of-all-elements-at-even-positions-in-an-array/",
+        "description": "Find the product of all elements at even indices (0, 2, 4...)."
+      },
+      {
+        "id": "code3",
+        "title": "Password Validator",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://leetcode.com/problems/strong-password-checker/",
+        "description": "Check if a password meets rules: 8+ chars, uppercase, lowercase, digit, special char."
+      },
+      {
+        "id": "code4",
+        "title": "Binary String XOR/AND/OR",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings",
+          "Bitwise"
+        ],
+        "link": "https://www.geeksforgeeks.org/xor-of-two-binary-strings/",
+        "description": "Perform XOR, AND, and OR operations on two binary strings."
+      },
+      {
+        "id": "code5",
+        "title": "Check if String is Pangram",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://leetcode.com/problems/check-if-the-sentence-is-pangram/",
+        "description": "A pangram contains every letter of the alphabet at least once."
+      },
+      {
+        "id": "code6",
+        "title": "Find Missing Number in Array",
+        "difficulty": "Easy",
+        "topics": [
+          "Arrays",
+          "Math"
+        ],
+        "link": "https://leetcode.com/problems/missing-number/",
+        "description": "Array has n-1 numbers from 1 to n. Find the missing one."
+      },
+      {
+        "id": "code7",
+        "title": "Sort Array of 0s, 1s, and 2s",
+        "difficulty": "Medium",
+        "topics": [
+          "Arrays",
+          "Sorting"
+        ],
+        "link": "https://leetcode.com/problems/sort-colors/",
+        "description": "Dutch National Flag problem — sort without using a sorting algorithm."
+      },
+      {
+        "id": "code8",
+        "title": "Remove Consecutive Duplicates",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/",
+        "description": "Remove consecutive duplicate characters from a string."
+      },
+      {
+        "id": "code9",
+        "title": "Sum of Primes in Range",
+        "difficulty": "Easy",
+        "topics": [
+          "Number Problems",
+          "Math"
+        ],
+        "link": "https://www.geeksforgeeks.org/sum-of-all-primes-in-a-given-range/",
+        "description": "Find the sum of all prime numbers between two given numbers."
+      },
+      {
+        "id": "code10",
+        "title": "Check Anagrams",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://leetcode.com/problems/valid-anagram/",
+        "description": "Check if two strings contain the same characters in different order."
+      },
+      {
+        "id": "code11",
+        "title": "Matrix Diagonal Sum",
+        "difficulty": "Easy",
+        "topics": [
+          "Arrays",
+          "Matrix"
+        ],
+        "link": "https://leetcode.com/problems/matrix-diagonal-sum/",
+        "description": "Find the sum of primary and secondary diagonals of a matrix."
+      },
+      {
+        "id": "code12",
+        "title": "Find Second Largest Element",
+        "difficulty": "Easy",
+        "topics": [
+          "Arrays"
+        ],
+        "link": "https://www.geeksforgeeks.org/find-second-largest-element-array/",
+        "description": "Find the second largest element in an array without sorting."
+      },
+      {
+        "id": "code13",
+        "title": "Decimal to Binary Conversion",
+        "difficulty": "Easy",
+        "topics": [
+          "Number Problems"
+        ],
+        "link": "https://www.geeksforgeeks.org/program-decimal-binary-conversion/",
+        "description": "Convert a decimal number to its binary representation."
+      },
+      {
+        "id": "code14",
+        "title": "Reverse a String",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://leetcode.com/problems/reverse-string/",
+        "description": "Reverse a string in-place."
+      },
+      {
+        "id": "code15",
+        "title": "Count Vowels and Consonants",
+        "difficulty": "Easy",
+        "topics": [
+          "Strings"
+        ],
+        "link": "https://www.geeksforgeeks.org/program-count-vowels-consonant-digits-special-characters-string/",
+        "description": "Count the number of vowels and consonants in a given string."
+      }
+    ],
+    "communication_grammar": [
       {
         "id": "c1",
         "topic": "Error Correction",
@@ -6731,1465 +8208,1757 @@ window.COMPANY_DATA["accenture"] = {
         "explanation": "'Data' can be treated as singular (The data shows) or plural (The data show) — both are accepted in modern English."
       }
     ],
-    "cognitive": [
-      {
-        "id": "g1",
-        "topic": "Number Series",
-        "question": "Find the next number in the series: 2, 6, 12, 20, 30, ?",
-        "options": [
-          "40",
-          "42",
-          "44",
-          "36"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 4, 6, 8, 10, 12. Second differences are constant (2). Next: 30 + 12 = 42"
-      },
-      {
-        "id": "g2",
-        "topic": "Number Series",
-        "question": "Find the next number in the series: 3, 6, 12, 24, 48, ?",
-        "options": [
-          "72",
-          "84",
-          "96",
-          "60"
-        ],
-        "answer": 2,
-        "explanation": "Geometric series: each number × 2. 48 × 2 = 96"
-      },
-      {
-        "id": "g3",
-        "topic": "Number Series",
-        "question": "Find the missing number: 2, 5, 10, 17, __, 37",
-        "options": [
-          "24",
-          "26",
-          "28",
-          "25"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 3, 5, 7, 9, 11. Pattern: odd numbers. 17 + 9 = 26"
-      },
-      {
-        "id": "g4",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 1, 2, 3, 5, 8, 13, ?",
-        "options": [
-          "18",
-          "20",
-          "21",
-          "16"
-        ],
-        "answer": 2,
-        "explanation": "Fibonacci series: each number = sum of previous two. 8 + 13 = 21"
-      },
-      {
-        "id": "g5",
-        "topic": "Arithmetic",
-        "question": "What is 47 × 11?",
-        "options": [
-          "507",
-          "517",
-          "527",
-          "497"
-        ],
-        "answer": 1,
-        "explanation": "Trick: 47 × 11 = 4(4+7)7 = 4(11)7 → carry the 1 → 517"
-      },
-      {
-        "id": "g6",
-        "topic": "Arithmetic",
-        "question": "What is the sum of first 20 natural numbers?",
-        "options": [
-          "190",
-          "200",
-          "210",
-          "220"
-        ],
-        "answer": 2,
-        "explanation": "Formula: n(n+1)/2 = 20 × 21 / 2 = 210"
-      },
-      {
-        "id": "g7",
-        "topic": "Arithmetic",
-        "question": "If 35² = ?",
-        "options": [
-          "1125",
-          "1225",
-          "1325",
-          "1025"
-        ],
-        "answer": 1,
-        "explanation": "Trick for squaring numbers ending in 5: 3×4 = 12, append 25 → 1225"
-      },
-      {
-        "id": "g8",
-        "topic": "Arithmetic",
-        "question": "68 × 5 = ?",
-        "options": [
-          "330",
-          "335",
-          "340",
-          "345"
-        ],
-        "answer": 2,
-        "explanation": "Trick: n × 5 = n/2 × 10. 68/2 = 34, × 10 = 340"
-      },
-      {
-        "id": "g9",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 4, 9, 16, 25, ?",
-        "options": [
-          "30",
-          "35",
-          "36",
-          "49"
-        ],
-        "answer": 2,
-        "explanation": "Perfect squares: 1², 2², 3², 4², 5², 6² = 36"
-      },
-      {
-        "id": "g10",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 8, 27, 64, 125, ?",
-        "options": [
-          "196",
-          "200",
-          "216",
-          "250"
-        ],
-        "answer": 2,
-        "explanation": "Perfect cubes: 1³, 2³, 3³, 4³, 5³, 6³ = 216"
-      },
-      {
-        "id": "g11",
-        "topic": "Patterns",
-        "question": "Which number doesn't belong: 2, 3, 5, 7, 9, 11, 13?",
-        "options": [
-          "2",
-          "9",
-          "11",
-          "3"
-        ],
-        "answer": 1,
-        "explanation": "All are prime numbers EXCEPT 9 (9 = 3 × 3, not prime)."
-      },
-      {
-        "id": "g12",
-        "topic": "Arithmetic",
-        "question": "What is 15% of 240?",
-        "options": [
-          "24",
-          "30",
-          "36",
-          "48"
-        ],
-        "answer": 2,
-        "explanation": "15% of 240 = (15/100) × 240 = 0.15 × 240 = 36"
-      },
-      {
-        "id": "g13",
-        "topic": "Arithmetic",
-        "question": "A train travels 120 km in 2 hours. What is its speed in km/h?",
-        "options": [
-          "40",
-          "50",
-          "60",
-          "80"
-        ],
-        "answer": 2,
-        "explanation": "Speed = Distance / Time = 120 / 2 = 60 km/h"
-      },
-      {
-        "id": "g14",
-        "topic": "Number Series",
-        "question": "Find the next number: 5, 10, 20, 40, 80, ?",
-        "options": [
-          "100",
-          "120",
-          "160",
-          "140"
-        ],
-        "answer": 2,
-        "explanation": "Each number is doubled: 80 × 2 = 160"
-      },
-      {
-        "id": "g15",
-        "topic": "Patterns",
-        "question": "If CLOUD = 48, RAIN = 42, then SUN = ?",
-        "options": [
-          "52",
-          "54",
-          "57",
-          "45"
-        ],
-        "answer": 2,
-        "explanation": "Sum of positions: C(3)+L(12)+O(15)+U(21)+D(4)=55... Actually using A=1 system: S(19)+U(21)+N(14)=54. Wait — CLOUD=C(3)+L(12)+O(15)+U(21)+D(4)=55≠48. Let's use position sum: S=19, U=21, N=14 → 19+21+14 = 54. But given CLOUD=48 and RAIN=42, let me check: R(18)+A(1)+I(9)+N(14)=42 ✓. C(3)+L(12)+O(15)+U(21)+D(4)=55≠48. Using different system: each letter = position×1, but CLOUD gives 48 with some offset. S+U+N = 19+21+14=54."
-      },
-      {
-        "id": "g16",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 4, 9, 16, 25, ?",
-        "options": [
-          "30",
-          "36",
-          "49",
-          "35"
-        ],
-        "answer": 1,
-        "explanation": "Perfect squares: 1², 2², 3², 4², 5², 6² = 36"
-      },
-      {
-        "id": "g17",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 1, 2, 3, 5, 8, 13, ?",
-        "options": [
-          "18",
-          "20",
-          "21",
-          "15"
-        ],
-        "answer": 2,
-        "explanation": "Fibonacci: each number is sum of previous two. 8+13 = 21"
-      },
-      {
-        "id": "g18",
-        "topic": "Number Series",
-        "question": "Find the next number: 3, 6, 12, 24, 48, ?",
-        "options": [
-          "72",
-          "96",
-          "60",
-          "84"
-        ],
-        "answer": 1,
-        "explanation": "Each number doubles: ×2. 48 × 2 = 96"
-      },
-      {
-        "id": "g19",
-        "topic": "Number Series",
-        "question": "Find the next number: 2, 3, 5, 7, 11, 13, ?",
-        "options": [
-          "15",
-          "16",
-          "17",
-          "19"
-        ],
-        "answer": 2,
-        "explanation": "Prime numbers: 2, 3, 5, 7, 11, 13, 17"
-      },
-      {
-        "id": "g20",
-        "topic": "Number Series",
-        "question": "Find the next number: 100, 95, 85, 70, 50, ?",
-        "options": [
-          "30",
-          "25",
-          "20",
-          "35"
-        ],
-        "answer": 1,
-        "explanation": "Differences: -5, -10, -15, -20, -25. Next: 50 - 25 = 25"
-      },
-      {
-        "id": "g21",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 8, 27, 64, 125, ?",
-        "options": [
-          "150",
-          "196",
-          "216",
-          "225"
-        ],
-        "answer": 2,
-        "explanation": "Perfect cubes: 1³, 2³, 3³, 4³, 5³, 6³ = 216"
-      },
-      {
-        "id": "g22",
-        "topic": "Number Series",
-        "question": "Find the next number: 2, 6, 18, 54, 162, ?",
-        "options": [
-          "324",
-          "486",
-          "500",
-          "648"
-        ],
-        "answer": 1,
-        "explanation": "Geometric: ×3 each time. 162 × 3 = 486"
-      },
-      {
-        "id": "g23",
-        "topic": "Number Series",
-        "question": "Find the next number: 5, 10, 20, 35, 55, ?",
-        "options": [
-          "70",
-          "75",
-          "80",
-          "85"
-        ],
-        "answer": 2,
-        "explanation": "Differences: 5, 10, 15, 20, 25. Next: 55 + 25 = 80"
-      },
-      {
-        "id": "g24",
-        "topic": "Number Series",
-        "question": "Find the next number: 4, 7, 12, 19, 28, ?",
-        "options": [
-          "35",
-          "37",
-          "39",
-          "41"
-        ],
-        "answer": 2,
-        "explanation": "Differences: 3, 5, 7, 9, 11. Next: 28 + 11 = 39"
-      },
-      {
-        "id": "g25",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 2, 4, 7, 11, 16, ?",
-        "options": [
-          "20",
-          "22",
-          "24",
-          "21"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 1, 2, 3, 4, 5, 6. Next: 16 + 6 = 22"
-      },
-      {
-        "id": "g26",
-        "topic": "Number Series",
-        "question": "Find the missing number: 3, 9, 27, ?, 243",
-        "options": [
-          "54",
-          "81",
-          "108",
-          "162"
-        ],
-        "answer": 1,
-        "explanation": "Geometric: ×3. 3→9→27→81→243"
-      },
-      {
-        "id": "g27",
-        "topic": "Number Series",
-        "question": "Find the next number: 1, 3, 6, 10, 15, 21, ?",
-        "options": [
-          "25",
-          "27",
-          "28",
-          "30"
-        ],
-        "answer": 2,
-        "explanation": "Triangular numbers. Differences: 2,3,4,5,6,7. Next: 21+7 = 28"
-      },
-      {
-        "id": "g28",
-        "topic": "Number Series",
-        "question": "Find the next number: 2, 5, 10, 17, 26, ?",
-        "options": [
-          "35",
-          "37",
-          "33",
-          "39"
-        ],
-        "answer": 1,
-        "explanation": "Pattern: n²+1. For n=1: 2, n=2: 5, n=3: 10, n=4: 17, n=5: 26, n=6: 37"
-      },
-      {
-        "id": "g29",
-        "topic": "Number Series",
-        "question": "Find the next number: 0, 1, 1, 2, 4, 7, 13, ?",
-        "options": [
-          "20",
-          "22",
-          "24",
-          "26"
-        ],
-        "answer": 2,
-        "explanation": "Tribonacci-like: each = sum of previous 3. 4+7+13 = 24"
-      },
-      {
-        "id": "g30",
-        "topic": "Number Series",
-        "question": "Find the next number: 7, 14, 28, 56, ?",
-        "options": [
-          "84",
-          "98",
-          "112",
-          "128"
-        ],
-        "answer": 2,
-        "explanation": "×2 each time. 56 × 2 = 112"
-      },
-      {
-        "id": "g31",
-        "topic": "Quick Math",
-        "question": "What is 15% of 200?",
-        "options": [
-          "15",
-          "20",
-          "25",
-          "30"
-        ],
-        "answer": 3,
-        "explanation": "15% × 200 = 0.15 × 200 = 30"
-      },
-      {
-        "id": "g32",
-        "topic": "Quick Math",
-        "question": "If an item costs ₹500 and gets a 20% discount, what is the final price?",
-        "options": [
-          "₹400",
-          "₹450",
-          "₹380",
-          "₹420"
-        ],
-        "answer": 0,
-        "explanation": "20% of 500 = 100. Final: 500 - 100 = ₹400"
-      },
-      {
-        "id": "g33",
-        "topic": "Quick Math",
-        "question": "What is 12 × 15?",
-        "options": [
-          "160",
-          "170",
-          "175",
-          "180"
-        ],
-        "answer": 3,
-        "explanation": "12 × 15 = 12 × 10 + 12 × 5 = 120 + 60 = 180"
-      },
-      {
-        "id": "g34",
-        "topic": "Quick Math",
-        "question": "What is 25% of 80?",
-        "options": [
-          "15",
-          "20",
-          "25",
-          "30"
-        ],
-        "answer": 1,
-        "explanation": "25% = ¼. 80 ÷ 4 = 20"
-      },
-      {
-        "id": "g35",
-        "topic": "Quick Math",
-        "question": "If 3x + 7 = 22, what is x?",
-        "options": [
-          "3",
-          "4",
-          "5",
-          "6"
-        ],
-        "answer": 2,
-        "explanation": "3x = 22 - 7 = 15. x = 15/3 = 5"
-      },
-      {
-        "id": "g36",
-        "topic": "Quick Math",
-        "question": "What is the average of 12, 15, 18, 21, 24?",
-        "options": [
-          "16",
-          "17",
-          "18",
-          "19"
-        ],
-        "answer": 2,
-        "explanation": "Sum = 90. Average = 90/5 = 18. Or middle of evenly spaced: 18"
-      },
-      {
-        "id": "g37",
-        "topic": "Quick Math",
-        "question": "A train travels 240 km in 4 hours. What is its speed?",
-        "options": [
-          "40 km/h",
-          "50 km/h",
-          "55 km/h",
-          "60 km/h"
-        ],
-        "answer": 3,
-        "explanation": "Speed = Distance/Time = 240/4 = 60 km/h"
-      },
-      {
-        "id": "g38",
-        "topic": "Quick Math",
-        "question": "What is 144 ÷ 12?",
-        "options": [
-          "10",
-          "11",
-          "12",
-          "13"
-        ],
-        "answer": 2,
-        "explanation": "144 ÷ 12 = 12. Also: 12² = 144"
-      },
-      {
-        "id": "g39",
-        "topic": "Quick Math",
-        "question": "If A can do a job in 6 days and B can do it in 12 days, how long together?",
-        "options": [
-          "2 days",
-          "3 days",
-          "4 days",
-          "5 days"
-        ],
-        "answer": 2,
-        "explanation": "A's rate: 1/6, B's rate: 1/12. Combined: 1/6+1/12 = 3/12 = 1/4. Time = 4 days"
-      },
-      {
-        "id": "g40",
-        "topic": "Quick Math",
-        "question": "What is √225?",
-        "options": [
-          "13",
-          "14",
-          "15",
-          "16"
-        ],
-        "answer": 2,
-        "explanation": "15 × 15 = 225. So √225 = 15"
-      },
-      {
-        "id": "g41",
-        "topic": "Quick Math",
-        "question": "Simplify: 2/3 + 1/4",
-        "options": [
-          "3/7",
-          "5/12",
-          "11/12",
-          "7/12"
-        ],
-        "answer": 2,
-        "explanation": "LCM of 3 and 4 is 12. 8/12 + 3/12 = 11/12"
-      },
-      {
-        "id": "g42",
-        "topic": "Quick Math",
-        "question": "What is 30% of 150?",
-        "options": [
-          "35",
-          "40",
-          "45",
-          "50"
-        ],
-        "answer": 2,
-        "explanation": "30% × 150 = 0.3 × 150 = 45"
-      },
-      {
-        "id": "g43",
-        "topic": "Quick Math",
-        "question": "A product marked at ₹800 is sold at ₹680. What is the discount %?",
-        "options": [
-          "10%",
-          "12%",
-          "15%",
-          "20%"
-        ],
-        "answer": 2,
-        "explanation": "Discount = 800-680 = 120. Percentage = (120/800)×100 = 15%"
-      },
-      {
-        "id": "g44",
-        "topic": "Quick Math",
-        "question": "What is 17 × 13?",
-        "options": [
-          "201",
-          "211",
-          "221",
-          "231"
-        ],
-        "answer": 2,
-        "explanation": "17 × 13 = (17 × 10) + (17 × 3) = 170 + 51 = 221"
-      },
-      {
-        "id": "g45",
-        "topic": "Quick Math",
-        "question": "If the ratio of boys to girls is 3:5 and there are 24 boys, how many girls?",
-        "options": [
-          "30",
-          "35",
-          "40",
-          "45"
-        ],
-        "answer": 2,
-        "explanation": "3 parts = 24, so 1 part = 8. Girls = 5 × 8 = 40"
-      },
-      {
-        "id": "g46",
-        "topic": "Pattern Recognition",
-        "question": "What comes next: A, C, E, G, ?",
-        "options": [
-          "H",
-          "I",
-          "J",
-          "K"
-        ],
-        "answer": 1,
-        "explanation": "Alternate letters: A(1), C(3), E(5), G(7), I(9). Skip one each time."
-      },
-      {
-        "id": "g47",
-        "topic": "Pattern Recognition",
-        "question": "What comes next: Z, X, V, T, ?",
-        "options": [
-          "S",
-          "R",
-          "Q",
-          "P"
-        ],
-        "answer": 1,
-        "explanation": "Reverse alphabets, skipping one: Z, X, V, T, R"
-      },
-      {
-        "id": "g48",
-        "topic": "Pattern Recognition",
-        "question": "Complete the pattern: 2, A, 4, C, 6, E, 8, ?",
-        "options": [
-          "F",
-          "G",
-          "H",
-          "I"
-        ],
-        "answer": 1,
-        "explanation": "Numbers: 2,4,6,8 (even). Letters: A,C,E,G (odd positions). Next letter: G"
-      },
-      {
-        "id": "g49",
-        "topic": "Pattern Recognition",
-        "question": "Which number doesn't belong: 2, 3, 5, 7, 9, 11",
-        "options": [
-          "2",
-          "3",
-          "9",
-          "11"
-        ],
-        "answer": 2,
-        "explanation": "All are prime except 9 (9 = 3×3). 9 doesn't belong."
-      },
-      {
-        "id": "g50",
-        "topic": "Pattern Recognition",
-        "question": "If Monday = 1, Tuesday = 2, ..., what is the 15th day?",
-        "options": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Sunday"
-        ],
-        "answer": 0,
-        "explanation": "15 ÷ 7 = 2 remainder 1. Day 1 = Monday. So 15th day = Monday"
-      },
-      {
-        "id": "g51",
-        "topic": "Pattern Recognition",
-        "question": "Which number doesn't belong: 4, 9, 16, 24, 36",
-        "options": [
-          "4",
-          "9",
-          "24",
-          "36"
-        ],
-        "answer": 2,
-        "explanation": "4=2², 9=3², 16=4², 36=6² are perfect squares. 24 is not a perfect square."
-      },
-      {
-        "id": "g52",
-        "topic": "Pattern Recognition",
-        "question": "Complete: 1, 4, 2, 5, 3, 6, 4, ?",
-        "options": [
-          "5",
-          "7",
-          "8",
-          "9"
-        ],
-        "answer": 1,
-        "explanation": "Two interleaved sequences: 1,2,3,4 and 4,5,6,7. Next from second: 7"
-      },
-      {
-        "id": "g53",
-        "topic": "Pattern Recognition",
-        "question": "If CAT = 24, DOG = ?",
-        "options": [
-          "26",
-          "38",
-          "40",
-          "34"
-        ],
-        "answer": 0,
-        "explanation": "C(3)+A(1)+T(20)=24. D(4)+O(15)+G(7)=26"
-      },
-      {
-        "id": "g54",
-        "topic": "Pattern Recognition",
-        "question": "What comes next: 1, 2, 6, 24, 120, ?",
-        "options": [
-          "240",
-          "620",
-          "720",
-          "600"
-        ],
-        "answer": 2,
-        "explanation": "Factorials: 1!, 2!, 3!, 4!, 5!, 6! = 720"
-      },
-      {
-        "id": "g55",
-        "topic": "Pattern Recognition",
-        "question": "Mirror image of 3:15 on a clock shows:",
-        "options": [
-          "8:45",
-          "9:45",
-          "8:15",
-          "9:15"
-        ],
-        "answer": 0,
-        "explanation": "Mirror of clock: subtract from 12:00 for hours, from 60 for minutes. 12-3=9, but mirror reflection gives 8:45."
-      },
-      {
-        "id": "g56",
-        "topic": "Quick Math",
-        "question": "What is the simple interest on ₹10,000 at 5% for 2 years?",
-        "options": [
-          "₹500",
-          "₹750",
-          "₹1000",
-          "₹1500"
-        ],
-        "answer": 2,
-        "explanation": "SI = P×R×T/100 = 10000×5×2/100 = ₹1000"
-      },
-      {
-        "id": "g57",
-        "topic": "Quick Math",
-        "question": "What is the HCF of 12 and 18?",
-        "options": [
-          "2",
-          "3",
-          "6",
-          "9"
-        ],
-        "answer": 2,
-        "explanation": "Factors of 12: 1,2,3,4,6,12. Factors of 18: 1,2,3,6,9,18. HCF = 6"
-      },
-      {
-        "id": "g58",
-        "topic": "Quick Math",
-        "question": "What is the LCM of 4 and 6?",
-        "options": [
-          "8",
-          "10",
-          "12",
-          "24"
-        ],
-        "answer": 2,
-        "explanation": "Multiples of 4: 4,8,12,16... Multiples of 6: 6,12,18... LCM = 12"
-      },
-      {
-        "id": "g59",
-        "topic": "Quick Math",
-        "question": "Convert 0.75 to a fraction:",
-        "options": [
-          "3/4",
-          "7/5",
-          "3/5",
-          "7/10"
-        ],
-        "answer": 0,
-        "explanation": "0.75 = 75/100 = 3/4"
-      },
-      {
-        "id": "g60",
-        "topic": "Quick Math",
-        "question": "What is 2⁸?",
-        "options": [
-          "128",
-          "256",
-          "512",
-          "64"
-        ],
-        "answer": 1,
-        "explanation": "2⁸ = 256. Quick: 2⁴=16, 2⁸=16×16=256"
-      },
-      {
-        "id": "g61",
-        "topic": "Number Series",
-        "question": "Find the next: 11, 13, 17, 19, 23, 29, ?",
-        "options": [
-          "31",
-          "33",
-          "35",
-          "37"
-        ],
-        "answer": 0,
-        "explanation": "Prime numbers: 11,13,17,19,23,29,31"
-      },
-      {
-        "id": "g62",
-        "topic": "Number Series",
-        "question": "Find the next: 1, 3, 7, 15, 31, ?",
-        "options": [
-          "47",
-          "55",
-          "63",
-          "60"
-        ],
-        "answer": 2,
-        "explanation": "Pattern: 2ⁿ-1. Or: ×2+1 each time. 31×2+1 = 63"
-      },
-      {
-        "id": "g63",
-        "topic": "Number Series",
-        "question": "Find the next: 10, 11, 13, 16, 20, ?",
-        "options": [
-          "24",
-          "25",
-          "26",
-          "27"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 1,2,3,4,5. Next: 20+5 = 25"
-      },
-      {
-        "id": "g64",
-        "topic": "Number Series",
-        "question": "Find the next: 2, 3, 5, 8, 12, 17, ?",
-        "options": [
-          "22",
-          "23",
-          "24",
-          "25"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 1,2,3,4,5,6. Next: 17+6 = 23"
-      },
-      {
-        "id": "g65",
-        "topic": "Number Series",
-        "question": "Find the odd one out: 8, 27, 64, 100, 125",
-        "options": [
-          "8",
-          "27",
-          "100",
-          "125"
-        ],
-        "answer": 2,
-        "explanation": "8=2³, 27=3³, 64=4³, 125=5³ are cubes. 100 = 10² is not a cube."
-      },
-      {
-        "id": "g66",
-        "topic": "Quick Math",
-        "question": "A shopkeeper buys at ₹400 and sells at ₹500. Profit %?",
-        "options": [
-          "20%",
-          "25%",
-          "30%",
-          "10%"
-        ],
-        "answer": 1,
-        "explanation": "Profit = 100. Profit% = (100/400)×100 = 25%"
-      },
-      {
-        "id": "g67",
-        "topic": "Quick Math",
-        "question": "What is the value of 999 × 99?",
-        "options": [
-          "98901",
-          "98001",
-          "99901",
-          "98991"
-        ],
-        "answer": 0,
-        "explanation": "999×99 = 999×(100-1) = 99900-999 = 98901"
-      },
-      {
-        "id": "g68",
-        "topic": "Quick Math",
-        "question": "If 8 workers can finish a job in 6 days, how many days for 12 workers?",
-        "options": [
-          "3",
-          "4",
-          "5",
-          "8"
-        ],
-        "answer": 1,
-        "explanation": "Total work = 8×6 = 48 man-days. 48/12 = 4 days"
-      },
-      {
-        "id": "g69",
-        "topic": "Quick Math",
-        "question": "What is 45% of 200?",
-        "options": [
-          "80",
-          "85",
-          "90",
-          "95"
-        ],
-        "answer": 2,
-        "explanation": "45% × 200 = 0.45 × 200 = 90"
-      },
-      {
-        "id": "g70",
-        "topic": "Quick Math",
-        "question": "If x:y = 2:3 and y:z = 4:5, what is x:z?",
-        "options": [
-          "2:5",
-          "8:15",
-          "6:10",
-          "4:5"
-        ],
-        "answer": 1,
-        "explanation": "Make y common: x:y = 8:12, y:z = 12:15. So x:z = 8:15"
-      },
-      {
-        "id": "g71",
-        "topic": "Pattern Recognition",
-        "question": "Complete: AB, CD, EF, GH, ?",
-        "options": [
-          "HI",
-          "IJ",
-          "JK",
-          "KL"
-        ],
-        "answer": 1,
-        "explanation": "Consecutive letter pairs: AB, CD, EF, GH, IJ"
-      },
-      {
-        "id": "g72",
-        "topic": "Pattern Recognition",
-        "question": "If COMPUTER = 111, what is LAPTOP?",
-        "options": [
-          "61",
-          "71",
-          "81",
-          "91"
-        ],
-        "answer": 1,
-        "explanation": "Sum of positions: C(3)+O(15)+M(13)+P(16)+U(21)+T(20)+E(5)+R(18)=111. L(12)+A(1)+P(16)+T(20)+O(15)+P(16)=80... actually let's recalculate. The pattern might be different. L+A+P+T+O+P = 12+1+16+20+15+16 = 80. Hmm, but 71 could use a ×1 scheme with the number of letters factored. Answer is 71 using a modified scheme."
-      },
-      {
-        "id": "g73",
-        "topic": "Pattern Recognition",
-        "question": "Find the next: AZ, BY, CX, DW, ?",
-        "options": [
-          "EU",
-          "EV",
-          "EW",
-          "EX"
-        ],
-        "answer": 1,
-        "explanation": "First letter: A→B→C→D→E. Second letter: Z→Y→X→W→V. Next: EV"
-      },
-      {
-        "id": "g74",
-        "topic": "Pattern Recognition",
-        "question": "Which number replaces ?: 6 : 36 :: 8 : ?",
-        "options": [
-          "48",
-          "56",
-          "64",
-          "72"
-        ],
-        "answer": 2,
-        "explanation": "6² = 36. So 8² = 64. Pattern is n : n²"
-      },
-      {
-        "id": "g75",
-        "topic": "Pattern Recognition",
-        "question": "Find the odd one: Apple, Mango, Carrot, Banana",
-        "options": [
-          "Apple",
-          "Mango",
-          "Carrot",
-          "Banana"
-        ],
-        "answer": 2,
-        "explanation": "Apple, Mango, Banana are fruits. Carrot is a vegetable."
-      },
-      {
-        "id": "g76",
-        "topic": "Quick Math",
-        "question": "What is 3/5 as a percentage?",
-        "options": [
-          "50%",
-          "55%",
-          "60%",
-          "65%"
-        ],
-        "answer": 2,
-        "explanation": "3/5 = 0.6 = 60%"
-      },
-      {
-        "id": "g77",
-        "topic": "Quick Math",
-        "question": "Find the area of a rectangle with length 12cm and width 5cm:",
-        "options": [
-          "34 cm²",
-          "60 cm²",
-          "17 cm²",
-          "120 cm²"
-        ],
-        "answer": 1,
-        "explanation": "Area = length × width = 12 × 5 = 60 cm²"
-      },
-      {
-        "id": "g78",
-        "topic": "Quick Math",
-        "question": "What is the perimeter of a square with side 7cm?",
-        "options": [
-          "14 cm",
-          "21 cm",
-          "28 cm",
-          "49 cm"
-        ],
-        "answer": 2,
-        "explanation": "Perimeter = 4 × side = 4 × 7 = 28 cm"
-      },
-      {
-        "id": "g79",
-        "topic": "Quick Math",
-        "question": "If a car travels at 80 km/h, how far does it go in 2.5 hours?",
-        "options": [
-          "160 km",
-          "180 km",
-          "200 km",
-          "220 km"
-        ],
-        "answer": 2,
-        "explanation": "Distance = Speed × Time = 80 × 2.5 = 200 km"
-      },
-      {
-        "id": "g80",
-        "topic": "Quick Math",
-        "question": "What is 18² ?",
-        "options": [
-          "224",
-          "284",
-          "324",
-          "364"
-        ],
-        "answer": 2,
-        "explanation": "18² = (20-2)² = 400-80+4 = 324. Or: 18×18 = 324"
-      },
-      {
-        "id": "g81",
-        "topic": "Number Series",
-        "question": "Find the next: 1, 3, 9, 27, 81, ?",
-        "options": [
-          "162",
-          "216",
-          "243",
-          "324"
-        ],
-        "answer": 2,
-        "explanation": "×3 each time (powers of 3). 81 × 3 = 243"
-      },
-      {
-        "id": "g82",
-        "topic": "Number Series",
-        "question": "Find the next: 0, 2, 8, 18, 32, ?",
-        "options": [
-          "40",
-          "48",
-          "50",
-          "52"
-        ],
-        "answer": 2,
-        "explanation": "Pattern: 2×0², 2×1², 2×2², 2×3², 2×4², 2×5² = 50"
-      },
-      {
-        "id": "g83",
-        "topic": "Number Series",
-        "question": "Find the next: 5, 11, 23, 47, 95, ?",
-        "options": [
-          "180",
-          "185",
-          "190",
-          "191"
-        ],
-        "answer": 3,
-        "explanation": "×2 + 1 each time. 95×2+1 = 191"
-      },
-      {
-        "id": "g84",
-        "topic": "Number Series",
-        "question": "Find the next: 1, 5, 14, 30, 55, ?",
-        "options": [
-          "85",
-          "91",
-          "100",
-          "105"
-        ],
-        "answer": 1,
-        "explanation": "Differences: 4,9,16,25,36 (squares). 55+36 = 91"
-      },
-      {
-        "id": "g85",
-        "topic": "Number Series",
-        "question": "Find the next: 4, 5, 7, 10, 14, ?",
-        "options": [
-          "17",
-          "18",
-          "19",
-          "20"
-        ],
-        "answer": 2,
-        "explanation": "Differences: 1,2,3,4,5. Next: 14+5 = 19"
-      },
-      {
-        "id": "g86",
-        "topic": "Quick Math",
-        "question": "What is the compound interest on ₹1000 at 10% for 2 years?",
-        "options": [
-          "₹200",
-          "₹210",
-          "₹220",
-          "₹250"
-        ],
-        "answer": 1,
-        "explanation": "Year 1: 1000×0.1=100. Year 2: 1100×0.1=110. Total CI = 210. Or: 1000(1.1²-1) = 210"
-      },
-      {
-        "id": "g87",
-        "topic": "Quick Math",
-        "question": "What is 999 + 999 + 999?",
-        "options": [
-          "2997",
-          "2979",
-          "2799",
-          "3997"
-        ],
-        "answer": 0,
-        "explanation": "999 × 3 = 3000 - 3 = 2997"
-      },
-      {
-        "id": "g88",
-        "topic": "Quick Math",
-        "question": "What is the cube root of 343?",
-        "options": [
-          "5",
-          "6",
-          "7",
-          "8"
-        ],
-        "answer": 2,
-        "explanation": "7³ = 7 × 7 × 7 = 343"
-      },
-      {
-        "id": "g89",
-        "topic": "Quick Math",
-        "question": "A is 40% of B. B is what percent of A?",
-        "options": [
-          "40%",
-          "150%",
-          "200%",
-          "250%"
-        ],
-        "answer": 3,
-        "explanation": "A = 0.4B. So B = A/0.4 = 2.5A = 250% of A"
-      },
-      {
-        "id": "g90",
-        "topic": "Quick Math",
-        "question": "If x² - 5x + 6 = 0, what are the values of x?",
-        "options": [
-          "1, 6",
-          "2, 3",
-          "-2, -3",
-          "1, 5"
-        ],
-        "answer": 1,
-        "explanation": "x² - 5x + 6 = (x-2)(x-3) = 0. x = 2 or x = 3"
-      },
-      {
-        "id": "g91",
-        "topic": "Pattern Recognition",
-        "question": "What comes next: MON, TUE, WED, THU, ?",
-        "options": [
-          "FRI",
-          "SAT",
-          "SUN",
-          "MON"
-        ],
-        "answer": 0,
-        "explanation": "Days of the week: Monday, Tuesday, Wednesday, Thursday, Friday"
-      },
-      {
-        "id": "g92",
-        "topic": "Pattern Recognition",
-        "question": "Find the odd one: 121, 144, 169, __(150)__, 196",
-        "options": [
-          "121",
-          "144",
-          "150",
-          "196"
-        ],
-        "answer": 2,
-        "explanation": "121=11², 144=12², 169=13², 196=14². 150 is not a perfect square."
-      },
-      {
-        "id": "g93",
-        "topic": "Number Series",
-        "question": "Find the next: 2, 6, 14, 30, 62, ?",
-        "options": [
-          "94",
-          "110",
-          "126",
-          "128"
-        ],
-        "answer": 2,
-        "explanation": "×2+2 each time. 62×2+2 = 126"
-      },
-      {
-        "id": "g94",
-        "topic": "Number Series",
-        "question": "Find the next: 99, 92, 84, 75, 65, ?",
-        "options": [
-          "54",
-          "55",
-          "56",
-          "50"
-        ],
-        "answer": 0,
-        "explanation": "Differences: -7, -8, -9, -10, -11. Next: 65-11 = 54"
-      },
-      {
-        "id": "g95",
-        "topic": "Quick Math",
-        "question": "What is 37.5% of 240?",
-        "options": [
-          "80",
-          "85",
-          "90",
-          "100"
-        ],
-        "answer": 2,
-        "explanation": "37.5% = 3/8. 240 × 3/8 = 90"
-      },
-      {
-        "id": "g96",
-        "topic": "Quick Math",
-        "question": "If CP = ₹200 and SP = ₹180, what is the loss%?",
-        "options": [
-          "5%",
-          "8%",
-          "10%",
-          "20%"
-        ],
-        "answer": 2,
-        "explanation": "Loss = 200-180 = 20. Loss% = (20/200)×100 = 10%"
-      },
-      {
-        "id": "g97",
-        "topic": "Quick Math",
-        "question": "What is the mean of first 10 natural numbers?",
-        "options": [
-          "5",
-          "5.5",
-          "6",
-          "10"
-        ],
-        "answer": 1,
-        "explanation": "Sum = 10×11/2 = 55. Mean = 55/10 = 5.5"
-      },
-      {
-        "id": "g98",
-        "topic": "Pattern Recognition",
-        "question": "Which doesn't belong: 2, 5, 10, 17, 28, 37",
-        "options": [
-          "10",
-          "17",
-          "28",
-          "37"
-        ],
-        "answer": 2,
-        "explanation": "Pattern: n²+1. 1+1=2, 4+1=5, 9+1=10, 16+1=17, 25+1=26, 36+1=37. 28 should be 26."
-      },
-      {
-        "id": "g99",
-        "topic": "Quick Math",
-        "question": "What is the value of 0.1 × 0.01 × 100?",
-        "options": [
-          "0.01",
-          "0.1",
-          "1",
-          "10"
-        ],
-        "answer": 1,
-        "explanation": "0.1 × 0.01 = 0.001. 0.001 × 100 = 0.1"
-      },
-      {
-        "id": "g100",
-        "topic": "Quick Math",
-        "question": "How many seconds in 1.5 hours?",
-        "options": [
-          "5000",
-          "5400",
-          "6000",
-          "9000"
-        ],
-        "answer": 1,
-        "explanation": "1.5 hours = 90 minutes = 90 × 60 = 5400 seconds"
-      }
-    ],
-    "coding": [
-      {
-        "id": "code1",
-        "title": "Replace Elements with Nearest Smaller on Right",
-        "difficulty": "Medium",
-        "topics": [
-          "Arrays",
-          "Stack"
-        ],
-        "link": "https://www.geeksforgeeks.org/next-smaller-element/",
-        "description": "Given an array, replace every element with the nearest smaller element on its right side."
-      },
-      {
-        "id": "code2",
-        "title": "Product of Array Elements at Even Positions",
-        "difficulty": "Easy",
-        "topics": [
-          "Arrays"
-        ],
-        "link": "https://www.geeksforgeeks.org/product-of-all-elements-at-even-positions-in-an-array/",
-        "description": "Find the product of all elements at even indices (0, 2, 4...)."
-      },
-      {
-        "id": "code3",
-        "title": "Password Validator",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://leetcode.com/problems/strong-password-checker/",
-        "description": "Check if a password meets rules: 8+ chars, uppercase, lowercase, digit, special char."
-      },
-      {
-        "id": "code4",
-        "title": "Binary String XOR/AND/OR",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings",
-          "Bitwise"
-        ],
-        "link": "https://www.geeksforgeeks.org/xor-of-two-binary-strings/",
-        "description": "Perform XOR, AND, and OR operations on two binary strings."
-      },
-      {
-        "id": "code5",
-        "title": "Check if String is Pangram",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://leetcode.com/problems/check-if-the-sentence-is-pangram/",
-        "description": "A pangram contains every letter of the alphabet at least once."
-      },
-      {
-        "id": "code6",
-        "title": "Find Missing Number in Array",
-        "difficulty": "Easy",
-        "topics": [
-          "Arrays",
-          "Math"
-        ],
-        "link": "https://leetcode.com/problems/missing-number/",
-        "description": "Array has n-1 numbers from 1 to n. Find the missing one."
-      },
-      {
-        "id": "code7",
-        "title": "Sort Array of 0s, 1s, and 2s",
-        "difficulty": "Medium",
-        "topics": [
-          "Arrays",
-          "Sorting"
-        ],
-        "link": "https://leetcode.com/problems/sort-colors/",
-        "description": "Dutch National Flag problem — sort without using a sorting algorithm."
-      },
-      {
-        "id": "code8",
-        "title": "Remove Consecutive Duplicates",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/",
-        "description": "Remove consecutive duplicate characters from a string."
-      },
-      {
-        "id": "code9",
-        "title": "Sum of Primes in Range",
-        "difficulty": "Easy",
-        "topics": [
-          "Number Problems",
-          "Math"
-        ],
-        "link": "https://www.geeksforgeeks.org/sum-of-all-primes-in-a-given-range/",
-        "description": "Find the sum of all prime numbers between two given numbers."
-      },
-      {
-        "id": "code10",
-        "title": "Check Anagrams",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://leetcode.com/problems/valid-anagram/",
-        "description": "Check if two strings contain the same characters in different order."
-      },
-      {
-        "id": "code11",
-        "title": "Matrix Diagonal Sum",
-        "difficulty": "Easy",
-        "topics": [
-          "Arrays",
-          "Matrix"
-        ],
-        "link": "https://leetcode.com/problems/matrix-diagonal-sum/",
-        "description": "Find the sum of primary and secondary diagonals of a matrix."
-      },
-      {
-        "id": "code12",
-        "title": "Find Second Largest Element",
-        "difficulty": "Easy",
-        "topics": [
-          "Arrays"
-        ],
-        "link": "https://www.geeksforgeeks.org/find-second-largest-element-array/",
-        "description": "Find the second largest element in an array without sorting."
-      },
-      {
-        "id": "code13",
-        "title": "Decimal to Binary Conversion",
-        "difficulty": "Easy",
-        "topics": [
-          "Number Problems"
-        ],
-        "link": "https://www.geeksforgeeks.org/program-decimal-binary-conversion/",
-        "description": "Convert a decimal number to its binary representation."
-      },
-      {
-        "id": "code14",
-        "title": "Reverse a String",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://leetcode.com/problems/reverse-string/",
-        "description": "Reverse a string in-place."
-      },
-      {
-        "id": "code15",
-        "title": "Count Vowels and Consonants",
-        "difficulty": "Easy",
-        "topics": [
-          "Strings"
-        ],
-        "link": "https://www.geeksforgeeks.org/program-count-vowels-consonant-digits-special-characters-string/",
-        "description": "Count the number of vowels and consonants in a given string."
-      }
-    ]
+    "communication_speaking": {
+      "reading": [
+        {
+          "id": "r1",
+          "text": "Accenture is a leading global professional services company that helps organizations build their digital core and optimize operations."
+        },
+        {
+          "id": "r2",
+          "text": "Artificial intelligence and machine learning are transforming industries by automating complex tasks and enabling data-driven decision making."
+        },
+        {
+          "id": "r3",
+          "text": "Effective communication is essential in the workplace as it fosters collaboration, reduces misunderstandings, and improves team productivity."
+        },
+        {
+          "id": "r4",
+          "text": "Cloud computing has revolutionized the way businesses operate by providing scalable, on-demand access to computing resources."
+        },
+        {
+          "id": "r5",
+          "text": "The development of sustainable technology solutions is critical for addressing environmental challenges while maintaining economic growth."
+        },
+        {
+          "id": "r6",
+          "text": "Cybersecurity threats continue to evolve, making it imperative for organizations to implement robust security measures to protect sensitive data."
+        },
+        {
+          "id": "r7",
+          "text": "Agile methodology emphasizes iterative development, continuous feedback, and cross-functional team collaboration to deliver software efficiently."
+        },
+        {
+          "id": "r8",
+          "text": "The Internet of Things connects billions of devices worldwide, enabling smarter homes, cities, and industrial processes."
+        },
+        {
+          "id": "r9",
+          "text": "Blockchain technology provides a decentralized and transparent way to record transactions, offering significant potential across various industries."
+        },
+        {
+          "id": "r10",
+          "text": "Remote working has become increasingly prevalent, requiring professionals to adapt their communication and collaboration strategies."
+        },
+        {
+          "id": "r11",
+          "text": "Data analytics enables organizations to extract meaningful insights from vast amounts of data, driving better strategic decisions."
+        },
+        {
+          "id": "r12",
+          "text": "Digital transformation involves integrating digital technology into all areas of a business, fundamentally changing how it operates and delivers value."
+        },
+        {
+          "id": "r13",
+          "text": "The software development lifecycle includes planning, coding, testing, deployment, and maintenance phases."
+        },
+        {
+          "id": "r14",
+          "text": "Effective leadership requires both vision and the ability to inspire others toward achieving common goals."
+        },
+        {
+          "id": "r15",
+          "text": "Automation is reducing the time and effort required for repetitive tasks, allowing employees to focus on more strategic work."
+        },
+        {
+          "id": "r16",
+          "text": "Companies are increasingly adopting hybrid work models that combine remote and in-office arrangements for greater flexibility."
+        },
+        {
+          "id": "r17",
+          "text": "Continuous learning and upskilling are essential for professionals to remain competitive in today's rapidly evolving job market."
+        },
+        {
+          "id": "r18",
+          "text": "Customer experience has become a key differentiator for businesses competing in saturated markets across all industries."
+        },
+        {
+          "id": "r19",
+          "text": "Quantum computing promises to solve complex problems that are currently beyond the capabilities of classical computers."
+        },
+        {
+          "id": "r20",
+          "text": "The responsible use of artificial intelligence requires careful consideration of ethical implications and potential biases in algorithms."
+        },
+        {
+          "id": "r21",
+          "text": "Project management tools help teams organize tasks, track progress, and meet deadlines more efficiently."
+        },
+        {
+          "id": "r22",
+          "text": "Cross-functional collaboration enables organizations to leverage diverse perspectives and expertise to solve complex business problems."
+        },
+        {
+          "id": "r23",
+          "text": "Data privacy regulations such as GDPR require companies to handle personal information with transparency and accountability."
+        },
+        {
+          "id": "r24",
+          "text": "Technology startups are disrupting traditional industries by introducing innovative solutions that address unmet customer needs."
+        },
+        {
+          "id": "r25",
+          "text": "Sustainable development goals encourage businesses to adopt practices that balance economic growth with environmental protection."
+        },
+        {
+          "id": "r26",
+          "text": "The global semiconductor shortage has highlighted the importance of supply chain resilience in the technology sector."
+        },
+        {
+          "id": "r27",
+          "text": "Edge computing processes data closer to its source, reducing latency and enabling real-time decision making for critical applications."
+        },
+        {
+          "id": "r28",
+          "text": "Diversity and inclusion initiatives help organizations create a more equitable workplace and drive innovation through varied perspectives."
+        },
+        {
+          "id": "r29",
+          "text": "Cloud-native applications are designed to take full advantage of cloud computing delivery models for maximum scalability and reliability."
+        },
+        {
+          "id": "r30",
+          "text": "Effective problem solving requires analytical thinking, creativity, and the ability to evaluate multiple potential solutions."
+        },
+        {
+          "id": "r31",
+          "text": "The financial technology sector is transforming how people manage money through mobile banking, digital payments, and cryptocurrency."
+        },
+        {
+          "id": "r32",
+          "text": "Business intelligence tools enable organizations to visualize data trends and make informed decisions based on real-time analytics."
+        },
+        {
+          "id": "r33",
+          "text": "Natural language processing allows computers to understand, interpret, and generate human language in a meaningful way."
+        },
+        {
+          "id": "r34",
+          "text": "DevOps practices bridge the gap between software development and IT operations to deliver applications faster and more reliably."
+        },
+        {
+          "id": "r35",
+          "text": "The healthcare industry is leveraging telemedicine and wearable devices to provide patients with more accessible and personalized care."
+        },
+        {
+          "id": "r36",
+          "text": "Machine learning algorithms improve their performance automatically through experience without being explicitly programmed for each task."
+        },
+        {
+          "id": "r37",
+          "text": "Robust testing strategies are essential for ensuring software quality and identifying defects before products reach end users."
+        },
+        {
+          "id": "r38",
+          "text": "The circular economy model promotes reducing waste by designing products for reuse, recycling, and sustainable manufacturing."
+        },
+        {
+          "id": "r39",
+          "text": "Application programming interfaces enable different software systems to communicate and share data seamlessly with each other."
+        },
+        {
+          "id": "r40",
+          "text": "Critical thinking skills are highly valued by employers across all industries and are essential for effective decision making."
+        }
+      ],
+      "repeat": [
+        {
+          "id": "rp1",
+          "text": "I have completed my graduation in computer science."
+        },
+        {
+          "id": "rp2",
+          "text": "The project was delivered on time and within budget."
+        },
+        {
+          "id": "rp3",
+          "text": "We need to analyze the data before making any decisions."
+        },
+        {
+          "id": "rp4",
+          "text": "Technology is changing the way we live and work."
+        },
+        {
+          "id": "rp5",
+          "text": "Clear communication helps avoid misunderstandings in the workplace."
+        },
+        {
+          "id": "rp6",
+          "text": "I am passionate about software development and problem solving."
+        },
+        {
+          "id": "rp7",
+          "text": "The team collaborated effectively to achieve the project goals."
+        },
+        {
+          "id": "rp8",
+          "text": "Innovation is the key to staying competitive in the market."
+        },
+        {
+          "id": "rp9",
+          "text": "Cloud services provide flexibility and cost savings for businesses."
+        },
+        {
+          "id": "rp10",
+          "text": "Data security is a top priority for every organization."
+        },
+        {
+          "id": "rp11",
+          "text": "I believe in continuous learning and professional development."
+        },
+        {
+          "id": "rp12",
+          "text": "Effective time management leads to better productivity and less stress."
+        },
+        {
+          "id": "rp13",
+          "text": "The company values diversity and inclusion in the workplace."
+        },
+        {
+          "id": "rp14",
+          "text": "Artificial intelligence is transforming customer service experiences."
+        },
+        {
+          "id": "rp15",
+          "text": "I am a quick learner and adapt easily to new technologies."
+        },
+        {
+          "id": "rp16",
+          "text": "Good leadership involves listening to your team and empowering them."
+        },
+        {
+          "id": "rp17",
+          "text": "The presentation was well received by all the stakeholders."
+        },
+        {
+          "id": "rp18",
+          "text": "We must focus on quality rather than just quantity."
+        },
+        {
+          "id": "rp19",
+          "text": "Renewable energy sources are becoming more affordable and accessible."
+        },
+        {
+          "id": "rp20",
+          "text": "Problem solving is one of the most important skills in any profession."
+        },
+        {
+          "id": "rp21",
+          "text": "The internet has connected people across the globe like never before."
+        },
+        {
+          "id": "rp22",
+          "text": "I enjoy working in a team and contributing to group discussions."
+        },
+        {
+          "id": "rp23",
+          "text": "Customer feedback helps us improve our products and services."
+        },
+        {
+          "id": "rp24",
+          "text": "Digital literacy is essential for success in the modern workplace."
+        },
+        {
+          "id": "rp25",
+          "text": "The software update improved the system performance significantly."
+        },
+        {
+          "id": "rp26",
+          "text": "Collaboration tools have made remote teamwork more efficient and productive."
+        },
+        {
+          "id": "rp27",
+          "text": "Ethics and integrity are fundamental values in professional life."
+        },
+        {
+          "id": "rp28",
+          "text": "The training program helped me develop new technical skills."
+        },
+        {
+          "id": "rp29",
+          "text": "Global markets are becoming increasingly interconnected through technology."
+        },
+        {
+          "id": "rp30",
+          "text": "I look forward to contributing to the growth of the organization."
+        },
+        {
+          "id": "rp31",
+          "text": "Sustainable practices benefit both the environment and the economy."
+        },
+        {
+          "id": "rp32",
+          "text": "The database stores information that can be accessed by authorized users."
+        },
+        {
+          "id": "rp33",
+          "text": "Successful projects require careful planning and effective execution."
+        },
+        {
+          "id": "rp34",
+          "text": "Mobile applications have transformed the way people access information."
+        },
+        {
+          "id": "rp35",
+          "text": "I am comfortable working under pressure and meeting tight deadlines."
+        },
+        {
+          "id": "rp36",
+          "text": "Cloud computing enables businesses to scale their operations efficiently."
+        },
+        {
+          "id": "rp37",
+          "text": "The mentor guided me throughout the internship and helped me grow professionally."
+        },
+        {
+          "id": "rp38",
+          "text": "Automation reduces human error and increases operational efficiency."
+        },
+        {
+          "id": "rp39",
+          "text": "Strong analytical skills are essential for solving complex business problems."
+        },
+        {
+          "id": "rp40",
+          "text": "The interview process assesses both technical competence and communication ability."
+        },
+        {
+          "id": "rp41",
+          "text": "Teamwork and cooperation are essential for achieving organizational goals."
+        },
+        {
+          "id": "rp42",
+          "text": "I have experience with programming languages including Java and Python."
+        },
+        {
+          "id": "rp43",
+          "text": "The company's mission is to deliver value through innovation and excellence."
+        },
+        {
+          "id": "rp44",
+          "text": "Regular exercise and a balanced diet contribute to overall well-being."
+        },
+        {
+          "id": "rp45",
+          "text": "The new policy was implemented to improve employee satisfaction and retention."
+        },
+        {
+          "id": "rp46",
+          "text": "I have strong organizational skills and attention to detail."
+        },
+        {
+          "id": "rp47",
+          "text": "The quarterly report showed a significant increase in revenue and profit."
+        },
+        {
+          "id": "rp48",
+          "text": "Networking events provide opportunities to connect with industry professionals."
+        },
+        {
+          "id": "rp49",
+          "text": "I am eager to apply my knowledge and skills in a real-world environment."
+        },
+        {
+          "id": "rp50",
+          "text": "Version control systems help developers manage changes to source code over time."
+        },
+        {
+          "id": "rp51",
+          "text": "The webinar covered important topics related to career growth and development."
+        },
+        {
+          "id": "rp52",
+          "text": "Quality assurance processes ensure that products meet the required standards."
+        },
+        {
+          "id": "rp53",
+          "text": "I have participated in several hackathons and coding competitions."
+        },
+        {
+          "id": "rp54",
+          "text": "The customer support team resolved the issue within twenty four hours."
+        },
+        {
+          "id": "rp55",
+          "text": "Open source software promotes collaboration and knowledge sharing among developers."
+        },
+        {
+          "id": "rp56",
+          "text": "Effective negotiation skills are valuable in both personal and professional contexts."
+        },
+        {
+          "id": "rp57",
+          "text": "The research findings were published in a reputable international journal."
+        },
+        {
+          "id": "rp58",
+          "text": "I am motivated by challenging problems that require creative solutions."
+        },
+        {
+          "id": "rp59",
+          "text": "The dashboard displays real-time metrics for monitoring system performance."
+        },
+        {
+          "id": "rp60",
+          "text": "Constructive feedback helps individuals identify areas for improvement and growth."
+        },
+        {
+          "id": "rp61",
+          "text": "The conference brought together experts from various fields to share their insights."
+        },
+        {
+          "id": "rp62",
+          "text": "I am committed to delivering high-quality work within the given timeframe."
+        },
+        {
+          "id": "rp63",
+          "text": "The algorithm efficiently sorts large datasets in ascending or descending order."
+        },
+        {
+          "id": "rp64",
+          "text": "Environmental awareness should be integrated into business strategies and operations."
+        },
+        {
+          "id": "rp65",
+          "text": "I have developed strong interpersonal skills through various team projects."
+        },
+        {
+          "id": "rp66",
+          "text": "The user interface was redesigned to provide a better customer experience."
+        },
+        {
+          "id": "rp67",
+          "text": "Emotional intelligence plays a crucial role in effective leadership and teamwork."
+        },
+        {
+          "id": "rp68",
+          "text": "I understand the importance of meeting deadlines and managing priorities."
+        },
+        {
+          "id": "rp69",
+          "text": "The security audit revealed several vulnerabilities that needed immediate attention."
+        },
+        {
+          "id": "rp70",
+          "text": "Professional development programs help employees advance their careers within the organization."
+        },
+        {
+          "id": "rp71",
+          "text": "I am confident in my ability to learn and grow in a dynamic work environment."
+        },
+        {
+          "id": "rp72",
+          "text": "The migration to cloud infrastructure reduced operational costs by thirty percent."
+        },
+        {
+          "id": "rp73",
+          "text": "Critical thinking enables professionals to make well-informed and logical decisions."
+        },
+        {
+          "id": "rp74",
+          "text": "I have a strong foundation in data structures and algorithms."
+        },
+        {
+          "id": "rp75",
+          "text": "The product launch was successful and received positive reviews from customers."
+        },
+        {
+          "id": "rp76",
+          "text": "Continuous integration and deployment pipelines accelerate the software delivery process."
+        },
+        {
+          "id": "rp77",
+          "text": "I am passionate about using technology to solve real-world problems and create impact."
+        },
+        {
+          "id": "rp78",
+          "text": "The company's growth strategy focuses on innovation and customer satisfaction."
+        },
+        {
+          "id": "rp79",
+          "text": "Good documentation practices make it easier for new team members to understand the codebase."
+        },
+        {
+          "id": "rp80",
+          "text": "I look forward to the opportunity to work with talented professionals and contribute meaningfully."
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Tell me about yourself.",
+          "modelAnswer": "My name is [Name]. I am a final year computer science student. I am passionate about technology and software development. I enjoy solving problems and learning new skills."
+        },
+        {
+          "id": "q2",
+          "text": "Why do you want to work at Accenture?",
+          "modelAnswer": "I want to work at Accenture because it offers exposure to cutting-edge technologies and a global work environment. The company's commitment to innovation aligns with my career goals."
+        },
+        {
+          "id": "q3",
+          "text": "What is your favorite subject and why?",
+          "modelAnswer": "My favorite subject is Data Structures and Algorithms because it teaches problem-solving skills that are fundamental to software development."
+        },
+        {
+          "id": "q4",
+          "text": "Describe a team project you worked on.",
+          "modelAnswer": "During my final year, I worked with a team of four on a web-based project management tool. My role was backend development. We followed agile methodology with weekly sprints."
+        },
+        {
+          "id": "q5",
+          "text": "What are your strengths?",
+          "modelAnswer": "My key strengths are problem-solving ability, adaptability, and teamwork. I can break complex problems into manageable parts and find efficient solutions."
+        },
+        {
+          "id": "q6",
+          "text": "What do you know about cloud computing?",
+          "modelAnswer": "Cloud computing is the delivery of computing services like storage, processing, and databases over the internet. It enables organizations to scale without investing in physical hardware."
+        },
+        {
+          "id": "q7",
+          "text": "How do you handle pressure?",
+          "modelAnswer": "I handle pressure by prioritizing tasks and focusing on one thing at a time. I create a structured plan with clear deadlines, which helps me stay organized."
+        },
+        {
+          "id": "q8",
+          "text": "What is the most important skill for a software developer?",
+          "modelAnswer": "I believe problem-solving is the most important skill because while languages change, the ability to analyze problems and design solutions remains valuable."
+        },
+        {
+          "id": "q9",
+          "text": "Describe a technology trend that excites you.",
+          "modelAnswer": "Generative AI excites me because of its potential to transform how we create content, write code, and interact with technology."
+        },
+        {
+          "id": "q10",
+          "text": "What do you do in your free time?",
+          "modelAnswer": "In my free time, I enjoy coding practice on platforms like LeetCode. I also read technology blogs to stay updated with industry trends."
+        },
+        {
+          "id": "q11",
+          "text": "How would you explain the internet to a five-year-old?",
+          "modelAnswer": "The internet is like a giant library that connects all the computers in the world so they can share information and talk to each other instantly."
+        },
+        {
+          "id": "q12",
+          "text": "What is teamwork according to you?",
+          "modelAnswer": "Teamwork is when a group of people work together toward a common goal, combining their individual skills and supporting each other to achieve success."
+        },
+        {
+          "id": "q13",
+          "text": "What motivates you to do your best work?",
+          "modelAnswer": "I am motivated by challenging problems that require creative solutions. The satisfaction of building something useful and seeing its impact drives me."
+        },
+        {
+          "id": "q14",
+          "text": "Where do you see yourself in five years?",
+          "modelAnswer": "In five years, I see myself as an experienced professional contributing to innovative projects and leading small teams while continuing to learn."
+        },
+        {
+          "id": "q15",
+          "text": "What is the importance of communication in the workplace?",
+          "modelAnswer": "Communication is essential because it helps team members collaborate effectively, reduces misunderstandings, and ensures everyone is aligned on goals."
+        },
+        {
+          "id": "q16",
+          "text": "Describe your college experience in three words.",
+          "modelAnswer": "My college experience can be described as challenging, enriching, and transformative."
+        },
+        {
+          "id": "q17",
+          "text": "What is your biggest achievement?",
+          "modelAnswer": "My biggest achievement was leading a team project that won first place in our college technical fest, where we built an innovative solution using machine learning."
+        },
+        {
+          "id": "q18",
+          "text": "How do you stay updated with technology?",
+          "modelAnswer": "I stay updated by reading technology blogs, following industry leaders on social media, and participating in online courses and coding communities."
+        },
+        {
+          "id": "q19",
+          "text": "What does innovation mean to you?",
+          "modelAnswer": "Innovation means finding new and better ways to solve problems. It involves creative thinking, experimentation, and the willingness to challenge existing methods."
+        },
+        {
+          "id": "q20",
+          "text": "What is your preferred programming language and why?",
+          "modelAnswer": "I prefer Python because of its readable syntax, extensive libraries, and versatility across web development, data science, and automation tasks."
+        },
+        {
+          "id": "q21",
+          "text": "How do you prioritize your tasks?",
+          "modelAnswer": "I prioritize tasks based on urgency and importance. I use a to-do list and focus on high-impact tasks first while ensuring deadlines are met."
+        },
+        {
+          "id": "q22",
+          "text": "What is the role of technology in education?",
+          "modelAnswer": "Technology has transformed education by making learning more accessible through online courses, interactive content, and tools that enable personalized learning."
+        },
+        {
+          "id": "q23",
+          "text": "Describe your ideal work environment.",
+          "modelAnswer": "My ideal work environment is collaborative, innovative, and supportive, where team members share knowledge and are encouraged to grow professionally."
+        },
+        {
+          "id": "q24",
+          "text": "What is digital transformation?",
+          "modelAnswer": "Digital transformation is the process of integrating digital technology into all areas of a business to improve operations, deliver value, and adapt to changing markets."
+        },
+        {
+          "id": "q25",
+          "text": "What qualities make a good leader?",
+          "modelAnswer": "A good leader has vision, integrity, empathy, and the ability to inspire and empower team members. They listen actively and lead by example."
+        },
+        {
+          "id": "q26",
+          "text": "Why is cybersecurity important?",
+          "modelAnswer": "Cybersecurity is important because it protects sensitive data, prevents financial losses, and maintains trust between organizations and their customers."
+        },
+        {
+          "id": "q27",
+          "text": "How do you handle failure?",
+          "modelAnswer": "I view failure as a learning opportunity. I analyze what went wrong, identify lessons, and apply those insights to improve my approach next time."
+        },
+        {
+          "id": "q28",
+          "text": "What is agile methodology?",
+          "modelAnswer": "Agile is an iterative approach to project management and software development that emphasizes flexibility, collaboration, and delivering value incrementally."
+        },
+        {
+          "id": "q29",
+          "text": "Describe a challenge you overcame.",
+          "modelAnswer": "During a project, our database crashed before the deadline. I stayed calm, recovered the data from backups, and we delivered the project successfully."
+        },
+        {
+          "id": "q30",
+          "text": "What is the importance of time management?",
+          "modelAnswer": "Time management helps increase productivity, reduce stress, and ensure that important tasks are completed on schedule without compromising quality."
+        },
+        {
+          "id": "q31",
+          "text": "What do you understand by work-life balance?",
+          "modelAnswer": "Work-life balance means allocating appropriate time and energy to both professional responsibilities and personal activities to maintain overall well-being."
+        },
+        {
+          "id": "q32",
+          "text": "How can artificial intelligence help businesses?",
+          "modelAnswer": "AI can help businesses by automating repetitive tasks, providing data insights, improving customer service, and enabling faster and better decision making."
+        },
+        {
+          "id": "q33",
+          "text": "What is your approach to learning something new?",
+          "modelAnswer": "I start by understanding the fundamentals, then practice through hands-on projects, and finally deepen my knowledge by exploring advanced concepts and resources."
+        },
+        {
+          "id": "q34",
+          "text": "What makes a good team player?",
+          "modelAnswer": "A good team player communicates openly, respects others' opinions, contributes actively, and is willing to support colleagues to achieve shared objectives."
+        },
+        {
+          "id": "q35",
+          "text": "Describe the importance of feedback.",
+          "modelAnswer": "Feedback is important because it helps identify strengths and areas for improvement, enables growth, and ensures alignment with expectations and goals."
+        },
+        {
+          "id": "q36",
+          "text": "What is problem solving?",
+          "modelAnswer": "Problem solving is the process of identifying a problem, analyzing possible solutions, choosing the best approach, and implementing it effectively."
+        },
+        {
+          "id": "q37",
+          "text": "How is technology affecting healthcare?",
+          "modelAnswer": "Technology is improving healthcare through telemedicine, electronic health records, AI-powered diagnostics, and wearable devices that monitor patient health in real time."
+        },
+        {
+          "id": "q38",
+          "text": "What does sustainability mean to you?",
+          "modelAnswer": "Sustainability means meeting current needs without compromising the ability of future generations to meet theirs, by balancing economic, social, and environmental factors."
+        },
+        {
+          "id": "q39",
+          "text": "Why are soft skills important in IT?",
+          "modelAnswer": "Soft skills like communication, teamwork, and adaptability are important in IT because technology professionals need to collaborate, present ideas, and work with diverse teams."
+        },
+        {
+          "id": "q40",
+          "text": "What is the difference between a leader and a manager?",
+          "modelAnswer": "A leader inspires and motivates people toward a vision, while a manager focuses on organizing, planning, and controlling processes to achieve specific objectives."
+        },
+        {
+          "id": "q41",
+          "text": "How do you deal with criticism?",
+          "modelAnswer": "I accept criticism constructively. I listen carefully, evaluate the feedback objectively, and use it as an opportunity to improve my skills and performance."
+        },
+        {
+          "id": "q42",
+          "text": "Describe a skill you recently learned.",
+          "modelAnswer": "I recently learned React for front-end development. I practiced by building small projects and following online tutorials to understand component-based architecture."
+        },
+        {
+          "id": "q43",
+          "text": "What is your understanding of corporate social responsibility?",
+          "modelAnswer": "Corporate social responsibility is a business approach where companies integrate social and environmental concerns into their operations and interactions with stakeholders."
+        },
+        {
+          "id": "q44",
+          "text": "How important is adaptability in today's workplace?",
+          "modelAnswer": "Adaptability is extremely important because technology and business environments change rapidly. Professionals who can adapt quickly are more effective and valuable."
+        },
+        {
+          "id": "q45",
+          "text": "What would you do if you disagreed with your team's approach?",
+          "modelAnswer": "I would respectfully share my perspective with supporting reasons, listen to others' viewpoints, and work toward a consensus that benefits the project."
+        },
+        {
+          "id": "q46",
+          "text": "Explain the importance of networking.",
+          "modelAnswer": "Networking helps build professional relationships, opens doors to new opportunities, and allows you to learn from others' experiences and expertise."
+        },
+        {
+          "id": "q47",
+          "text": "What is data-driven decision making?",
+          "modelAnswer": "Data-driven decision making is the process of using data analysis and insights to guide business strategies and choices rather than relying solely on intuition."
+        },
+        {
+          "id": "q48",
+          "text": "How do you ensure quality in your work?",
+          "modelAnswer": "I ensure quality by planning carefully, reviewing my work thoroughly, testing rigorously, and seeking feedback from peers before final delivery."
+        },
+        {
+          "id": "q49",
+          "text": "What role does creativity play in technology?",
+          "modelAnswer": "Creativity drives innovation in technology by enabling professionals to think of novel solutions, design better user experiences, and solve problems in unique ways."
+        },
+        {
+          "id": "q50",
+          "text": "What is the significance of ethical behavior in business?",
+          "modelAnswer": "Ethical behavior builds trust with customers, employees, and stakeholders. It ensures long-term sustainability and protects the company's reputation."
+        },
+        {
+          "id": "q51",
+          "text": "How would you explain machine learning to a non-technical person?",
+          "modelAnswer": "Machine learning is like teaching a computer to learn from examples. Instead of giving it specific instructions, you show it many examples and it figures out patterns on its own."
+        },
+        {
+          "id": "q52",
+          "text": "What is your opinion on remote working?",
+          "modelAnswer": "Remote working offers flexibility and eliminates commute time, but it requires discipline and effective communication tools to maintain productivity and collaboration."
+        },
+        {
+          "id": "q53",
+          "text": "Describe the importance of documentation in software development.",
+          "modelAnswer": "Documentation helps team members understand the code, makes maintenance easier, and enables new developers to quickly get up to speed with the project."
+        },
+        {
+          "id": "q54",
+          "text": "What steps would you take to improve a slow application?",
+          "modelAnswer": "I would first identify bottlenecks through profiling, then optimize the code, improve database queries, implement caching, and consider scaling the infrastructure."
+        },
+        {
+          "id": "q55",
+          "text": "How do you manage multiple deadlines?",
+          "modelAnswer": "I create a priority list based on urgency and importance, break tasks into smaller steps, set milestones, and use project management tools to track progress."
+        },
+        {
+          "id": "q56",
+          "text": "What does professionalism mean to you?",
+          "modelAnswer": "Professionalism means being reliable, respectful, accountable, and committed to delivering quality work. It also involves continuous learning and ethical conduct."
+        },
+        {
+          "id": "q57",
+          "text": "What is the impact of social media on society?",
+          "modelAnswer": "Social media has increased connectivity and information access but also raised concerns about privacy, misinformation, and mental health that need to be addressed."
+        },
+        {
+          "id": "q58",
+          "text": "How can companies improve employee engagement?",
+          "modelAnswer": "Companies can improve engagement by providing growth opportunities, recognizing achievements, fostering open communication, and creating an inclusive work culture."
+        },
+        {
+          "id": "q59",
+          "text": "What is the importance of testing in software development?",
+          "modelAnswer": "Testing ensures software quality, identifies bugs before release, improves user satisfaction, and reduces the cost of fixing defects after deployment."
+        },
+        {
+          "id": "q60",
+          "text": "Describe a situation where you showed initiative.",
+          "modelAnswer": "When our study group needed preparation material, I took the initiative to compile and organize notes from all subjects and shared them with everyone."
+        }
+      ],
+      "sentenceBuilds": [
+        {
+          "id": "sb1",
+          "words": [
+            "technology",
+            "our",
+            "changing",
+            "is",
+            "lives",
+            "rapidly"
+          ],
+          "answer": "Technology is rapidly changing our lives."
+        },
+        {
+          "id": "sb2",
+          "words": [
+            "skills",
+            "communication",
+            "essential",
+            "are",
+            "workplace",
+            "in",
+            "the"
+          ],
+          "answer": "Communication skills are essential in the workplace."
+        },
+        {
+          "id": "sb3",
+          "words": [
+            "enables",
+            "cloud",
+            "computing",
+            "businesses",
+            "to",
+            "efficiently",
+            "scale"
+          ],
+          "answer": "Cloud computing enables businesses to scale efficiently."
+        },
+        {
+          "id": "sb4",
+          "words": [
+            "learn",
+            "I",
+            "willing",
+            "am",
+            "new",
+            "to",
+            "technologies"
+          ],
+          "answer": "I am willing to learn new technologies."
+        },
+        {
+          "id": "sb5",
+          "words": [
+            "team",
+            "the",
+            "successfully",
+            "completed",
+            "project",
+            "the"
+          ],
+          "answer": "The team successfully completed the project."
+        },
+        {
+          "id": "sb6",
+          "words": [
+            "important",
+            "cybersecurity",
+            "data",
+            "for",
+            "is",
+            "protecting"
+          ],
+          "answer": "Cybersecurity is important for protecting data."
+        },
+        {
+          "id": "sb7",
+          "words": [
+            "developers",
+            "software",
+            "problems",
+            "solve",
+            "complex"
+          ],
+          "answer": "Software developers solve complex problems."
+        },
+        {
+          "id": "sb8",
+          "words": [
+            "global",
+            "Accenture",
+            "a",
+            "is",
+            "company",
+            "services"
+          ],
+          "answer": "Accenture is a global services company."
+        },
+        {
+          "id": "sb9",
+          "words": [
+            "innovation",
+            "drives",
+            "technology",
+            "modern",
+            "progress"
+          ],
+          "answer": "Modern technology drives innovation progress."
+        },
+        {
+          "id": "sb10",
+          "words": [
+            "artificial",
+            "reshaping",
+            "intelligence",
+            "is",
+            "industries"
+          ],
+          "answer": "Artificial intelligence is reshaping industries."
+        },
+        {
+          "id": "sb11",
+          "words": [
+            "continuous",
+            "success",
+            "for",
+            "learning",
+            "is",
+            "essential"
+          ],
+          "answer": "Continuous learning is essential for success."
+        },
+        {
+          "id": "sb12",
+          "words": [
+            "the",
+            "future",
+            "shapes",
+            "education",
+            "of",
+            "our",
+            "children"
+          ],
+          "answer": "Education shapes the future of our children."
+        },
+        {
+          "id": "sb13",
+          "words": [
+            "management",
+            "helps",
+            "time",
+            "increase",
+            "effective",
+            "productivity"
+          ],
+          "answer": "Effective time management helps increase productivity."
+        },
+        {
+          "id": "sb14",
+          "words": [
+            "strong",
+            "requires",
+            "foundation",
+            "programming",
+            "a",
+            "in",
+            "logic"
+          ],
+          "answer": "Programming requires a strong foundation in logic."
+        },
+        {
+          "id": "sb15",
+          "words": [
+            "the",
+            "environment",
+            "protect",
+            "we",
+            "must",
+            "our"
+          ],
+          "answer": "We must protect our environment."
+        },
+        {
+          "id": "sb16",
+          "words": [
+            "data",
+            "better",
+            "helps",
+            "analysis",
+            "make",
+            "decisions"
+          ],
+          "answer": "Data analysis helps make better decisions."
+        },
+        {
+          "id": "sb17",
+          "words": [
+            "internet",
+            "transformed",
+            "the",
+            "has",
+            "communication",
+            "global"
+          ],
+          "answer": "The internet has transformed global communication."
+        },
+        {
+          "id": "sb18",
+          "words": [
+            "teamwork",
+            "leads",
+            "cooperation",
+            "and",
+            "to",
+            "success"
+          ],
+          "answer": "Teamwork and cooperation leads to success."
+        },
+        {
+          "id": "sb19",
+          "words": [
+            "experience",
+            "customer",
+            "is",
+            "a",
+            "key",
+            "differentiator"
+          ],
+          "answer": "Customer experience is a key differentiator."
+        },
+        {
+          "id": "sb20",
+          "words": [
+            "practice",
+            "makes",
+            "consistent",
+            "perfect",
+            "results"
+          ],
+          "answer": "Consistent practice makes perfect results."
+        },
+        {
+          "id": "sb21",
+          "words": [
+            "algorithms",
+            "complex",
+            "solve",
+            "engineers",
+            "problems",
+            "using"
+          ],
+          "answer": "Engineers solve complex problems using algorithms."
+        },
+        {
+          "id": "sb22",
+          "words": [
+            "responsibility",
+            "taking",
+            "builds",
+            "trust",
+            "and",
+            "character"
+          ],
+          "answer": "Taking responsibility builds trust and character."
+        },
+        {
+          "id": "sb23",
+          "words": [
+            "adapting",
+            "change",
+            "to",
+            "important",
+            "is",
+            "very"
+          ],
+          "answer": "Adapting to change is very important."
+        },
+        {
+          "id": "sb24",
+          "words": [
+            "creativity",
+            "innovation",
+            "and",
+            "go",
+            "hand",
+            "in",
+            "hand"
+          ],
+          "answer": "Creativity and innovation go hand in hand."
+        },
+        {
+          "id": "sb25",
+          "words": [
+            "digital",
+            "the",
+            "economy",
+            "is",
+            "growing",
+            "rapidly"
+          ],
+          "answer": "The digital economy is growing rapidly."
+        },
+        {
+          "id": "sb26",
+          "words": [
+            "professional",
+            "development",
+            "career",
+            "enhances",
+            "growth"
+          ],
+          "answer": "Professional development enhances career growth."
+        },
+        {
+          "id": "sb27",
+          "words": [
+            "healthy",
+            "a",
+            "lifestyle",
+            "promotes",
+            "well-being",
+            "overall"
+          ],
+          "answer": "A healthy lifestyle promotes overall well-being."
+        },
+        {
+          "id": "sb28",
+          "words": [
+            "security",
+            "measures",
+            "prevent",
+            "unauthorized",
+            "access"
+          ],
+          "answer": "Security measures prevent unauthorized access."
+        },
+        {
+          "id": "sb29",
+          "words": [
+            "effective",
+            "reduces",
+            "communication",
+            "workplace",
+            "conflicts"
+          ],
+          "answer": "Effective communication reduces workplace conflicts."
+        },
+        {
+          "id": "sb30",
+          "words": [
+            "the",
+            "report",
+            "was",
+            "submitted",
+            "before",
+            "deadline",
+            "the"
+          ],
+          "answer": "The report was submitted before the deadline."
+        },
+        {
+          "id": "sb31",
+          "words": [
+            "automation",
+            "increases",
+            "and",
+            "efficiency",
+            "reduces",
+            "errors"
+          ],
+          "answer": "Automation increases efficiency and reduces errors."
+        },
+        {
+          "id": "sb32",
+          "words": [
+            "feedback",
+            "helps",
+            "improve",
+            "constructive",
+            "performance"
+          ],
+          "answer": "Constructive feedback helps improve performance."
+        },
+        {
+          "id": "sb33",
+          "words": [
+            "mobile",
+            "have",
+            "applications",
+            "transformed",
+            "daily",
+            "life"
+          ],
+          "answer": "Mobile applications have transformed daily life."
+        },
+        {
+          "id": "sb34",
+          "words": [
+            "skills",
+            "problem-solving",
+            "employers",
+            "value",
+            "highly"
+          ],
+          "answer": "Employers highly value problem-solving skills."
+        },
+        {
+          "id": "sb35",
+          "words": [
+            "planning",
+            "is",
+            "strategic",
+            "for",
+            "essential",
+            "success",
+            "long-term"
+          ],
+          "answer": "Strategic planning is essential for long-term success."
+        },
+        {
+          "id": "sb36",
+          "words": [
+            "training",
+            "programs",
+            "help",
+            "develop",
+            "employee",
+            "skills"
+          ],
+          "answer": "Training programs help develop employee skills."
+        },
+        {
+          "id": "sb37",
+          "words": [
+            "the",
+            "was",
+            "presentation",
+            "by",
+            "well",
+            "received",
+            "everyone"
+          ],
+          "answer": "The presentation was well received by everyone."
+        },
+        {
+          "id": "sb38",
+          "words": [
+            "research",
+            "development",
+            "and",
+            "drive",
+            "innovation"
+          ],
+          "answer": "Research and development drive innovation."
+        },
+        {
+          "id": "sb39",
+          "words": [
+            "quality",
+            "assurance",
+            "ensures",
+            "product",
+            "reliability"
+          ],
+          "answer": "Quality assurance ensures product reliability."
+        },
+        {
+          "id": "sb40",
+          "words": [
+            "remote",
+            "collaboration",
+            "requires",
+            "work",
+            "effective",
+            "tools"
+          ],
+          "answer": "Remote work requires effective collaboration tools."
+        },
+        {
+          "id": "sb41",
+          "words": [
+            "database",
+            "management",
+            "is",
+            "for",
+            "crucial",
+            "data",
+            "integrity"
+          ],
+          "answer": "Database management is crucial for data integrity."
+        },
+        {
+          "id": "sb42",
+          "words": [
+            "ethical",
+            "practices",
+            "build",
+            "customer",
+            "trust",
+            "and",
+            "loyalty"
+          ],
+          "answer": "Ethical practices build customer trust and loyalty."
+        },
+        {
+          "id": "sb43",
+          "words": [
+            "the",
+            "market",
+            "is",
+            "evolving",
+            "technology",
+            "constantly"
+          ],
+          "answer": "The technology market is constantly evolving."
+        },
+        {
+          "id": "sb44",
+          "words": [
+            "leadership",
+            "requires",
+            "both",
+            "vision",
+            "and",
+            "action"
+          ],
+          "answer": "Leadership requires both vision and action."
+        },
+        {
+          "id": "sb45",
+          "words": [
+            "we",
+            "to",
+            "need",
+            "embrace",
+            "change",
+            "and",
+            "innovation"
+          ],
+          "answer": "We need to embrace change and innovation."
+        },
+        {
+          "id": "sb46",
+          "words": [
+            "the",
+            "deadline",
+            "was",
+            "extended",
+            "by",
+            "one",
+            "week"
+          ],
+          "answer": "The deadline was extended by one week."
+        },
+        {
+          "id": "sb47",
+          "words": [
+            "mentoring",
+            "helps",
+            "professionals",
+            "junior",
+            "grow",
+            "rapidly"
+          ],
+          "answer": "Mentoring helps junior professionals grow rapidly."
+        },
+        {
+          "id": "sb48",
+          "words": [
+            "agile",
+            "methodology",
+            "promotes",
+            "iterative",
+            "development"
+          ],
+          "answer": "Agile methodology promotes iterative development."
+        },
+        {
+          "id": "sb49",
+          "words": [
+            "the",
+            "success",
+            "project",
+            "exceeded",
+            "our",
+            "expectations"
+          ],
+          "answer": "The project success exceeded our expectations."
+        },
+        {
+          "id": "sb50",
+          "words": [
+            "good",
+            "communication",
+            "is",
+            "the",
+            "foundation",
+            "of",
+            "teamwork"
+          ],
+          "answer": "Good communication is the foundation of teamwork."
+        }
+      ],
+      "stories": [
+        {
+          "id": "st1",
+          "title": "The New Employee",
+          "text": "Priya joined a technology company as a software developer. On her first day, she met her team and was given a small project to work on. She felt nervous but her manager was very supportive. Within a week, she had completed her first task and received positive feedback from the team. Priya realized that asking questions and seeking help were important steps in learning. She felt confident about her future at the company.",
+          "keywords": [
+            "Priya",
+            "technology",
+            "software developer",
+            "first day",
+            "project",
+            "nervous",
+            "supportive",
+            "completed",
+            "positive feedback",
+            "asking questions",
+            "confident"
+          ]
+        },
+        {
+          "id": "st2",
+          "title": "The Team Project",
+          "text": "Five students were assigned a group project on environmental sustainability. Initially, they had different ideas and found it difficult to agree. The group leader suggested they each present their ideas and then vote on the best approach. After a healthy discussion, they combined two ideas and created a comprehensive presentation. Their professor appreciated their collaborative approach and gave them the highest grade in the class.",
+          "keywords": [
+            "five students",
+            "group project",
+            "sustainability",
+            "different ideas",
+            "difficult",
+            "leader",
+            "present",
+            "vote",
+            "discussion",
+            "combined",
+            "comprehensive",
+            "highest grade"
+          ]
+        },
+        {
+          "id": "st3",
+          "title": "The Job Interview",
+          "text": "Rahul prepared for weeks for his job interview at a leading IT company. He practiced answering common questions, researched the company, and prepared questions to ask the interviewer. On the day of the interview, he arrived early and dressed professionally. During the interview, he spoke confidently about his skills and experiences. The interviewer was impressed by his preparation and offered him the position the following week.",
+          "keywords": [
+            "Rahul",
+            "prepared",
+            "job interview",
+            "IT company",
+            "practiced",
+            "researched",
+            "arrived early",
+            "professionally",
+            "confidently",
+            "skills",
+            "impressed",
+            "offered",
+            "position"
+          ]
+        },
+        {
+          "id": "st4",
+          "title": "The Startup Idea",
+          "text": "Two friends had an idea to create a mobile application that helps students organize their study schedules. They started by conducting a survey among college students to understand their needs. Based on the feedback, they designed the app with features like reminders, progress tracking, and study tips. After months of development, they launched the app and received over ten thousand downloads in the first month. Their success showed the importance of understanding customer needs before building a product.",
+          "keywords": [
+            "friends",
+            "mobile application",
+            "students",
+            "study schedules",
+            "survey",
+            "feedback",
+            "designed",
+            "reminders",
+            "progress tracking",
+            "launched",
+            "ten thousand downloads",
+            "customer needs"
+          ]
+        },
+        {
+          "id": "st5",
+          "title": "The Conference",
+          "text": "An international technology conference was held in Bangalore last month. Over two thousand professionals from different countries attended the event. The keynote speaker talked about the future of artificial intelligence in healthcare. Several workshops were conducted on topics like cloud computing, cybersecurity, and data analytics. Many participants said the conference helped them learn new skills and build professional connections. The organizers announced that next year's conference would be even bigger.",
+          "keywords": [
+            "international",
+            "technology conference",
+            "Bangalore",
+            "two thousand",
+            "professionals",
+            "keynote speaker",
+            "artificial intelligence",
+            "healthcare",
+            "workshops",
+            "cloud computing",
+            "cybersecurity",
+            "data analytics",
+            "connections",
+            "bigger"
+          ]
+        },
+        {
+          "id": "st6",
+          "title": "The Problem Solver",
+          "text": "Ananya was working on a critical bug in the company's payment system. The bug was causing some transactions to fail randomly. She spent three days analyzing logs and testing different scenarios. Finally, she discovered that a recent update had introduced a timing issue in the database queries. She fixed the problem and added automated tests to prevent similar issues in the future. Her manager praised her persistence and promoted her to senior developer.",
+          "keywords": [
+            "Ananya",
+            "critical bug",
+            "payment system",
+            "transactions",
+            "fail",
+            "analyzing logs",
+            "testing",
+            "timing issue",
+            "database queries",
+            "fixed",
+            "automated tests",
+            "persistence",
+            "promoted",
+            "senior developer"
+          ]
+        },
+        {
+          "id": "st7",
+          "title": "Remote Learning",
+          "text": "During the pandemic, universities switched to online classes. Students had to adapt to a new way of learning using video conferencing tools. Some students found it difficult to stay focused at home, while others appreciated the flexibility. Teachers used interactive quizzes and breakout rooms to keep students engaged. By the end of the semester, most students had improved their digital skills and become more self-disciplined learners.",
+          "keywords": [
+            "pandemic",
+            "online classes",
+            "adapt",
+            "video conferencing",
+            "difficult",
+            "focused",
+            "flexibility",
+            "interactive quizzes",
+            "breakout rooms",
+            "engaged",
+            "digital skills",
+            "self-disciplined"
+          ]
+        },
+        {
+          "id": "st8",
+          "title": "The Hackathon",
+          "text": "A twenty-four hour hackathon was organized by a technology company to promote innovation. Fifty teams participated from across the country. Each team had to build a working prototype to solve a social problem. One team created an app that connected food donors with homeless shelters. They won the first prize of fifty thousand rupees. The event inspired many young developers to use their skills for social good.",
+          "keywords": [
+            "hackathon",
+            "twenty-four hour",
+            "technology company",
+            "innovation",
+            "fifty teams",
+            "prototype",
+            "social problem",
+            "app",
+            "food donors",
+            "homeless shelters",
+            "first prize",
+            "inspired",
+            "social good"
+          ]
+        },
+        {
+          "id": "st9",
+          "title": "The Mentor",
+          "text": "Vikram was struggling with data structures during his second year of college. A senior student named Meera noticed his difficulties and offered to help. She spent one hour every weekend explaining concepts and solving problems with him. Gradually, Vikram's understanding improved and he started scoring well in exams. He was so grateful that he decided to mentor junior students himself. This chain of mentoring became a tradition in the department.",
+          "keywords": [
+            "Vikram",
+            "data structures",
+            "struggling",
+            "senior student",
+            "Meera",
+            "help",
+            "weekend",
+            "explaining",
+            "improved",
+            "scoring well",
+            "grateful",
+            "mentor",
+            "tradition",
+            "department"
+          ]
+        },
+        {
+          "id": "st10",
+          "title": "The Digital Village",
+          "text": "A small village in rural India received internet connectivity for the first time. The local school teacher started teaching students how to use computers and access online resources. Farmers began checking weather forecasts and market prices on their phones. A young woman opened an online store to sell handmade crafts to customers across the country. Within two years, the village's economy had improved significantly, showing how technology can transform rural communities.",
+          "keywords": [
+            "village",
+            "rural India",
+            "internet",
+            "school teacher",
+            "computers",
+            "online resources",
+            "farmers",
+            "weather forecasts",
+            "market prices",
+            "online store",
+            "handmade crafts",
+            "economy",
+            "improved",
+            "technology",
+            "transform"
+          ]
+        },
+        {
+          "id": "st11",
+          "title": "The Science Fair",
+          "text": "Students at a local school organized a science fair to showcase their projects. One group built a solar-powered water purifier using recycled materials. Another team created a mobile app that taught mathematics through games. The judges were impressed by the creativity and practical applications of the projects. The winning team received a scholarship to attend a national science competition. The event encouraged more students to pursue careers in science and technology.",
+          "keywords": [
+            "science fair",
+            "projects",
+            "solar-powered",
+            "water purifier",
+            "recycled",
+            "mobile app",
+            "mathematics",
+            "games",
+            "judges",
+            "creativity",
+            "practical",
+            "scholarship",
+            "national",
+            "science and technology"
+          ]
+        },
+        {
+          "id": "st12",
+          "title": "The First Job",
+          "text": "After graduating from college, Sneha applied to several companies. She received two job offers and had to choose between a large corporation and a small startup. The corporation offered a higher salary, while the startup promised more learning opportunities and faster growth. After careful consideration, Sneha chose the startup because she wanted to work on diverse projects and develop multiple skills. Two years later, she was leading a team of ten engineers, confirming that her decision was right.",
+          "keywords": [
+            "Sneha",
+            "graduating",
+            "applied",
+            "two job offers",
+            "corporation",
+            "startup",
+            "higher salary",
+            "learning opportunities",
+            "faster growth",
+            "careful consideration",
+            "diverse projects",
+            "leading",
+            "team",
+            "ten engineers",
+            "decision"
+          ]
+        },
+        {
+          "id": "st13",
+          "title": "The Green Initiative",
+          "text": "A technology company launched a green initiative to reduce its carbon footprint. They installed solar panels on the office building and replaced all plastic cups with biodegradable ones. Employees were encouraged to use public transport or carpool to work. The company also planted two hundred trees near the office. Within one year, the company reduced its energy consumption by twenty percent and inspired other companies in the area to follow similar practices.",
+          "keywords": [
+            "green initiative",
+            "carbon footprint",
+            "solar panels",
+            "biodegradable",
+            "public transport",
+            "carpool",
+            "planted",
+            "two hundred trees",
+            "energy consumption",
+            "twenty percent",
+            "inspired",
+            "similar practices"
+          ]
+        },
+        {
+          "id": "st14",
+          "title": "The Database Migration",
+          "text": "A company decided to migrate its legacy database to a modern cloud-based system. The IT team spent two months planning the migration to ensure zero data loss. They created backup copies of all data and tested the migration process multiple times. On the day of migration, the team worked through the night to complete the process. The new system was faster and more reliable, reducing query response times by fifty percent. The successful migration demonstrated the importance of thorough planning.",
+          "keywords": [
+            "migrate",
+            "legacy database",
+            "cloud-based",
+            "IT team",
+            "two months",
+            "planning",
+            "zero data loss",
+            "backup",
+            "tested",
+            "migration",
+            "night",
+            "faster",
+            "reliable",
+            "fifty percent",
+            "thorough planning"
+          ]
+        },
+        {
+          "id": "st15",
+          "title": "The Community Service",
+          "text": "A group of engineering students decided to teach basic computer skills to elderly people in their neighborhood. They organized weekly classes at the community center every Saturday morning. The senior citizens learned how to use smartphones, send emails, and make video calls to their families. Many of them were able to connect with relatives living abroad for the first time. The students realized that technology can bridge generational gaps and bring people closer together.",
+          "keywords": [
+            "engineering students",
+            "computer skills",
+            "elderly",
+            "weekly classes",
+            "community center",
+            "Saturday",
+            "senior citizens",
+            "smartphones",
+            "emails",
+            "video calls",
+            "families",
+            "abroad",
+            "bridge",
+            "generational gaps",
+            "closer"
+          ]
+        }
+      ],
+      "openQuestions": [
+        {
+          "id": "oq1",
+          "text": "Describe a time when you had to learn something new quickly. How did you approach it?",
+          "hint": "Talk about a specific situation, what you learned, the steps you took, and the outcome."
+        },
+        {
+          "id": "oq2",
+          "text": "If you could change one thing about the education system, what would it be and why?",
+          "hint": "Choose one aspect, explain the current problem, suggest your change, and describe its benefits."
+        },
+        {
+          "id": "oq3",
+          "text": "How has technology changed the way people communicate? Give examples.",
+          "hint": "Discuss social media, messaging apps, video calls, email, and how these compare to traditional communication."
+        },
+        {
+          "id": "oq4",
+          "text": "What advice would you give to someone starting their career in technology?",
+          "hint": "Talk about continuous learning, practical skills, networking, soft skills, and staying updated."
+        },
+        {
+          "id": "oq5",
+          "text": "Describe an invention that has had the biggest impact on modern life.",
+          "hint": "Choose one invention, explain how it works, discuss its impact, and give examples of how people use it daily."
+        },
+        {
+          "id": "oq6",
+          "text": "What challenges do you think the world will face in the next ten years?",
+          "hint": "Consider climate change, AI, job automation, cybersecurity, healthcare, or education challenges."
+        },
+        {
+          "id": "oq7",
+          "text": "If you could work on any project, what would you build and why?",
+          "hint": "Describe the project, its purpose, the technology you would use, and the impact it would have."
+        },
+        {
+          "id": "oq8",
+          "text": "How can companies create a more inclusive workplace?",
+          "hint": "Discuss diversity initiatives, equal opportunities, flexible policies, training, and creating a respectful culture."
+        },
+        {
+          "id": "oq9",
+          "text": "Describe the most important lesson you learned during your education.",
+          "hint": "Share a specific lesson, how you learned it, and how it has helped you in your personal or professional life."
+        },
+        {
+          "id": "oq10",
+          "text": "What is the role of ethics in artificial intelligence development?",
+          "hint": "Discuss bias, transparency, privacy, accountability, and the importance of responsible AI."
+        }
+      ]
+    }
   }
 };
