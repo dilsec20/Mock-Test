@@ -11,13 +11,13 @@ const COMPANIES = [
     examName: 'Accenture Campus Recruitment',
     dataFile: 'data/accenture.json',
     color: '#A100FF',
-    sections: ['Technical MCQ', 'Grammar MCQ', 'Speaking Test (Pearson)', 'Cognitive', 'Coding'],
+    sections: ['Technical MCQ', 'Grammar MCQ', 'Speaking Test (Pearson)', 'Gamified Cognitive Games', 'Coding'],
     stats: {
-      questions: '600+ Pool',
+      questions: '650+ Pool',
       duration: '70 min',
-      tests: '5'
+      tests: '6 Modules'
     },
-    features: ['No Negative Marking', 'PYQ Based', 'Pearson Speaking (Voice)', 'Mic & AI Evaluated']
+    features: ['No Negative Marking', 'Gamified Mini-Games (Bubble & Mazes)', 'Pearson Spoken English', 'Mic & Voice Evaluated']
   }
   // More companies can be added here later
 ];

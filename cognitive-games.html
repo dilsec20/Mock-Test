@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accenture Gamified Cognitive Assessment — MockPrep</title>
+  <meta name="description" content="Interactive Accenture Game-Based Cognitive Assessment: Bubble Math, Lock & Key Memory Game with Directional Doors, and Maze Pathfinding.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <style>
+    /* ── Gamified Cognitive Specific Styles ── */
+    .game-page-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-md);
+      padding-top: 80px;
+    }
+
+    /* Top Control & Tab Bar */
+    .game-nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: var(--space-xl);
+    }
+    .game-tab-btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-glass);
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .game-tab-btn:hover {
+      background: var(--bg-glass-hover);
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+    }
+    .game-tab-btn.active {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Header Bar */
+    .game-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      border-radius: 16px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      margin-bottom: var(--space-lg);
+    }
+    .game-title-group h2 {
+      font-size: 1.3rem;
+      margin-bottom: 2px;
+    }
+    .game-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .game-stats-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .stat-pill.timer {
+      color: var(--accent-orange);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .stat-pill.score {
+      color: var(--accent-green);
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       GAME 1: BUBBLE MATH STYLES
+       ══════════════════════════════════════════════════════ */
+    .bubble-game-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: var(--space-2xl) var(--space-xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bubble-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .bubble-progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: var(--space-xl);
+    }
+    .bubble-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      transition: width 0.3s ease;
+    }
+    .bubble-prompt {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--space-2xl);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 99px;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--text-primary);
+    }
+    .bubble-prompt.high-low {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #f59e0b;
+    }
+    .bubble-prompt.low-high {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.3);
+      color: #22c55e;
+    }
+
+    /* Bubbles Display */
+    .bubbles-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin: var(--space-xl) 0;
+      min-height: 160px;
+    }
+    .math-bubble {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.05));
+      border: 3px solid rgba(0, 212, 255, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(0, 212, 255, 0.1);
+      position: relative;
+    }
+    .math-bubble:hover {
+      transform: translateY(-6px) scale(1.05);
+      border-color: var(--accent-blue);
+      box-shadow: 0 12px 36px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+    .math-bubble:active {
+      transform: scale(0.96);
+    }
+    .math-bubble .expression-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+    }
+    .math-bubble .order-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      color: #0b0f19;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b0f19;
+      box-shadow: 0 4px 10px rgba(0, 212, 255, 0.5);
+      animation: popBadge 0.2s ease;
+    }
+    @keyframes popBadge {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .math-bubble.selected {
+      border-color: var(--accent-blue);
+      background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.15));
+      transform: scale(0.98);
+      pointer-events: none;
+    }
+    .math-bubble.correct {
+      border-color: #22c55e !important;
+      background: radial-gradient(circle at 35% 35%, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.1)) !important;
+      box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
+    }
+    .math-bubble.wrong {
+      border-color: #ef4444 !important;
+      background: radial-gradient(circle at 35% 35%, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1)) !important;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       GAME 2: LOCK & KEY MEMORY GAME (DIRECTIONAL DOORS)
+       ══════════════════════════════════════════════════════ */
+    .grid-game-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: var(--space-xl);
+      text-align: center;
+      position: relative;
+    }
+    .level-selector-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: var(--space-md);
+    }
+    .level-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-glass);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--accent-blue);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .level-btn:hover {
+      background: rgba(0, 212, 255, 0.2);
+    }
+    .level-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    }
+
+    /* Red Alert Banner */
+    .locked-alert-banner {
+      min-height: 28px;
+      margin-bottom: var(--space-md);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      opacity: 0;
+    }
+    .locked-alert-banner.visible {
+      opacity: 1;
+      animation: alertFlash 0.3s ease;
+    }
+    @keyframes alertFlash {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Game Board Grid Container */
+    .board-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: var(--space-md) auto var(--space-lg);
+    }
+    .game-grid {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--border-glass);
+      border-radius: 16px;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .grid-cell {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .grid-cell:hover:not(.wall) {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+    .grid-cell.player {
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.5), rgba(124, 58, 237, 0.15)) !important;
+      border: 2px solid var(--accent-purple) !important;
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
+      animation: pulsePlayer 1.8s infinite;
+    }
+    @keyframes pulsePlayer {
+      0%, 100% { box-shadow: 0 0 12px rgba(124, 58, 237, 0.6); }
+      50% { box-shadow: 0 0 22px rgba(124, 58, 237, 0.9); }
+    }
+    .grid-cell.wall {
+      background: #ef4444 !important;
+      border-color: #dc2626 !important;
+      cursor: not-allowed;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+    }
+    .grid-cell.key {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .grid-cell.exit {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    .grid-cell.directional-door {
+      background: rgba(180, 83, 9, 0.2);
+      border: 2px dashed #f59e0b;
+    }
+    .door-direction-arrow {
+      position: absolute;
+      bottom: 2px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #f59e0b;
+    }
+    .grid-cell.visited {
+      background: rgba(0, 212, 255, 0.05);
+    }
+
+    /* Grid Controls / Instructions */
+    .grid-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: var(--space-md);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .key-count-display {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       OVERALL RESULTS VIEW
+       ══════════════════════════════════════════════════════ */
+    .cog-results-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: var(--space-2xl) var(--space-xl);
+      text-align: center;
+    }
+    .cog-score-circle {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      border: 5px solid var(--accent-blue);
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-xl);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+    .cog-score-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .cog-score-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+    .cog-breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .cog-mini-card {
+      padding: var(--space-lg);
+      border-radius: 14px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      text-align: center;
+    }
+    .cog-mini-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 6px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .math-bubble {
+        width: 105px;
+        height: 105px;
+      }
+      .math-bubble .expression-text {
+        font-size: 1rem;
+      }
+      .grid-cell {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="logo-icon">🎯</span>
+      <span>MockPrep</span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="test.html?company=accenture">Written Mock</a>
+      <a href="comm-test.html">Speaking Test</a>
+      <a href="results.html">My Results</a>
+    </div>
+  </nav>
+
+  <div class="game-page-container">
+
+    <!-- Mode & Tab Switcher -->
+    <div class="game-nav-tabs">
+      <button class="game-tab-btn active" id="tab-bubble" onclick="switchGame('bubble')">
+        <span>⚡</span> Bubble Math Challenge
+      </button>
+      <button class="game-tab-btn" id="tab-lockkey" onclick="switchGame('lockkey')">
+        <span>🔐</span> Lock & Key Memory Game
+      </button>
+      <button class="game-tab-btn" id="tab-maze" onclick="switchGame('maze')">
+        <span>🗺️</span> Maze Pathfinding
+      </button>
+      <button class="game-tab-btn" id="tab-assessment" onclick="startAssessmentMode()" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2)); border-color: rgba(245, 158, 11, 0.4);">
+        <span>⏱️</span> Full 20-Min Exam Mode
+      </button>
+    </div>
+
+    <!-- Active Game Header Bar -->
+    <div class="game-header-bar">
+      <div class="game-title-group">
+        <h2 id="active-game-title">⚡ Bubble Math Challenge</h2>
+        <div class="game-subtitle" id="active-game-subtitle">Click circles from LOW → HIGH or HIGH → LOW</div>
+      </div>
+      <div class="game-stats-group">
+        <div class="stat-pill timer">
+          <span>⏱️</span>
+          <span id="session-timer-display">20:00</span>
+        </div>
+        <div class="stat-pill score">
+          <span>⭐ Score:</span>
+          <span id="session-score-display">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         VIEW 1: BUBBLE MATH GAME
+         ══════════════════════════════════════════════════════ -->
+    <div id="view-bubble" class="game-view">
+      <div class="bubble-game-card">
+        <div>
+          <div class="bubble-meta-row">
+            <span id="bubble-question-num">Question: 1 / 24</span>
+            <span id="bubble-round-score">Score: 0</span>
+          </div>
+          <div class="bubble-progress-bar">
+            <div class="bubble-progress-fill" id="bubble-progress-fill" style="width: 4%;"></div>
+          </div>
+          <div>
+            <div class="bubble-prompt low-high" id="bubble-prompt-badge">
+              Click circles from LOW → HIGH
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Bubbles -->
+        <div class="bubbles-container" id="bubbles-container">
+          <!-- Dynamically injected math bubbles -->
+        </div>
+
+        <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: var(--space-md);">
+          💡 Evaluate each arithmetic expression mentally and click them in the requested order.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         VIEW 2: LOCK & KEY MEMORY GAME (DIRECTIONAL DOORS)
+         ══════════════════════════════════════════════════════ -->
+    <div id="view-lockkey" class="game-view hidden">
+      <div class="grid-game-card">
+        <!-- Level Selector -->
+        <div class="level-selector-row">
+          <button class="level-btn active" onclick="loadLockKeyLevel(1)">Level 1 (3x3)</button>
+          <button class="level-btn" onclick="loadLockKeyLevel(2)">Level 2 (3x3)</button>
+          <button class="level-btn" onclick="loadLockKeyLevel(3)">Level 3 (4x4)</button>
+          <button class="level-btn" onclick="loadLockKeyLevel(4)">Level 4 (4x4)</button>
+          <button class="level-btn" onclick="loadLockKeyLevel(5)">Level 5 (5x5)</button>
+          <button class="level-btn" onclick="loadLockKeyLevel(6)">Level 6 (6x6)</button>
+        </div>
+
+        <div class="key-count-display" id="key-count-display">
+          🔑 Keys Collected: 0 / 1
+        </div>
+
+        <!-- Red Alert Message -->
+        <div class="locked-alert-banner" id="door-alert-banner">
+          ⚠️ Door Locked in this direction! Resetting...
+        </div>
+
+        <!-- The Grid Board -->
+        <div class="board-container">
+          <div class="game-grid" id="lockkey-grid">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Controls & Hint -->
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: var(--space-md);">
+          <button class="btn btn-secondary btn-sm" onclick="resetCurrentLockKeyLevel()">🔄 Reset Level</button>
+          <button class="btn btn-ghost btn-sm" onclick="showLockKeyHint()">💡 Show Hint</button>
+        </div>
+
+        <!-- Legend -->
+        <div class="grid-legend">
+          <div class="legend-item"><span>♟️</span> Player (You)</div>
+          <div class="legend-item"><span>🔑</span> Collect Keys</div>
+          <div class="legend-item"><span>🚪</span> Directional Door (follow arrow!)</div>
+          <div class="legend-item"><span style="display:inline-block; width:12px; height:12px; background:#ef4444; border-radius:2px;"></span> Wall</div>
+          <div class="legend-item"><span>🏁</span> Exit Goal</div>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: var(--space-sm);">
+          Use <strong>Arrow Keys / WASD</strong> or click adjacent squares to navigate.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         VIEW 3: MAZE PATHFINDING GAME
+         ══════════════════════════════════════════════════════ -->
+    <div id="view-maze" class="game-view hidden">
+      <div class="grid-game-card">
+        <div class="level-selector-row">
+          <button class="level-btn active" onclick="loadMazeLevel(1)">Maze 1 (4x4)</button>
+          <button class="level-btn" onclick="loadMazeLevel(2)">Maze 2 (4x4)</button>
+          <button class="level-btn" onclick="loadMazeLevel(3)">Maze 3 (5x5)</button>
+          <button class="level-btn" onclick="loadMazeLevel(4)">Maze 4 (5x5)</button>
+          <button class="level-btn" onclick="loadMazeLevel(5)">Maze 5 (6x6)</button>
+          <button class="level-btn" onclick="loadMazeLevel(6)">Maze 6 (6x6)</button>
+        </div>
+
+        <div class="key-count-display" id="maze-step-display">
+          🚶 Steps Taken: 0 | Optimal: ~
+        </div>
+
+        <div class="board-container">
+          <div class="game-grid" id="maze-grid">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: var(--space-md);">
+          <button class="btn btn-secondary btn-sm" onclick="resetCurrentMazeLevel()">🔄 Reset Maze</button>
+        </div>
+
+        <div class="grid-legend">
+          <div class="legend-item"><span>🟢</span> Start</div>
+          <div class="legend-item"><span>🏁</span> Exit Goal</div>
+          <div class="legend-item"><span style="display:inline-block; width:12px; height:12px; background:#ef4444; border-radius:2px;"></span> Wall</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         VIEW 4: ASSESSMENT RESULTS VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div id="view-results" class="game-view hidden">
+      <div class="cog-results-card">
+        <div class="cog-score-circle" id="cog-circle">
+          <div class="cog-score-value" id="cog-final-pct">85%</div>
+          <div class="cog-score-label">Cognitive Score</div>
+        </div>
+        <h2>Accenture Cognitive Assessment Complete!</h2>
+        <p class="text-muted" id="cog-feedback-text">Excellent mental speed and spatial logic!</p>
+
+        <div class="cog-breakdown-grid">
+          <div class="cog-mini-card">
+            <div style="font-size: 1.5rem;">⚡</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Bubble Math</div>
+            <div class="cog-mini-val" id="res-bubble-score" style="color: var(--accent-blue);">20 / 24</div>
+            <div style="font-size: 0.75rem; color: var(--accent-green);">Numerical Speed</div>
+          </div>
+          <div class="cog-mini-card">
+            <div style="font-size: 1.5rem;">🔐</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Lock & Key</div>
+            <div class="cog-mini-val" id="res-lockkey-score" style="color: var(--accent-orange);">6 / 6</div>
+            <div style="font-size: 0.75rem; color: var(--accent-green);">Directional Logic</div>
+          </div>
+          <div class="cog-mini-card">
+            <div style="font-size: 1.5rem;">🗺️</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Path Maze</div>
+            <div class="cog-mini-val" id="res-maze-score" style="color: var(--accent-purple);">6 / 6</div>
+            <div style="font-size: 0.75rem; color: var(--accent-green);">Spatial Navigation</div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-xl);">
+          <a href="results.html" class="btn btn-primary btn-lg" style="margin-right: 12px;">📊 View in My Results</a>
+          <a href="index.html" class="btn btn-secondary btn-lg" style="margin-right: 12px;">🏠 Back to Home</a>
+          <button class="btn btn-ghost btn-lg" onclick="location.reload()">🔄 Play Again</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/cognitive-engine.js"></script>
+</body>
+</html>

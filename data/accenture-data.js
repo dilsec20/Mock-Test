@@ -52,8 +52,22 @@ window.COMPANY_DATA["accenture"] = {
       "isSpeaking": true
     },
     {
+      "id": "cognitive_gamified",
+      "name": "Cognitive Assessment (Gamified Games)",
+      "icon": "🎮",
+      "questions": 36,
+      "duration": 20,
+      "description": "Bubble Math (High/Low), Lock & Key Directional Doors, Maze Pathfinding — Real Accenture Pattern",
+      "topics": [
+        "Bubble Math Challenge",
+        "Lock & Key Directional Doors",
+        "Maze Pathfinding"
+      ],
+      "isGamified": true
+    },
+    {
       "id": "cognitive",
-      "name": "Cognitive & Quick Math",
+      "name": "Cognitive Quick Math (MCQ)",
       "icon": "🧠",
       "questions": 15,
       "duration": 10,

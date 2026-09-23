@@ -38,8 +38,9 @@ function renderSectionSelector() {
   document.getElementById('company-name-display').textContent = data.company + ' — Select a section to practice';
 
   const container = document.getElementById('section-options');
-  const testableSections = data.sections.filter(s => !s.isExternal && !s.isSpeaking);
+  const testableSections = data.sections.filter(s => !s.isExternal && !s.isSpeaking && !s.isGamified);
   const speakingSection = data.sections.find(s => s.isSpeaking);
+  const gamifiedSection = data.sections.find(s => s.isGamified);
   const codingSection = data.sections.find(s => s.isExternal);
 
   let html = '';
@@ -76,6 +77,19 @@ function renderSectionSelector() {
         <h4>${speakingSection.name} <span style="font-size: 0.65rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; padding: 2px 8px; border-radius: 99px; margin-left: 6px; font-weight: 700;">REAL FORMAT</span></h4>
         <div class="section-meta">
           ${speakingSection.questions} questions • ${speakingSection.duration} min • Spoken audio assessment with mic: Reading, Repeat, Q&A, Sentence Builds, Stories
+        </div>
+      </div>
+    `;
+  }
+
+  // Gamified Cognitive section (Interactive Mini-Games)
+  if (gamifiedSection) {
+    html += `
+      <div class="section-option" data-section="${gamifiedSection.id}" onclick="selectSection('${gamifiedSection.id}')">
+        <div class="section-icon">${gamifiedSection.icon}</div>
+        <h4>${gamifiedSection.name} <span style="font-size: 0.65rem; background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 2px 8px; border-radius: 99px; margin-left: 6px; font-weight: 700;">REAL GAMES</span></h4>
+        <div class="section-meta">
+          ${gamifiedSection.questions} challenges • ${gamifiedSection.duration} min • Interactive mini-games: Bubble Math (High/Low), Directional Doors, Maze Pathfinding
         </div>
       </div>
     `;
@@ -124,14 +138,20 @@ function beginTest() {
     return;
   }
 
+  // Handle gamified cognitive section separately
+  if (testState.selectedSection === 'cognitive_gamified') {
+    window.location.href = `cognitive-games.html?company=${testState.company}&mode=assessment`;
+    return;
+  }
+
   // Load questions based on selected section
   const data = testState.companyData;
 
   if (testState.selectedSection === 'full') {
-    // Combine all written testable sections (excluding speaking & coding)
+    // Combine all written testable sections (excluding speaking, gamified & coding)
     testState.questions = [];
     let totalTime = 0;
-    data.sections.filter(s => !s.isExternal && !s.isSpeaking).forEach(section => {
+    data.sections.filter(s => !s.isExternal && !s.isSpeaking && !s.isGamified).forEach(section => {
       const sectionQuestions = data.questionBank[section.id] || [];
       // Shuffle and pick the right number
       const picked = shuffleArray([...sectionQuestions]).slice(0, section.questions);
@@ -479,7 +499,7 @@ function calculateResults() {
     percentage,
     timeTaken,
     totalTime: (testState.selectedSection === 'full'
-      ? testState.companyData.sections.filter(s => !s.isExternal && !s.isSpeaking).reduce((s, sec) => s + sec.duration, 0)
+      ? testState.companyData.sections.filter(s => !s.isExternal && !s.isSpeaking && !s.isGamified).reduce((s, sec) => s + sec.duration, 0)
       : testState.companyData.sections.find(s => s.id === testState.selectedSection)?.duration || 0) * 60,
     topicScores,
     questionResults
