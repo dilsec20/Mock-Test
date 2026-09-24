@@ -5,6 +5,27 @@ window.COMPANY_DATA.capgemini = {
   examDate: '2026-10-15',
   totalDuration: 45,
   supportsFullMock: false,
+  codingPracticeAttempts: 10,
+  cohorts: [
+    { id: 'alpha_stack', name: 'alpha_<stack>', focus: 'Strong software engineering, AI-assisted delivery, and modern application development' },
+    { id: 'root_mind', name: 'root_<mind>', focus: 'Problem solving, DSA, fundamentals, and engineering mindset' }
+  ],
+  roleProfiles: [
+    {
+      id: 'role_1',
+      name: 'Software Engineer - AI and Platform Path',
+      focus: ['DSA', 'Design Patterns', 'AI/ML', 'Cloud', 'Platform Engineering', 'RAG', 'Agentic Systems'],
+      pathways: ['Forward Deployed Engineer', 'AI Native Engineer', 'Platform Engineer', 'AI-Augmented Quality Engineer']
+    },
+    {
+      id: 'role_2',
+      name: 'Software Engineer - Application Path',
+      focus: ['Java', 'Python', '.NET', 'JavaScript', 'React', 'Angular', 'Node.js', 'SQL', 'APIs', 'DevOps'],
+      pathways: ['Full-Stack Engineering', 'Cloud Engineering', 'Data Engineering', 'Cybersecurity', 'API Development']
+    }
+  ],
+  eligibleStreams: ['BE', 'BTECH - CS/IT', 'Circuit and allied branches'],
+  preferredExposure: ['AI/ML', 'Generative AI', 'Cloud Computing', 'DevOps and Automation', 'Full-Stack Development', 'Data Engineering', 'Cybersecurity', 'Platform Engineering', 'API Development'],
   sections: [
     {
       id: 'ai_literacy',
@@ -160,6 +181,25 @@ window.COMPANY_DATA.capgemini = {
         options: ['The team have finished the task.', 'The team has finished the task.', 'The team finishing task.', 'The team finish the task yesterday.'],
         answer: 1,
         explanation: 'In this context, team is treated as a singular collective noun.'
+      },
+      { id: 'cg_eng_3', topic: 'Grammar', question: 'Choose the correct sentence.', options: ['She has completed the report.', 'She have completed the report.', 'She completing report.', 'She complete yesterday report.'], answer: 0, explanation: 'The singular subject she takes has.' },
+      { id: 'cg_eng_4', topic: 'Tenses', question: 'By next Monday, the team ___ the migration.', options: ['will complete', 'will have completed', 'completed', 'has complete'], answer: 1, explanation: 'Future perfect describes an action completed before a future time.' },
+      { id: 'cg_eng_5', topic: 'Prepositions', question: 'The meeting starts ___ 10 AM.', options: ['in', 'on', 'at', 'by'], answer: 2, explanation: 'At is used with a specific clock time.' },
+      { id: 'cg_eng_6', topic: 'Vocabulary', question: 'Choose the closest meaning of reliable.', options: ['Dependable', 'Doubtful', 'Temporary', 'Delayed'], answer: 0, explanation: 'Reliable means dependable or consistently trustworthy.' },
+      { id: 'cg_eng_7', topic: 'Error Correction', question: 'Choose the corrected sentence.', options: ['Neither answer are correct.', 'Neither answer is correct.', 'Neither answers is correct.', 'Neither answer be correct.'], answer: 1, explanation: 'Neither is singular and takes is.' },
+      { id: 'cg_eng_8', topic: 'Articles', question: 'She is ___ honest developer.', options: ['a', 'an', 'the only', 'no article'], answer: 1, explanation: 'An is used before the vowel sound in honest.' },
+      { id: 'cg_eng_9', topic: 'Active Voice', question: 'Choose the active form of: The defect was fixed by Ravi.', options: ['Ravi fixed the defect.', 'Ravi was fixed by the defect.', 'The defect fixed Ravi.', 'Ravi is fixing by defect.'], answer: 0, explanation: 'The active subject Ravi performs the action.' },
+      { id: 'cg_eng_10', topic: 'Sentence Ordering', question: 'Which sentence should begin a professional email?', options: ['Send it now.', 'I hope you are doing well.', 'Why did you delay?', 'Reply immediately.'], answer: 1, explanation: 'The second option is a polite professional opening.' },
+      { id: 'cg_eng_11', topic: 'Reading', question: 'A concise summary should contain what?', options: ['Every minor detail', 'The central idea and key supporting points', 'Only an opinion', 'Unrelated examples'], answer: 1, explanation: 'A summary preserves the central idea and important support.' },
+      { id: 'cg_eng_12', topic: 'Grammar', question: 'Choose the correct conditional sentence.', options: ['If I had time, I will help.', 'If I have time, I will help.', 'If I have time, I helped.', 'If I having time, I help.'], answer: 1, explanation: 'The first conditional uses present simple after if and will in the result.' },
+      { id: 'cg_eng_13', topic: 'Vocabulary', question: 'Choose the opposite of expand.', options: ['Increase', 'Extend', 'Contract', 'Improve'], answer: 2, explanation: 'Contract means to become smaller or reduce in size.' },
+      { id: 'cg_eng_14', topic: 'Connectors', question: 'The build failed; ___, the deployment was postponed.', options: ['however', 'therefore', 'although', 'meanwhile'], answer: 1, explanation: 'Therefore expresses the result of the failed build.' },
+      { id: 'cg_eng_15', topic: 'Error Correction', question: 'Choose the correct sentence.', options: ['The information are useful.', 'The information is useful.', 'The informations is useful.', 'The information be useful.'], answer: 1, explanation: 'Information is an uncountable singular noun.' },
+      { id: 'cg_eng_16', topic: 'Reported Speech', question: 'Choose the reported form: He said, "I am ready."', options: ['He said that he was ready.', 'He said that I am ready.', 'He says he ready.', 'He said he is ready yesterday.'], answer: 0, explanation: 'The present verb shifts to past in this reported statement.' },
+      { id: 'cg_eng_17', topic: 'Professional Writing', question: 'Which closing is most appropriate for a formal request?', options: ['Do it fast.', 'Thanks in advance for your help.', 'Whatever works.', 'Bye.'], answer: 1, explanation: 'The second option is polite and professional.' },
+      { id: 'cg_eng_18', topic: 'Reading', question: 'What does an inference require?', options: ['A conclusion supported by clues', 'A random guess only', 'A copied title', 'No evidence'], answer: 0, explanation: 'An inference combines evidence with reasoning.' },
+      { id: 'cg_eng_19', topic: 'Grammar', question: 'Choose the correct comparative sentence.', options: ['This solution is more efficient than the old one.', 'This solution is most efficient than old.', 'This solution more efficient the old.', 'This solution is efficient than old.'], answer: 0, explanation: 'More efficient is the correct comparative form.' },
+      { id: 'cg_eng_20', topic: 'Punctuation', question: 'Which sentence uses punctuation correctly?', options: ['Before deploying, test the change.', 'Before deploying test, the change.', 'Before, deploying test the change.', 'Before deploying test the, change.'], answer: 0, explanation: 'The introductory phrase is correctly separated with a comma.'
       }
     ],
     problem_solving: [
@@ -288,7 +328,43 @@ window.COMPANY_DATA.capgemini = {
         topics: ['Frontend', 'React', 'JavaScript', 'HTML/CSS', 'DOM'],
         link: 'https://react.dev/learn/sharing-state-between-components',
         description: 'Complete a starter React/HTML/CSS application so users can add, filter, toggle, and remove todos while keeping state shared between components.'
-      }
+      },
+      { id: 'cg_dsa_3', category: 'dsa', title: 'Trapping Rain Water', difficulty: 'Hard', topics: ['DSA', 'Two Pointers', 'Arrays'], link: 'https://leetcode.com/problems/trapping-rain-water/', description: 'Compute trapped water between elevation bars using an optimal two-pointer or prefix-boundary strategy.' },
+      { id: 'cg_dsa_4', category: 'dsa', title: 'Word Ladder', difficulty: 'Hard', topics: ['DSA', 'BFS', 'Hash Set'], link: 'https://leetcode.com/problems/word-ladder/', description: 'Find the shortest transformation sequence between two words using one-letter changes.' },
+      { id: 'cg_dsa_5', category: 'dsa', title: 'Course Schedule', difficulty: 'Medium', topics: ['DSA', 'Graphs', 'Topological Sort'], link: 'https://leetcode.com/problems/course-schedule/', description: 'Determine whether all courses can be completed when prerequisites form a directed graph.' },
+      { id: 'cg_dsa_6', category: 'dsa', title: 'N-Queens', difficulty: 'Hard', topics: ['DSA', 'Backtracking'], link: 'https://leetcode.com/problems/n-queens/', description: 'Place n queens on a chessboard so that no two queens attack each other.' },
+      { id: 'cg_dsa_7', category: 'dsa', title: 'Median of Two Sorted Arrays', difficulty: 'Hard', topics: ['DSA', 'Binary Search'], link: 'https://leetcode.com/problems/median-of-two-sorted-arrays/', description: 'Find the median of two sorted arrays in logarithmic partition time.' },
+      { id: 'cg_dsa_8', category: 'dsa', title: 'Edit Distance', difficulty: 'Hard', topics: ['DSA', 'Dynamic Programming', 'Strings'], link: 'https://leetcode.com/problems/edit-distance/', description: 'Find the minimum insertions, deletions, and replacements needed to transform one word into another.' },
+      { id: 'cg_dsa_9', category: 'dsa', title: 'Serialize and Deserialize Binary Tree', difficulty: 'Hard', topics: ['DSA', 'Trees', 'BFS'], link: 'https://leetcode.com/problems/serialize-and-deserialize-binary-tree/', description: 'Design serialization and deserialization functions that preserve a binary tree.' },
+      { id: 'cg_dsa_10', category: 'dsa', title: 'Sliding Window Maximum', difficulty: 'Hard', topics: ['DSA', 'Deque', 'Sliding Window'], link: 'https://leetcode.com/problems/sliding-window-maximum/', description: 'Return the maximum value in every fixed-size window in linear time.' },
+      { id: 'cg_dsa_11', category: 'dsa', title: 'Number of Islands', difficulty: 'Medium', topics: ['DSA', 'Grid BFS', 'DFS'], link: 'https://leetcode.com/problems/number-of-islands/', description: 'Count connected land components in a binary grid.' },
+      { id: 'cg_dsa_12', category: 'dsa', title: 'LRU Cache', difficulty: 'Medium', topics: ['DSA', 'Hash Map', 'Linked List'], link: 'https://leetcode.com/problems/lru-cache/', description: 'Implement a cache with O(1) get and put operations using a map and doubly linked list.' },
+      { id: 'cg_dsa_13', category: 'dsa', title: 'Merge K Sorted Lists', difficulty: 'Hard', topics: ['DSA', 'Heap', 'Linked List'], link: 'https://leetcode.com/problems/merge-k-sorted-lists/', description: 'Merge k sorted linked lists efficiently using a min heap.' },
+      { id: 'cg_dsa_14', category: 'dsa', title: 'Largest Rectangle in Histogram', difficulty: 'Hard', topics: ['DSA', 'Monotonic Stack'], link: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', description: 'Find the largest rectangle area in a histogram.' },
+      { id: 'cg_dsa_15', category: 'dsa', title: 'Pacific Atlantic Water Flow', difficulty: 'Medium', topics: ['DSA', 'Graphs', 'DFS'], link: 'https://leetcode.com/problems/pacific-atlantic-water-flow/', description: 'Find cells from which water can flow to both oceans.' },
+      { id: 'cg_dsa_16', category: 'dsa', title: 'Coin Change', difficulty: 'Medium', topics: ['DSA', 'Dynamic Programming'], link: 'https://leetcode.com/problems/coin-change/', description: 'Find the fewest coins needed to make a target amount.' },
+      { id: 'cg_dsa_17', category: 'dsa', title: 'Network Delay Time', difficulty: 'Medium', topics: ['DSA', 'Graphs', 'Dijkstra'], link: 'https://leetcode.com/problems/network-delay-time/', description: 'Calculate the time for a signal to reach every node in a weighted graph.' },
+      { id: 'cg_dsa_18', category: 'dsa', title: 'Regular Expression Matching', difficulty: 'Hard', topics: ['DSA', 'Dynamic Programming', 'Strings'], link: 'https://leetcode.com/problems/regular-expression-matching/', description: 'Implement matching for a string with dot and star pattern rules.' },
+      { id: 'cg_dsa_19', category: 'dsa', title: 'Maximal Rectangle', difficulty: 'Hard', topics: ['DSA', 'Matrix', 'Monotonic Stack'], link: 'https://leetcode.com/problems/maximal-rectangle/', description: 'Find the largest rectangle containing only ones in a binary matrix.' },
+      { id: 'cg_dsa_20', category: 'dsa', title: 'Word Break', difficulty: 'Medium', topics: ['DSA', 'Dynamic Programming', 'Hash Set'], link: 'https://leetcode.com/problems/word-break/', description: 'Determine whether a string can be segmented into dictionary words.' },
+      { id: 'cg_sql_2', category: 'sql', title: 'Second Highest Salary', difficulty: 'Medium', topics: ['SQL', 'Subquery', 'DISTINCT'], link: 'https://leetcode.com/problems/second-highest-salary/', description: 'Return the second highest distinct salary or null.' },
+      { id: 'cg_sql_3', category: 'sql', title: 'Duplicate Emails', difficulty: 'Easy', topics: ['SQL', 'GROUP BY', 'HAVING'], link: 'https://leetcode.com/problems/duplicate-emails/', description: 'Find email addresses occurring more than once.' },
+      { id: 'cg_sql_4', category: 'sql', title: 'Customers Who Never Order', difficulty: 'Easy', topics: ['SQL', 'LEFT JOIN', 'NULL'], link: 'https://leetcode.com/problems/customers-who-never-order/', description: 'Find customers without a matching order using a left join.' },
+      { id: 'cg_sql_5', category: 'sql', title: 'Average Time of Process per Machine', difficulty: 'Easy', topics: ['SQL', 'JOIN', 'GROUP BY', 'AVG'], link: 'https://leetcode.com/problems/average-time-of-process-per-machine/', description: 'Join start and end events and calculate average process time per machine.' },
+      { id: 'cg_sql_6', category: 'sql', title: 'Monthly Transactions I', difficulty: 'Medium', topics: ['SQL', 'GROUP BY', 'Conditional Aggregation'], link: 'https://leetcode.com/problems/monthly-transactions-i/', description: 'Group transactions by month and country and calculate approved totals.' },
+      { id: 'cg_sql_7', category: 'sql', title: 'Managers with at Least 5 Direct Reports', difficulty: 'Medium', topics: ['SQL', 'SELF JOIN', 'GROUP BY', 'HAVING'], link: 'https://leetcode.com/problems/managers-with-at-least-5-direct-reports/', description: 'Use a self-join and HAVING to identify managers with enough reports.' },
+      { id: 'cg_sql_8', category: 'sql', title: 'Department Highest Salary', difficulty: 'Medium', topics: ['SQL', 'JOIN', 'GROUP BY'], link: 'https://leetcode.com/problems/department-highest-salary/', description: 'Return employees with the highest salary in each department.' },
+      { id: 'cg_sql_9', category: 'sql', title: 'Rank Scores', difficulty: 'Medium', topics: ['SQL', 'DENSE_RANK', 'Window Functions'], link: 'https://leetcode.com/problems/rank-scores/', description: 'Rank scores while giving equal values the same rank.' },
+      { id: 'cg_sql_10', category: 'sql', title: 'Customer Who Visited but Did Not Make Transactions', difficulty: 'Medium', topics: ['SQL', 'LEFT JOIN', 'GROUP BY'], link: 'https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/', description: 'Count visits that do not have a matching transaction.' },
+      { id: 'cg_front_2', category: 'frontend', title: 'Debounced Search Component', difficulty: 'Medium', topics: ['Frontend', 'React', 'JavaScript'], link: 'https://react.dev/learn/synchronizing-with-effects', description: 'Build a debounced search component that ignores stale results.' },
+      { id: 'cg_front_3', category: 'frontend', title: 'Accessible Modal', difficulty: 'Medium', topics: ['Frontend', 'DOM', 'Accessibility'], link: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement', description: 'Implement Escape handling, focus return, and backdrop close behaviour.' },
+      { id: 'cg_front_4', category: 'frontend', title: 'Filterable Data Table', difficulty: 'Hard', topics: ['Frontend', 'React', 'State'], link: 'https://react.dev/learn/sharing-state-between-components', description: 'Add stable sorting, filtering, and an empty state to a starter table.' },
+      { id: 'cg_front_5', category: 'frontend', title: 'Responsive Dashboard Grid', difficulty: 'Medium', topics: ['Frontend', 'HTML/CSS', 'Responsive Design'], link: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout', description: 'Complete a responsive grid without overflow at mobile and desktop widths.' },
+      { id: 'cg_front_6', category: 'frontend', title: 'Todo Event Delegation', difficulty: 'Medium', topics: ['Frontend', 'DOM', 'Events'], link: 'https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener', description: 'Build add, toggle, delete, and filter behaviour with delegated events.' },
+      { id: 'cg_front_7', category: 'frontend', title: 'Form Validation UI', difficulty: 'Medium', topics: ['Frontend', 'HTML', 'Validation'], link: 'https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation', description: 'Add inline validation and accessible error messages to a form skeleton.' },
+      { id: 'cg_front_8', category: 'frontend', title: 'Pagination Component', difficulty: 'Medium', topics: ['Frontend', 'React', 'State'], link: 'https://react.dev/learn', description: 'Implement page navigation, disabled boundaries, and stable page size.' },
+      { id: 'cg_front_9', category: 'frontend', title: 'Keyboard Navigable Dropdown', difficulty: 'Hard', topics: ['Frontend', 'DOM', 'Accessibility'], link: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role', description: 'Complete keyboard navigation and ARIA state updates for a dropdown skeleton.' },
+      { id: 'cg_front_10', category: 'frontend', title: 'Drag and Drop Task Board', difficulty: 'Hard', topics: ['Frontend', 'React', 'DOM'], link: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API', description: 'Move tasks between columns while preserving state and keyboard fallback controls.' }
     ]
   }
 };

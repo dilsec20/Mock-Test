@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
       showCodingLinks();
     } else if (sectionParam) {
       selectSection(sectionParam);
+      if (params.get('mode') === 'fullmock' && testState.company === 'capgemini') {
+        testState.isCapgeminiFullMock = true;
+        startCapgeminiStage(sectionParam);
+      }
     }
   } else {
     console.error('No data found for company:', testState.company);
@@ -52,6 +56,26 @@ function renderSectionSelector() {
   const codingSection = data.sections.find(s => s.isExternal);
 
   let html = '';
+
+  if (data.company === 'Capgemini') {
+    html += `
+      <div class="section-option full-mock-card" data-section="full" onclick="selectSection('full')" style="border: 2px solid #f3c84b; background: linear-gradient(135deg, rgba(243, 200, 75, 0.1), rgba(0, 112, 173, 0.16));">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="section-icon" style="font-size: 1.8rem;">🏆</div>
+            <div>
+              <h4 style="margin: 0; font-size: 1.15rem; color: #fff;">Capgemini Exceller Full Mock</h4>
+              <span style="font-size: 0.72rem; color: #f3c84b; font-weight: 700; letter-spacing: 0.5px;">7-STAGE 2027 PATTERN PRACTICE</span>
+            </div>
+          </div>
+          <span style="background: #f3c84b; color: #111827; padding: 4px 12px; border-radius: 99px; font-size: 0.72rem; font-weight: 800;">FULL MOCK</span>
+        </div>
+        <div class="section-meta" style="line-height: 1.6;">
+          English Communication → AI Literacy → Technical Assessment → Debugging → AI-assisted Coding → Prompt Engineering → Cognitive Assessment
+        </div>
+      </div>
+    `;
+  }
 
   // Full Mock Test option (All 4 Official Stages Pipeline)
   if (data.supportsFullMock !== false) {
@@ -169,6 +193,16 @@ function beginTest() {
     return;
   }
 
+  if (testState.selectedSection === 'full' && testState.company === 'capgemini') {
+    beginCapgeminiFullMock();
+    return;
+  }
+
+  if (testState.company === 'capgemini' && testState.isCapgeminiFullMock) {
+    startCapgeminiStage(testState.selectedSection);
+    return;
+  }
+
   const selectedSection = testState.companyData.sections.find(section => section.id === testState.selectedSection);
   if (selectedSection?.isWorkspace) {
     window.location.href = `capgemini-workspace.html?company=${testState.company}&mode=${selectedSection.workspaceMode}`;
@@ -231,6 +265,48 @@ function beginTest() {
   document.getElementById('test-view').classList.remove('hidden');
 
   // Render
+  renderQuestionNav();
+  renderQuestion();
+  startTimer();
+  updateSummary();
+}
+
+function beginCapgeminiFullMock() {
+  testState.isCapgeminiFullMock = true;
+  try {
+    localStorage.setItem('mockprep_capgemini_fullmock', JSON.stringify({
+      id: 'cap_fm_' + Date.now().toString(36),
+      company: 'Capgemini',
+      date: new Date().toISOString(),
+      stages: {}
+    }));
+  } catch (e) {}
+  startCapgeminiStage('english_communication');
+}
+
+function startCapgeminiStage(sectionId) {
+  const section = testState.companyData.sections.find(item => item.id === sectionId);
+  if (!section || section.isExternal || section.isWorkspace) {
+    const workspaceMode = section?.workspaceMode || 'debugging';
+    window.location.href = `capgemini-workspace.html?company=capgemini&mode=${workspaceMode}&fullmock=capgemini&stage=${workspaceMode}`;
+    return;
+  }
+
+  const sectionQuestions = testState.companyData.questionBank[sectionId] || [];
+  testState.selectedSection = sectionId;
+  testState.questions = getCoverageSelection(testState.companyData.company, sectionId, sectionQuestions, section.questions);
+  testState.questions.forEach(question => { question._section = section.name; });
+  testState.timeRemaining = section.duration * 60;
+  testState.currentIndex = 0;
+  testState.answers = {};
+  testState.flagged = new Set();
+  testState.startTime = Date.now();
+  testState.isSubmitted = false;
+  testState.isFullMock = false;
+  document.getElementById('current-section-name').textContent = `Capgemini Full Mock: ${section.name}`;
+  document.body.classList.add('in-exam-mode');
+  document.getElementById('section-select-view').classList.add('hidden');
+  document.getElementById('test-view').classList.remove('hidden');
   renderQuestionNav();
   renderQuestion();
   startTimer();
@@ -978,6 +1054,11 @@ function submitTest() {
   document.getElementById('timeup-modal').classList.remove('active');
 
   const params = new URLSearchParams(window.location.search);
+  if (testState.isCapgeminiFullMock) {
+    continueCapgeminiFullMock(results);
+    return;
+  }
+
   const isFullMock = testState.isFullMock || testState.selectedSection === 'full' || 
                      params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
 
@@ -1040,6 +1121,62 @@ function submitTest() {
     // Normal single-section test redirect
     window.location.href = `results.html?id=${results.id}`;
   }
+}
+
+function continueCapgeminiFullMock(results) {
+  const stageOrder = ['english_communication', 'ai_literacy', 'technical_assessment', 'ai_debugging', 'ai_feature_development', 'prompt_engineering', 'cognitive_assessment'];
+  let session = {};
+  try {
+    session = JSON.parse(localStorage.getItem('mockprep_capgemini_fullmock')) || {};
+  } catch (e) {}
+  session.stages = session.stages || {};
+  session.stages[testState.selectedSection] = results;
+  try {
+    localStorage.setItem('mockprep_capgemini_fullmock', JSON.stringify(session));
+  } catch (e) {}
+
+  const currentPosition = stageOrder.indexOf(testState.selectedSection);
+  const nextStage = stageOrder[currentPosition + 1];
+  if (!nextStage) {
+    finishCapgeminiFullMock();
+    return;
+  }
+
+  const nextSection = testState.companyData.sections.find(section => section.id === nextStage);
+  if (nextSection?.isWorkspace) {
+    window.location.href = `capgemini-workspace.html?company=capgemini&mode=${nextSection.workspaceMode}&fullmock=capgemini&stage=${nextSection.workspaceMode}`;
+    return;
+  }
+
+  startCapgeminiStage(nextStage);
+}
+
+function finishCapgeminiFullMock() {
+  let session = {};
+  try { session = JSON.parse(localStorage.getItem('mockprep_capgemini_fullmock')) || {}; } catch (e) {}
+  const stages = session.stages || {};
+  const stageValues = Object.values(stages);
+  const total = stageValues.reduce((sum, stage) => sum + (stage.total || 0), 0);
+  const correct = stageValues.reduce((sum, stage) => sum + (stage.correct || 0), 0);
+  const record = {
+    id: 'capgemini_full_' + Date.now().toString(36),
+    company: 'Capgemini',
+    section: 'Capgemini Full Assessment Summary',
+    date: new Date().toISOString(),
+    total,
+    correct,
+    incorrect: total - correct,
+    unanswered: 0,
+    percentage: total ? Math.round((correct / total) * 100) : 0,
+    timeTaken: 0,
+    totalTime: 45 * 60,
+    stageResults: stages,
+    topicScores: {},
+    questionResults: []
+  };
+  saveResults(record);
+  try { localStorage.removeItem('mockprep_capgemini_fullmock'); } catch (e) {}
+  window.location.href = `results.html?id=${record.id}`;
 }
 
 // ── Calculate Results ──

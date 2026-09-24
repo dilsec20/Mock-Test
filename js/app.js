@@ -33,7 +33,7 @@ const COMPANIES = [
       duration: '45 min',
       tests: '2 Sections'
     },
-    features: ['13 LPA Alpha / 16 LPA Root Preparation', 'Hard DSA', 'React / JavaScript / HTML / CSS', 'SQL JOINs & HAVING']
+    features: ['alpha_<stack> / root_<mind>', '10+ Coding Mocks', 'Hard DSA', 'Java / C++ Debugging', 'React / JavaScript / HTML / CSS', 'AI, Cloud, APIs & DevOps']
   }
 ];
 

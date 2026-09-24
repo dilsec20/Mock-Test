@@ -1,5 +1,6 @@
 const workspaceParams = new URLSearchParams(window.location.search);
 const workspaceMode = workspaceParams.get('mode') === 'debugging' ? 'debugging' : 'ai-coding';
+const isCapgeminiFullMock = workspaceParams.get('fullmock') === 'capgemini';
 
 const challengeSets = {
   debugging: [
@@ -42,6 +43,46 @@ const challengeSets = {
       constraints: ['The array represents a complete binary tree', 'Return false on the first invalid relationship', 'Use zero-based indexing'],
       tests: ['Input: 90, 70, 80, 20, 40 | Expected: true', 'Input: 50, 70, 40 | Expected: false'],
       code: 'bool isMaxHeap(vector<int>& values) {\n    for (int i = 0; i < values.size() / 2; i++) {\n        int left = 2 * i + 1;\n        int right = 2 * i + 2;\n        if (values[i] < values[left] && values[i] < values[right]) return false;\n    }\n    return true;\n}'
+    },
+    {
+      title: 'Fix Java Null Handling',
+      tag: 'Java + Exceptions',
+      statement: 'Repair the Java service method so a missing profile returns a safe response instead of throwing a NullPointerException.',
+      constraints: ['Do not catch Exception broadly', 'Keep the return type unchanged', 'Handle a missing repository result explicitly'],
+      tests: ['Existing user id = 42 | Expected: profile JSON', 'Unknown user id = 99 | Expected: 404 response'],
+      code: 'Profile getProfile(long id) {\n    Profile profile = repository.findById(id).orElse(null);\n    return profile.toDto();\n}'
+    },
+    {
+      title: 'Repair C++ Iterator Invalidation',
+      tag: 'C++ + STL',
+      statement: 'Fix the loop that removes expired sessions while iterating over a vector without skipping elements or using an invalid iterator.',
+      constraints: ['Preserve the relative order of remaining sessions', 'Use a single pass', 'Do not access an erased iterator'],
+      tests: ['Sessions: 2, 7, 4, 9 | expiry <= 7 | Expected: 9', 'Sessions: 1, 3 | expiry <= 3 | Expected: empty'],
+      code: 'for (auto it = sessions.begin(); it != sessions.end(); ++it) {\n    if (it->expiresAt <= now) {\n        sessions.erase(it);\n    }\n}'
+    },
+    {
+      title: 'Correct Java Binary Search Bounds',
+      tag: 'Java + Arrays',
+      statement: 'Fix the binary search so it finds the first occurrence of a target and terminates for a one-element array.',
+      constraints: ['Input is sorted in ascending order', 'Return -1 when absent', 'Target may appear multiple times'],
+      tests: ['Values: 1, 2, 2, 4 | target = 2 | Expected: 1', 'Values: 8 | target = 8 | Expected: 0'],
+      code: 'int firstIndex(int[] values, int target) {\n    int left = 0, right = values.length - 1;\n    while (left < right) {\n        int mid = (left + right) / 2;\n        if (values[mid] >= target) right = mid - 1;\n        else left = mid + 1;\n    }\n    return values[left] == target ? left : -1;\n}'
+    },
+    {
+      title: 'Fix C++ Graph Visited State',
+      tag: 'C++ + Graph DFS',
+      statement: 'Correct the DFS so cycles do not cause infinite recursion and every connected node is visited exactly once.',
+      constraints: ['The graph may contain cycles', 'Use adjacency lists', 'Return the number of reachable nodes'],
+      tests: ['Edges: 0-1, 1-2 | start = 0 | Expected: 3', 'Edges: 0-1, 1-0 | start = 0 | Expected: 2'],
+      code: 'void dfs(int node, vector<vector<int>>& graph, vector<bool>& visited) {\n    for (int next : graph[node]) {\n        if (!visited[next]) dfs(next, graph, visited);\n    }\n    visited[node] = true;\n}'
+    },
+    {
+      title: 'Debug Java HashMap Aggregation',
+      tag: 'Java + HashMap',
+      statement: 'Fix the frequency aggregation so the first occurrence of a key is counted instead of being overwritten incorrectly.',
+      constraints: ['Keys are strings', 'Return the most frequent key', 'Tie-break by lexicographically smaller key'],
+      tests: ['Input: api, db, api | Expected: api', 'Input: ui, db | Expected: db'],
+      code: 'for (String key : keys) {\n    frequency.put(key, frequency.get(key));\n}\nreturn frequency;'
     }
   ],
   'ai-coding': [
@@ -88,7 +129,31 @@ const challengeSets = {
   ]
 };
 
-const challenges = challengeSets[workspaceMode];
+const allChallenges = challengeSets[workspaceMode];
+function getCoverageChallenge(mode, items) {
+  const storageKey = `mockprep_workspace_coverage:${mode}`;
+  let remaining = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey)) || [];
+    remaining = saved.filter(index => Number.isInteger(index) && index >= 0 && index < items.length);
+  } catch (e) {}
+
+  if (!remaining.length) {
+    remaining = items.map((_, index) => index);
+    for (let index = remaining.length - 1; index > 0; index--) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [remaining[index], remaining[swapIndex]] = [remaining[swapIndex], remaining[index]];
+    }
+  }
+
+  const selectedIndex = remaining.shift();
+  try { localStorage.setItem(storageKey, JSON.stringify(remaining)); } catch (e) {}
+  return items[selectedIndex];
+}
+
+const challenges = isCapgeminiFullMock
+  ? [getCoverageChallenge(workspaceMode, allChallenges)]
+  : allChallenges;
 let activeIndex = 0;
 let secondsRemaining = workspaceMode === 'debugging' ? 20 * 60 : 45 * 60;
 let timerId;
@@ -183,11 +248,67 @@ document.getElementById('submit-next-btn').addEventListener('click', () => {
   if (activeIndex === challenges.length - 1) {
     elements.result.innerHTML = 'Assessment complete <span class="cap-result-success">All challenges submitted</span>';
     clearInterval(timerId);
+    if (isCapgeminiFullMock) completeCapgeminiWorkspaceStage();
     return;
   }
   activeIndex += 1;
   renderChallenge();
 });
+
+function completeCapgeminiWorkspaceStage() {
+  let session = {};
+  try {
+    session = JSON.parse(localStorage.getItem('mockprep_capgemini_fullmock')) || {};
+  } catch (e) {}
+  session.stages = session.stages || {};
+  session.stages[workspaceMode] = {
+    section: workspaceMode === 'debugging' ? 'Debugging Assessment' : 'AI-assisted Coding',
+    total: 1,
+    correct: 0,
+    incorrect: 1,
+    percentage: 0,
+    date: new Date().toISOString(),
+    challenge: challenges[0].title
+  };
+
+  if (workspaceMode === 'debugging') {
+    try { localStorage.setItem('mockprep_capgemini_fullmock', JSON.stringify(session)); } catch (e) {}
+    window.location.href = 'capgemini-workspace.html?company=capgemini&mode=ai-coding&fullmock=capgemini&stage=ai-coding';
+    return;
+  }
+
+  if (workspaceMode === 'ai-coding') {
+    try { localStorage.setItem('mockprep_capgemini_fullmock', JSON.stringify(session)); } catch (e) {}
+    window.location.href = 'test.html?company=capgemini&section=prompt_engineering&mode=fullmock';
+    return;
+  }
+
+  const stageValues = Object.values(session.stages);
+  const total = stageValues.reduce((sum, stage) => sum + (stage.total || 0), 0);
+  const correct = stageValues.reduce((sum, stage) => sum + (stage.correct || 0), 0);
+  const fullResult = {
+    id: 'capgemini_full_' + Date.now().toString(36),
+    company: 'Capgemini',
+    section: 'Capgemini Full Assessment Summary',
+    date: new Date().toISOString(),
+    total,
+    correct,
+    incorrect: total - correct,
+    unanswered: 0,
+    percentage: total ? Math.round((correct / total) * 100) : 0,
+    timeTaken: 0,
+    totalTime: 45 * 60,
+    stageResults: session.stages,
+    topicScores: {},
+    questionResults: []
+  };
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('mockprep_results')) || []; } catch (e) {}
+  history.unshift(fullResult);
+  try { localStorage.setItem('mockprep_results', JSON.stringify(history.slice(0, 50))); } catch (e) {}
+  try { localStorage.removeItem('mockprep_capgemini_fullmock'); } catch (e) {}
+  window.location.href = `results.html?id=${fullResult.id}`;
+}
 
 function addAssistantMessage(text, response) {
   const log = document.getElementById('assistant-log');
