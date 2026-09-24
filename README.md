@@ -14,6 +14,7 @@ A premium, timed mock test platform for placement exam preparation. Built with p
 ## Currently Available
 
 - **Accenture** — Technical MCQ, Communication, Cognitive, Coding (external links)
+- **Capgemini** — English Communication, Problem Solving, AI-assisted Debugging, AI-assisted Feature Development, Prompt Engineering, Cognitive Assessment, and hard coding practice
 
 ## How to Use
 

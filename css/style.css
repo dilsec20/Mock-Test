@@ -601,6 +601,20 @@ code, .code-block {
   color: var(--text-muted);
 }
 
+.section-practice-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  color: var(--accent-blue);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.section-practice-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
 .section-select-page {
   min-height: calc(100vh - 76px);
   padding: 34px 20px 40px;
@@ -2072,4 +2086,193 @@ body.in-exam-mode .container {
   border-color: transparent !important;
   font-weight: 700;
   box-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
+}
+
+/* ── Capgemini Debugging / AI Coding Workspace ── */
+.capgemini-workspace-page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #080b13;
+  color: #e5e7eb;
+}
+
+.cap-workspace-header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 24px;
+  background: #0d111c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cap-workspace-brand {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+.cap-workspace-brand span {
+  margin-left: 12px;
+  color: #8b95a7;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.cap-workspace-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d7dce5;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86rem;
+}
+
+.cap-live-dot { color: #f3c84b; font-size: 0.72rem; }
+
+.cap-workspace-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(300px, 1fr) minmax(360px, 1.2fr) 300px;
+  height: calc(100vh - 72px);
+}
+
+.cap-challenge-rail,
+.cap-problem-panel,
+.cap-editor-panel,
+.cap-assistant-panel {
+  min-width: 0;
+  min-height: 0;
+  background: #0d111c;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cap-challenge-rail {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+}
+
+.cap-rail-heading,
+.cap-panel-heading,
+.cap-assistant-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cap-rail-heading { padding: 0 6px 16px; }
+
+.cap-eyebrow {
+  color: #7d899e;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cap-rail-heading h1,
+.cap-panel-heading h2,
+.cap-assistant-heading h2 {
+  margin: 4px 0 0;
+  color: #f8fafc;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+}
+
+.cap-rail-heading > span,
+.cap-question-number {
+  color: #f3c84b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.cap-challenge-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cap-challenge-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #d7dce5;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cap-challenge-item:hover,
+.cap-challenge-item.active {
+  background: #171d2a;
+  border-color: rgba(243, 200, 75, 0.35);
+}
+
+.cap-challenge-index { color: #f3c84b; font-weight: 800; }
+.cap-challenge-copy { min-width: 0; }
+.cap-challenge-copy strong { display: block; font-size: 0.78rem; line-height: 1.2; }
+.cap-challenge-copy small { display: block; color: #7d899e; font-size: 0.66rem; margin-top: 4px; }
+.cap-challenge-status { color: #7d899e; font-size: 0.58rem; white-space: nowrap; }
+.cap-challenge-item.active .cap-challenge-status { color: #f3c84b; }
+
+.cap-progress-block { padding: 16px 6px 10px; }
+.cap-progress-label { display: flex; justify-content: space-between; color: #aab3c2; font-size: 0.72rem; }
+.cap-progress-label strong { color: #f3c84b; }
+.cap-progress-track { height: 5px; margin-top: 8px; overflow: hidden; border-radius: 99px; background: #273142; }
+.cap-progress-fill { height: 100%; width: 20%; background: #f3c84b; transition: width 200ms ease; }
+.cap-workspace-note { padding: 12px 6px 0; border-top: 1px solid rgba(255,255,255,0.08); color: #7d899e; font-size: 0.68rem; line-height: 1.6; }
+
+.cap-problem-panel { background: #121722; }
+.cap-panel-scroll { height: 100%; overflow-y: auto; padding: 28px 24px; }
+.cap-panel-heading { padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.cap-challenge-statement { color: #e4e8ef; font-size: 0.98rem; line-height: 1.75; }
+.cap-workspace-section { margin-top: 24px; }
+.cap-workspace-section h3 { color: #f3c84b; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.cap-workspace-section ul { padding-left: 20px; color: #aab3c2; font-size: 0.82rem; line-height: 1.8; }
+.cap-sample-test { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; background: #0d111c; color: #aab3c2; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; line-height: 1.6; }
+.cap-sample-test strong { color: #6ee7b7; font-size: 0.64rem; }
+
+.cap-editor-panel { display: flex; flex-direction: column; background: #080b13; }
+.cap-editor-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; color: #d7dce5; font-size: 0.78rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.cap-editor-toolbar select { padding: 7px 10px; border: 1px solid #354154; border-radius: 5px; background: #151b28; color: #f8fafc; }
+.cap-code-editor { flex: 1; width: 100%; min-height: 280px; resize: none; padding: 22px; border: 0; outline: 0; background: #080b13; color: #d7e1ef; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7; tab-size: 2; }
+.cap-test-result { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08); color: #8894a7; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; }
+.cap-test-result span { color: #8894a7; }
+.cap-result-success { color: #6ee7b7 !important; }
+.cap-result-failure { color: #fca5a5 !important; }
+.cap-editor-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+
+.cap-assistant-panel { display: flex; flex-direction: column; padding: 20px 16px; border-right: 0; }
+.cap-assistant-heading h2 { font-size: 1rem; }
+.cap-ai-badge { padding: 4px 7px; border: 1px solid #6d5dfc; border-radius: 5px; color: #b7adff; font-size: 0.62rem; font-weight: 800; }
+.cap-assistant-copy { color: #8894a7; font-size: 0.72rem; line-height: 1.6; }
+.cap-assistant-log { flex: 1; overflow-y: auto; padding: 10px 0; }
+.cap-assistant-message { margin-bottom: 10px; padding: 10px; border: 1px solid rgba(109,93,252,0.25); border-radius: 7px; background: rgba(109,93,252,0.08); color: #bfc7d6; font-size: 0.72rem; line-height: 1.55; }
+.cap-assistant-user { background: rgba(243,200,75,0.08); border-color: rgba(243,200,75,0.2); color: #f7e5a0; }
+.cap-assistant-input-row { display: flex; gap: 6px; }
+.cap-assistant-input-row input { min-width: 0; flex: 1; padding: 9px; border: 1px solid #354154; border-radius: 5px; outline: 0; background: #151b28; color: #fff; }
+.cap-assistant-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+.cap-assistant-actions .btn { padding: 8px 5px; font-size: 0.66rem; }
+
+@media (max-width: 1100px) {
+  .cap-workspace-layout { grid-template-columns: 210px minmax(280px, 1fr) minmax(330px, 1.2fr); }
+  .cap-assistant-panel { grid-column: 2 / -1; min-height: 230px; border-top: 1px solid rgba(255,255,255,0.1); }
+}
+
+@media (max-width: 760px) {
+  .capgemini-workspace-page { overflow: auto; }
+  .cap-workspace-header { height: auto; min-height: 64px; padding: 12px 14px; flex-wrap: wrap; }
+  .cap-workspace-layout { display: flex; height: auto; flex-direction: column; }
+  .cap-challenge-rail, .cap-problem-panel, .cap-editor-panel, .cap-assistant-panel { min-height: 360px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .cap-challenge-rail { min-height: 260px; }
+  .cap-challenge-list { max-height: 180px; }
+  .cap-assistant-panel { min-height: 400px; }
 }

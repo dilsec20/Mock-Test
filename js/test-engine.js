@@ -54,7 +54,8 @@ function renderSectionSelector() {
   let html = '';
 
   // Full Mock Test option (All 4 Official Stages Pipeline)
-  html += `
+  if (data.supportsFullMock !== false) {
+    html += `
     <div class="section-option full-mock-card" data-section="full" onclick="selectSection('full')" style="border: 2px solid var(--accent-primary); background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.12));">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 10px;">
@@ -75,7 +76,8 @@ function renderSectionSelector() {
         </div>
       </div>
     </div>
-  `;
+    `;
+  }
 
   // Individual MCQ sections
   testableSections.forEach(section => {
@@ -85,6 +87,7 @@ function renderSectionSelector() {
         <h4>${section.name}</h4>
         <div class="section-meta">
           ${section.questions} questions • ${section.duration} min • ${section.description}
+          ${section.practiceUrl ? `<a class="section-practice-link" href="${section.practiceUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${section.practiceLabel || 'Practice reference'} ↗</a>` : ''}
         </div>
       </div>
     `;
@@ -124,6 +127,7 @@ function renderSectionSelector() {
         <h4>${codingSection.name}</h4>
         <div class="section-meta">
           ${codingSection.questions} problems • Practice on GFG/LeetCode • ${codingSection.description}
+          ${codingSection.practiceUrl ? `<a class="section-practice-link" href="${codingSection.practiceUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${codingSection.practiceLabel || 'Practice platform'} ↗</a>` : ''}
         </div>
       </div>
     `;
@@ -162,6 +166,12 @@ function beginTest() {
   // Handle gamified cognitive section separately
   if (testState.selectedSection === 'cognitive_gamified') {
     window.location.href = `cognitive-games.html?company=${testState.company}&mode=assessment`;
+    return;
+  }
+
+  const selectedSection = testState.companyData.sections.find(section => section.id === testState.selectedSection);
+  if (selectedSection?.isWorkspace) {
+    window.location.href = `capgemini-workspace.html?company=${testState.company}&mode=${selectedSection.workspaceMode}`;
     return;
   }
 

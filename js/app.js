@@ -18,8 +18,23 @@ const COMPANIES = [
       tests: '6 Modules'
     },
     features: ['No Negative Marking', 'Gamified Mini-Games (Bubble & Mazes)', 'Pearson Spoken English', 'Mic & Voice Evaluated']
+  },
+  {
+    id: 'capgemini',
+    name: 'Capgemini',
+    logo: 'C>',
+    examDate: '2026-10-15',
+    examName: 'Capgemini New Hiring Assessment',
+    dataFile: 'data/capgemini-data.js',
+    color: '#0070AD',
+    sections: ['AI Literacy', 'Technical Assessment', 'AI-assisted Debugging', 'AI-assisted Feature Development', 'Hard Coding'],
+    stats: {
+      questions: '40 MCQs',
+      duration: '45 min',
+      tests: '2 Sections'
+    },
+    features: ['13 LPA Alpha / 16 LPA Root Preparation', 'Hard DSA', 'React / JavaScript / HTML / CSS', 'SQL JOINs & HAVING']
   }
-  // More companies can be added here later
 ];
 
 // ── Initialize ──
