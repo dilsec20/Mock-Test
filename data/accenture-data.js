@@ -6896,13 +6896,14 @@ window.COMPANY_DATA["accenture"] = {
       },
       {
         "id": "code2",
-        "title": "Product of Array Elements at Even Positions",
-        "difficulty": "Easy",
+        "title": "Product of Array Except Self",
+        "difficulty": "Medium",
         "topics": [
-          "Arrays"
+          "Arrays",
+          "Prefix/Suffix Products"
         ],
-        "link": "https://www.geeksforgeeks.org/product-of-all-elements-at-even-positions-in-an-array/",
-        "description": "Find the product of all elements at even indices (0, 2, 4...)."
+        "link": "https://leetcode.com/problems/product-of-array-except-self/",
+        "description": "Return an array where each value is the product of every input element except the value at that index, without division."
       },
       {
         "id": "code3",
@@ -6975,7 +6976,7 @@ window.COMPANY_DATA["accenture"] = {
           "Number Problems",
           "Math"
         ],
-        "link": "https://www.geeksforgeeks.org/sum-of-all-primes-in-a-given-range/",
+        "link": "https://www.geeksforgeeks.org/sieve-of-eratosthenes/",
         "description": "Find the sum of all prime numbers between two given numbers."
       },
       {
@@ -7038,6 +7039,119 @@ window.COMPANY_DATA["accenture"] = {
         ],
         "link": "https://www.geeksforgeeks.org/program-count-vowels-consonant-digits-special-characters-string/",
         "description": "Count the number of vowels and consonants in a given string."
+      },
+      {
+        "id": "code16",
+        "title": "Koko Eating Bananas",
+        "difficulty": "Medium",
+        "topics": [
+          "Binary Search",
+          "Arrays"
+        ],
+        "link": "https://leetcode.com/problems/koko-eating-bananas/",
+        "description": "Find the minimum eating speed that lets Koko finish all banana piles within h hours."
+      },
+      {
+        "id": "code17",
+        "title": "Two Sum",
+        "difficulty": "Easy",
+        "topics": [
+          "Hash Map",
+          "Arrays"
+        ],
+        "link": "https://leetcode.com/problems/two-sum/",
+        "description": "Find two array values whose sum equals the target and return their indices."
+      },
+      {
+        "id": "code18",
+        "title": "Longest Substring Without Repeating Characters",
+        "difficulty": "Medium",
+        "topics": [
+          "Strings",
+          "Sliding Window",
+          "Hash Map"
+        ],
+        "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+        "description": "Find the length of the longest substring containing no repeated characters."
+      },
+      {
+        "id": "code19",
+        "title": "Group Anagrams",
+        "difficulty": "Medium",
+        "topics": [
+          "Strings",
+          "Hash Map"
+        ],
+        "link": "https://leetcode.com/problems/group-anagrams/",
+        "description": "Group words that are anagrams of each other."
+      },
+      {
+        "id": "code20",
+        "title": "Subarray Sum Equals K",
+        "difficulty": "Medium",
+        "topics": [
+          "Arrays",
+          "Prefix Sum",
+          "Hash Map"
+        ],
+        "link": "https://leetcode.com/problems/subarray-sum-equals-k/",
+        "description": "Count contiguous subarrays whose elements add up to k."
+      },
+      {
+        "id": "code21",
+        "title": "Top K Frequent Elements",
+        "difficulty": "Medium",
+        "topics": [
+          "Hash Map",
+          "Heap",
+          "Arrays"
+        ],
+        "link": "https://leetcode.com/problems/top-k-frequent-elements/",
+        "description": "Return the k values that appear most frequently in an integer array."
+      },
+      {
+        "id": "code22",
+        "title": "Search in Rotated Sorted Array",
+        "difficulty": "Medium",
+        "topics": [
+          "Binary Search",
+          "Arrays"
+        ],
+        "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+        "description": "Search for a target in a rotated sorted array in logarithmic time."
+      },
+      {
+        "id": "code23",
+        "title": "Merge Intervals",
+        "difficulty": "Medium",
+        "topics": [
+          "Arrays",
+          "Sorting"
+        ],
+        "link": "https://leetcode.com/problems/merge-intervals/",
+        "description": "Merge all overlapping intervals and return the reduced interval list."
+      },
+      {
+        "id": "code24",
+        "title": "Longest Consecutive Sequence",
+        "difficulty": "Medium",
+        "topics": [
+          "Hash Set",
+          "Arrays"
+        ],
+        "link": "https://leetcode.com/problems/longest-consecutive-sequence/",
+        "description": "Find the length of the longest consecutive integer sequence in an unsorted array."
+      },
+      {
+        "id": "code25",
+        "title": "Longest Palindromic Substring",
+        "difficulty": "Medium",
+        "topics": [
+          "Strings",
+          "Dynamic Programming"
+        ],
+        "link": "https://leetcode.com/problems/longest-palindromic-substring/",
+        "description": "Return the longest substring that reads the same forward and backward."
       }
     ],
     "communication_grammar": [
