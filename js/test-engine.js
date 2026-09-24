@@ -175,8 +175,7 @@ function beginTest() {
     let totalTime = 0;
     data.sections.filter(s => !s.isExternal && !s.isSpeaking && !s.isGamified).forEach(section => {
       const sectionQuestions = data.questionBank[section.id] || [];
-      // Shuffle and pick the right number
-      const picked = shuffleArray([...sectionQuestions]).slice(0, section.questions);
+      const picked = getCoverageSelection(data.company, section.id, sectionQuestions, section.questions);
       picked.forEach(q => { q._section = section.name; });
       testState.questions.push(...picked);
       totalTime += section.duration;
@@ -199,7 +198,7 @@ function beginTest() {
   } else {
     const section = data.sections.find(s => s.id === testState.selectedSection);
     const sectionQuestions = data.questionBank[testState.selectedSection] || [];
-    testState.questions = shuffleArray([...sectionQuestions]).slice(0, section.questions);
+    testState.questions = getCoverageSelection(data.company, section.id, sectionQuestions, section.questions);
     testState.questions.forEach(q => { q._section = section.name; });
     testState.timeRemaining = section.duration * 60;
     document.getElementById('current-section-name').textContent = section.name;
@@ -238,14 +237,52 @@ let codingTimerState = {
   activeIndex: 0
 };
 
+function getCoverageSelection(company, sectionId, questions, count) {
+  if (!questions.length || count <= 0) return [];
+
+  const storageKey = 'mockprep_question_coverage';
+  const deckKey = `${company}:${sectionId}`;
+  const questionIds = questions.map((question, index) => String(question.id ?? index));
+  let coverage = {};
+
+  try {
+    coverage = JSON.parse(localStorage.getItem(storageKey)) || {};
+  } catch (e) {}
+
+  let remaining = Array.isArray(coverage[deckKey])
+    ? coverage[deckKey].filter(id => questionIds.includes(String(id)))
+    : [];
+  const selectedIds = [];
+
+  while (selectedIds.length < Math.min(count, questions.length)) {
+    if (!remaining.length) {
+      const refillableIds = questionIds.filter(id => !selectedIds.includes(id));
+      remaining = shuffleArray(refillableIds.length ? refillableIds : [...questionIds]);
+    }
+
+    const nextId = remaining.shift();
+    if (!selectedIds.includes(String(nextId))) {
+      selectedIds.push(String(nextId));
+    }
+  }
+
+  coverage[deckKey] = remaining;
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(coverage));
+  } catch (e) {}
+
+  return selectedIds
+    .map(id => questions.find((question, index) => String(question.id ?? index) === id))
+    .filter(Boolean);
+}
+
 function getCodingProblemPool() {
   const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
   const problems = (data && data.questionBank && data.questionBank.coding) || [];
 
   if (!problems.length) return [];
 
-  const shuffled = [...problems].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(2, shuffled.length));
+  return getCoverageSelection(data.company, 'coding', problems, 2);
 }
 
 function prepareCodingAttempt() {
