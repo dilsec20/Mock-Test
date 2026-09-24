@@ -388,79 +388,86 @@ function onBubbleGameFinished() {
 // D_R: Door can ONLY be entered by moving RIGHT (from left)
 // P: Player, K: Key, #: Wall, E: Exit, .: Empty
 const LOCK_KEY_LEVELS = [
-  // Level 1 (3x3)
+  // Level 1 (3x3): Collect 1 Key, Enter doors in allowed direction, reach Exit
+  // Solvable path: P(2,0) -> (1,0) -> enter (1,1) moving R -> (1,2) -> (0,2)[Key] -> enter (0,1) moving L -> (0,0)[Exit]
   {
     size: 3,
     start: { r: 2, c: 0 },
     keys: 1,
     board: [
-      ['E', '.', 'K'],
-      ['.', '#', '.'],
-      ['P', '.', 'D_U'] // D_U at (2,2): can only enter going UP
+      ['E', 'D_L', 'K'],
+      ['.', 'D_R', '.'],
+      ['P', '.', '.']
     ]
   },
-  // Level 2 (3x3)
+
+  // Level 2 (3x3): Collect 1 Key, reach Exit
+  // Solvable path: P(1,0) -> (0,0) -> enter (0,1) moving R -> (0,2)[Key] -> (1,2) -> (2,2)[Exit]
   {
     size: 3,
     start: { r: 1, c: 0 },
     keys: 1,
     board: [
       ['.', 'D_R', 'K'],
-      ['P', '#', '.'],
+      ['P', 'D_D', '.'],
       ['.', '.', 'E']
     ]
   },
-  // Level 3 (4x4)
+
+  // Level 3 (4x4): Collect 2 Keys, reach Exit
+  // Uses directional doors strategically (no solid wall blocks)
   {
     size: 4,
     start: { r: 3, c: 0 },
     keys: 2,
     board: [
-      ['.', 'D_D', 'K', '.'],
-      ['#', '.', '#', '.'],
-      ['.', '.', '.', 'K'],
+      ['.', 'D_R', 'K', '.'],
+      ['D_U', '.', 'D_L', '.'],
+      ['.', 'D_U', '.', 'K'],
       ['P', 'D_R', '.', 'E']
     ]
   },
-  // Level 4 (4x4)
+
+  // Level 4 (4x4): Collect 2 Keys, reach Exit
   {
     size: 4,
     start: { r: 2, c: 1 },
     keys: 2,
     board: [
-      ['K', '.', '#', '.'],
+      ['K', 'D_L', '.', '.'],
       ['.', 'D_U', '.', 'K'],
-      ['#', 'P', '.', '#'],
+      ['.', 'P', 'D_R', '.'],
       ['.', '.', 'D_R', 'E']
     ]
   },
-  // Level 5 (5x5)
+
+  // Level 5 (5x5): Collect 2 Keys, reach Exit
   {
     size: 5,
     start: { r: 4, c: 0 },
-    keys: 3,
+    keys: 2,
     board: [
-      ['K', '.', '#', '.', 'E'],
+      ['K', '.', '.', 'D_R', 'E'],
       ['.', 'D_R', '.', '.', '.'],
-      ['#', '.', '#', 'D_D', 'K'],
-      ['.', '.', 'K', '.', '#'],
-      ['P', '.', '.', 'D_U', '.']
+      ['D_U', '.', 'D_U', '.', 'D_D'],
+      ['.', 'D_U', '.', 'K', '.'],
+      ['P', '.', 'D_R', '.', '.']
     ]
   },
-  // Level 6 (6x6) — matching screenshot layout
+
+  // Level 6 (6x6): Collect 2 Keys, reach Exit
   {
     size: 6,
     start: { r: 2, c: 2 },
     keys: 2,
     board: [
-      ['.', 'D_D', '.', '.', '.', 'K'],
-      ['.', '.', '.', '.', '.', '.'],
-      ['.', '.', 'P', '#', '.', '.'],
-      ['.', '.', '.', '.', '.', '.'],
-      ['.', '.', '.', '.', '.', '.'],
-      ['.', '.', '.', '.', '.', 'K']
-    ],
-    exit: { r: 0, c: 0 }
+      ['E', 'D_L', '.', '.', 'D_R', 'K'],
+      ['.', '.', 'D_R', '.', '.', '.'],
+      ['.', 'D_L', 'P', 'D_R', '.', '.'],
+      ['.', 'D_U', '.', '.', 'D_D', '.'],
+      ['.', '.', 'D_L', '.', '.', '.'],
+      ['.', '.', '.', '.', 'D_R', 'K']
+    ]
   }
 ];
 
@@ -513,14 +520,15 @@ function updateKeyDisplay() {
   }
 }
 
-function showDoorAlert() {
+function showDoorAlert(msg) {
   const alertEl = document.getElementById('door-alert-banner');
   if (alertEl) {
+    if (msg) alertEl.textContent = msg;
     alertEl.classList.add('visible');
     sfx.buzzer();
     setTimeout(() => {
       alertEl.classList.remove('visible');
-    }, 2000);
+    }, 2500);
   }
 }
 
@@ -551,7 +559,14 @@ function renderLockKeyGrid() {
       // Player Position
       if (r === player.r && c === player.c) {
         cell.classList.add('player');
-        cell.innerHTML = '♟️';
+        if (val.startsWith('D_')) {
+          cell.classList.add('directional-door');
+          const dir = val.split('_')[1];
+          const arrows = { U: '⬆️', D: '⬇️', L: '⬅️', R: '➡️' };
+          cell.innerHTML = `♟️<span class="door-direction-arrow">${arrows[dir] || ''}</span>`;
+        } else {
+          cell.innerHTML = '♟️';
+        }
       } else if (val === '#') {
         cell.classList.add('wall');
       } else if (val === 'K') {
@@ -564,7 +579,7 @@ function renderLockKeyGrid() {
         cell.classList.add('directional-door');
         const dir = val.split('_')[1];
         const arrows = { U: '⬆️', D: '⬇️', L: '⬅️', R: '➡️' };
-        cell.innerHTML = `🚪<span class="door-direction-arrow">${arrows[dir] || ''}</span>`;
+        cell.innerHTML = `<span style="font-size:1.3rem;">🚪</span><span class="door-direction-arrow">${arrows[dir] || ''}</span>`;
       }
 
       gridEl.appendChild(cell);
@@ -595,7 +610,7 @@ function moveLockKeyPlayer(dr, dc) {
 
   const targetVal = cogState.lockkey.board[newR][newC];
 
-  // Wall collision
+  // Wall collision (if any legacy wall)
   if (targetVal === '#') {
     sfx.beep(200, 'sine', 0.1);
     return;
@@ -612,11 +627,25 @@ function moveLockKeyPlayer(dr, dc) {
 
     // Must move in the arrow direction to pass!
     if (movementDir !== requiredDir) {
-      showDoorAlert();
-      // Reset player to start position
+      const dirLabels = {
+        U: 'UP ⬆️ (from below)',
+        D: 'DOWN ⬇️ (from above)',
+        L: 'LEFT ⬅️ (from right)',
+        R: 'RIGHT ➡️ (from left)'
+      };
+
+      // Flash target cell red
+      const cellEl = document.querySelector(`#lockkey-grid .grid-cell[data-r="${newR}"][data-c="${newC}"]`);
+      if (cellEl) {
+        cellEl.classList.add('locked-flash');
+      }
+
+      showDoorAlert(`🚫 Door Locked! Only accessible moving ${dirLabels[requiredDir] || requiredDir}. Resetting to start...`);
       cogState.lockkey.resetsCount++;
-      cogState.lockkey.playerPos = { ...cogState.lockkey.startPos };
-      renderLockKeyGrid();
+
+      setTimeout(() => {
+        resetCurrentLockKeyLevel();
+      }, 500);
       return;
     }
   }
@@ -640,7 +669,8 @@ function moveLockKeyPlayer(dr, dc) {
       return;
     } else {
       // Locked exit
-      showDoorAlert();
+      const remaining = cogState.lockkey.keysTotal - cogState.lockkey.keysCollected;
+      showDoorAlert(`🔒 Exit Door is locked! Collect all keys first (${remaining} remaining).`);
       return;
     }
   }
@@ -653,6 +683,7 @@ function onLockKeyLevelComplete() {
   sfx.chime();
   cogState.lockkey.score += 20;
   cogState.totalScore += 20;
+  cogState.lockkey.clearedLevels = (cogState.lockkey.clearedLevels || 0) + 1;
   updateScoreDisplay();
 
   setTimeout(() => {
@@ -671,7 +702,7 @@ function onLockKeyLevelComplete() {
 }
 
 function showLockKeyHint() {
-  alert('💡 Hint: Check the door arrows! If a door points UP (⬆️), you must move onto it from below. Collect all keys before reaching the exit flag.');
+  alert('💡 Directional Doors Rule:\n\n• Each door (🚪) has an arrow indicating the ONLY direction allowed to enter (e.g. ➡️ means you must move Right into the door).\n• Entering from any other direction locks the door, flashes red, and resets you to start.\n• There are no wall blocks—use the allowed doors to collect all keys (🔑) and reach the exit (🏁)!');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -679,7 +710,7 @@ function showLockKeyHint() {
 // ══════════════════════════════════════════════════════════
 
 const MAZE_LEVELS = [
-  // Maze 1 (4x4)
+  // Maze 1 (4x4) — Solvable in 6 steps
   {
     size: 4,
     start: { r: 0, c: 0 },
@@ -692,7 +723,7 @@ const MAZE_LEVELS = [
       ['#', '.', '.', 'E']
     ]
   },
-  // Maze 2 (4x4)
+  // Maze 2 (4x4) — Solvable in 6 steps
   {
     size: 4,
     start: { r: 0, c: 0 },
@@ -705,7 +736,7 @@ const MAZE_LEVELS = [
       ['.', '#', '.', 'E']
     ]
   },
-  // Maze 3 (5x5)
+  // Maze 3 (5x5) — 100% Solvable in 8 steps
   {
     size: 5,
     start: { r: 0, c: 0 },
@@ -714,12 +745,12 @@ const MAZE_LEVELS = [
     board: [
       ['S', '.', '.', '#', '.'],
       ['#', '#', '.', '.', '.'],
-      ['.', '.', '#', '#', '.'],
-      ['.', '.', '.', '.', '#'],
-      ['#', '#', '.', '.', 'E']
+      ['.', '.', '.', '#', '.'],
+      ['.', '#', '.', '.', '.'],
+      ['.', '#', '#', '.', 'E']
     ]
   },
-  // Maze 4 (5x5)
+  // Maze 4 (5x5) — 100% Solvable in 8 steps
   {
     size: 5,
     start: { r: 4, c: 0 },
@@ -728,12 +759,12 @@ const MAZE_LEVELS = [
     board: [
       ['.', '.', '#', '.', 'E'],
       ['.', '#', '.', '.', '.'],
-      ['.', '.', '#', '.', '#'],
-      ['#', '.', '.', '.', '.'],
-      ['S', '.', '#', '#', '.']
+      ['.', '.', '.', '#', '.'],
+      ['#', '.', '#', '.', '.'],
+      ['S', '.', '.', '#', '.']
     ]
   },
-  // Maze 5 (6x6)
+  // Maze 5 (6x6) — 100% Solvable in 10 steps
   {
     size: 6,
     start: { r: 0, c: 0 },
@@ -741,14 +772,14 @@ const MAZE_LEVELS = [
     optimal: 10,
     board: [
       ['S', '.', '.', '#', '.', '.'],
-      ['#', '#', '.', '.', '#', '.'],
+      ['#', '.', '.', '.', '#', '.'],
       ['.', '.', '#', '.', '.', '.'],
-      ['.', '#', '.', '#', '#', '.'],
+      ['.', '#', '.', '#', '.', '.'],
       ['.', '.', '.', '.', '.', '.'],
       ['#', '#', '.', '#', '.', 'E']
     ]
   },
-  // Maze 6 (6x6)
+  // Maze 6 (6x6) — 100% Solvable in 10 steps
   {
     size: 6,
     start: { r: 0, c: 5 },
@@ -758,8 +789,8 @@ const MAZE_LEVELS = [
       ['.', '.', '#', '.', '.', 'S'],
       ['.', '#', '.', '.', '#', '.'],
       ['.', '.', '.', '#', '.', '.'],
-      ['#', '#', '.', '.', '.', '.'],
-      ['.', '.', '#', '#', '.', '.'],
+      ['#', '.', '.', '.', '.', '.'],
+      ['.', '.', '#', '.', '.', '.'],
       ['E', '.', '.', '.', '#', '.']
     ]
   }
@@ -782,6 +813,7 @@ function loadMazeLevel(levelNum) {
   cogState.maze.playerPos = { ...level.start };
   cogState.maze.exitPos = { ...level.exit };
 
+  hideMazeAlert();
   updateMazeStepDisplay();
   renderMazeGrid();
 }
@@ -790,10 +822,34 @@ function resetCurrentMazeLevel() {
   loadMazeLevel(cogState.maze.currentLevel);
 }
 
+function showMazeAlert(msg, isSuccess = false) {
+  const alertEl = document.getElementById('maze-alert-banner');
+  if (alertEl) {
+    alertEl.textContent = msg;
+    if (isSuccess) alertEl.classList.add('success');
+    else alertEl.classList.remove('success');
+    alertEl.classList.add('visible');
+    setTimeout(() => {
+      alertEl.classList.remove('visible');
+    }, 2800);
+  }
+}
+
+function hideMazeAlert() {
+  const alertEl = document.getElementById('maze-alert-banner');
+  if (alertEl) alertEl.classList.remove('visible');
+}
+
 function updateMazeStepDisplay() {
   const el = document.getElementById('maze-step-display');
   if (el) {
-    el.innerHTML = `🚶 Steps Taken: <strong>${cogState.maze.stepsTaken}</strong> | Optimal: <strong>${cogState.maze.optimalSteps}</strong>`;
+    const isExceeded = cogState.maze.stepsTaken > cogState.maze.optimalSteps;
+    const colorStyle = isExceeded ? 'color: #ef4444;' : 'color: var(--accent-green);';
+    const warningBadge = isExceeded
+      ? ` <span style="background: rgba(239,68,68,0.2); color:#ef4444; padding:2px 8px; border-radius:4px; font-size:0.8rem; margin-left:8px; border:1px solid rgba(239,68,68,0.4);">⚠️ Exceeded Shortest Path (${cogState.maze.optimalSteps} max)</span>`
+      : ` <span style="background: rgba(34,197,94,0.15); color:var(--accent-green); padding:2px 8px; border-radius:4px; font-size:0.8rem; margin-left:8px; border:1px solid rgba(34,197,94,0.3);">✨ Optimal: ${cogState.maze.optimalSteps} steps</span>`;
+
+    el.innerHTML = `🚶 Steps Taken: <strong style="${colorStyle}">${cogState.maze.stepsTaken}</strong> | Shortest Required: <strong style="color:var(--accent-blue);">${cogState.maze.optimalSteps}</strong>${warningBadge}`;
   }
 }
 
@@ -869,20 +925,41 @@ function moveMazePlayer(dr, dc) {
 }
 
 function onMazeLevelComplete() {
-  cogState.maze.isCompleted = true;
-  sfx.chime();
-  const efficiencyBonus = cogState.maze.stepsTaken <= cogState.maze.optimalSteps ? 25 : 15;
-  cogState.maze.score += efficiencyBonus;
-  cogState.totalScore += efficiencyBonus;
-  updateScoreDisplay();
+  if (cogState.maze.stepsTaken <= cogState.maze.optimalSteps) {
+    // Reached exit using the shortest path!
+    cogState.maze.isCompleted = true;
+    sfx.chime();
+    const marks = 25;
+    cogState.maze.score += marks;
+    cogState.totalScore += marks;
+    cogState.maze.clearedLevels = (cogState.maze.clearedLevels || 0) + 1;
+    updateScoreDisplay();
+    showMazeAlert(`🎯 Perfect! Shortest path completed in ${cogState.maze.stepsTaken} steps! (+${marks} pts)`, true);
 
-  setTimeout(() => {
-    if (cogState.maze.currentLevel < cogState.maze.maxLevel) {
-      loadMazeLevel(cogState.maze.currentLevel + 1);
-    } else {
-      finishAssessment();
-    }
-  }, 600);
+    setTimeout(() => {
+      if (cogState.maze.currentLevel < cogState.maze.maxLevel) {
+        loadMazeLevel(cogState.maze.currentLevel + 1);
+      } else {
+        if (cogState.isAssessmentMode) {
+          finishAssessment();
+        } else {
+          alert('🏆 Congratulations! You mastered all Maze Pathfinding levels with optimal shortest paths!');
+        }
+      }
+    }, 1200);
+  } else {
+    // Sub-optimal path: took more than optimal steps!
+    sfx.buzzer();
+    showMazeAlert(`⚠️ Not the shortest path! You took ${cogState.maze.stepsTaken} steps (optimal is ${cogState.maze.optimalSteps}). 0 marks added. Resetting maze for retry...`, false);
+
+    setTimeout(() => {
+      resetCurrentMazeLevel();
+    }, 2500);
+  }
+}
+
+function showMazeHint() {
+  alert(`💡 Maze Pathfinding Shortest Path Rule:\n\n• Goal: Reach the exit flag (🏁) from start (🟢) using ONLY the shortest possible path.\n• Current Level Optimal: Exactly ${cogState.maze.optimalSteps} steps.\n• Marks (+25 pts) are ONLY awarded when you take the exact shortest path. If you take extra steps, no marks are awarded and the maze resets for retry!`);
 }
 
 // ── Global Keyboard Navigation ──
