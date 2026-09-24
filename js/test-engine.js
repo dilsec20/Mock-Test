@@ -338,6 +338,8 @@ function finishFullMockRecruitment() {
   if (codingTimerState.interval) clearInterval(codingTimerState.interval);
 
   const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
   const problems = codingTimerState.selectedProblems.length
     ? codingTimerState.selectedProblems
     : ((data && data.questionBank && data.questionBank.coding) || [
@@ -386,6 +388,17 @@ function finishFullMockRecruitment() {
     },
     questionResults: problemResults
   };
+
+  if (!isFullMock) {
+    const codingResult = {
+      ...stage4,
+      id: 'coding_' + Date.now().toString(36),
+      section: 'Algorithmic Coding Assessment'
+    };
+    saveResults(codingResult);
+    window.location.href = `results.html?id=${codingResult.id}`;
+    return;
+  }
 
   // Retrieve Stage 1, Stage 2, Stage 3 from localStorage
   let fullMockSession = {};
