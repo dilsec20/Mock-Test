@@ -96,6 +96,244 @@ window.COMPANY_DATA["accenture"] = {
   "questionBank": {
     "technical_mcq": [
       {
+        "id": "pyq_security_stateful_firewall",
+        "topic": "Security",
+        "question": "A stateful firewall maintains which of the following tables to track the status of active network connections?",
+        "options": [
+          "Bridging table",
+          "State table",
+          "Connection table",
+          "Routing table"
+        ],
+        "answer": 1,
+        "explanation": "A stateful firewall inspects packets in the context of active sessions and maintains a State table (also known as a connection state table) recording source/destination IP, ports, and TCP handshake states. Bridging tables map MAC addresses to switch ports, while Routing tables determine packet paths."
+      },
+      {
+        "id": "pyq_ppt_default_pointer",
+        "topic": "MS Office",
+        "question": "In MS PowerPoint, which of the following is the default mouse pointer type during a slide show?",
+        "options": [
+          "Pen",
+          "Highlighter",
+          "Arrow",
+          "Laser Pointer"
+        ],
+        "answer": 2,
+        "explanation": "During a PowerPoint presentation, the default mouse pointer is the Arrow. The presenter can right-click to switch to a Pen, Highlighter, or Laser Pointer for annotations."
+      },
+      {
+        "id": "pyq_social_hashtag_symbol",
+        "topic": "MS Office",
+        "question": "Which symbol is used to draw attention, categorize, and organize similar types of content across social media platforms?",
+        "options": [
+          "@",
+          "&",
+          "#",
+          "$"
+        ],
+        "answer": 2,
+        "explanation": "The hashtag symbol (#) is used to index keywords or topics on social media, allowing users to find and track related posts. The @ symbol is used to tag/mention specific users."
+      },
+      {
+        "id": "pyq_gmail_drive_icon",
+        "topic": "MS Office",
+        "question": "While composing an email in Gmail, which icon on the bottom toolbar is used to insert files directly using Google Drive?",
+        "options": [
+          "Paperclip icon",
+          "Google Drive triangle icon",
+          "Insert Photo icon",
+          "Insert Link icon"
+        ],
+        "answer": 1,
+        "explanation": "The triangular Google Drive icon allows attaching files or inserting sharing links directly from Drive (supporting files larger than the 25MB attachment limit). The paperclip icon attaches files from local computer storage."
+      },
+      {
+        "id": "pyq_windows_f2_rename",
+        "topic": "MS Office",
+        "question": "Which function key is used to rename a selected file or folder in Windows File Explorer?",
+        "options": [
+          "F1",
+          "F3",
+          "F2",
+          "F4"
+        ],
+        "answer": 2,
+        "explanation": "F2 is the universal Windows shortcut to rename the selected file or folder. F1 opens Help, F3 searches, and F4 focuses the address bar."
+      },
+      {
+        "id": "pyq_paint_selection_tools",
+        "topic": "MS Office",
+        "question": "Which of the following selection options are natively included in MS Paint?\n1. Rectangular selection\n2. Free-form selection\n3. Circular selection",
+        "options": [
+          "1 and 3",
+          "1 and 2",
+          "1, 2 and 3",
+          "2 and 3"
+        ],
+        "answer": 1,
+        "explanation": "MS Paint provides only Rectangular selection and Free-form selection under the Select tool menu. It does not have a native Circular or elliptical selection tool."
+      },
+      {
+        "id": "pyq_word_remove_hyperlink",
+        "topic": "MS Office",
+        "question": "If you copy web addresses of different websites and paste them into a Word document, they appear with blue font and an underline. How can you remove this formatting while keeping the text?",
+        "options": [
+          "By using Conditional Formatting",
+          "By removing Hyperlink",
+          "By using WordArt",
+          "By changing line spacing"
+        ],
+        "answer": 1,
+        "explanation": "Right-clicking the linked text and selecting \"Remove Hyperlink\" (or selecting and pressing Ctrl + Shift + F9) strips the URL binding, blue color, and underline, converting it to standard plain text."
+      },
+      {
+        "id": "pyq_app_no_spellcheck",
+        "topic": "MS Office",
+        "question": "In which of the following applications can you NOT run a built-in spellcheck?",
+        "options": [
+          "MS Word",
+          "MS PowerPoint",
+          "MS Excel",
+          "Notepad"
+        ],
+        "answer": 3,
+        "explanation": "Notepad is a basic plain-text editor without integrated spelling or grammar verification tools. Word, PowerPoint, and Excel all provide full spellcheck via the Review tab or F7 shortcut."
+      },
+      {
+        "id": "pyq_word_indent_shortcut",
+        "topic": "MS Office",
+        "question": "In MS Word, which keyboard shortcut key is used to indent the paragraph?",
+        "options": [
+          "Ctrl + I",
+          "Alt + M",
+          "Alt + I",
+          "Ctrl + M"
+        ],
+        "answer": 3,
+        "explanation": "Ctrl + M indents the selected paragraph by 0.5 inches from the left margin. (Ctrl + Shift + M removes the indent). Ctrl + I is used for italicizing text."
+      },
+      {
+        "id": "pyq_word_track_changes",
+        "topic": "MS Office",
+        "question": "Which MS Word feature records additions, deletions, and formatting changes made during document review so they can be accepted or rejected?",
+        "options": [
+          "Mail Merge",
+          "Track Changes",
+          "WordArt",
+          "Format Painter"
+        ],
+        "answer": 1,
+        "explanation": "Track Changes (Review tab) highlights all edits made by collaborators with strikethroughs, underlines, and markup balloons, allowing the document author to Accept or Reject each modification."
+      },
+      {
+        "id": "pyq_word_mail_merge",
+        "topic": "MS Office",
+        "question": "You need to send 500 personalized offer letters containing different candidate names and salaries. Which MS Word feature should you use?",
+        "options": [
+          "Track Changes",
+          "Mail Merge",
+          "Format Painter",
+          "WordArt"
+        ],
+        "answer": 1,
+        "explanation": "Mail Merge links a master Word template with a structured data source (like an Excel table of names and salaries) to automatically generate hundreds of individualized letters, envelopes, or emails."
+      },
+      {
+        "id": "pyq_excel_dropdown_validation",
+        "topic": "MS Office",
+        "question": "Which of the following features in MS Excel is used to create a drop-down list in selected cells?",
+        "options": [
+          "Data > Conditional Formatting",
+          "Data > Data Validation",
+          "Insert > Pivot Table",
+          "Data > Filter"
+        ],
+        "answer": 1,
+        "explanation": "Data > Data Validation allows you to select \"Allow: List\" and specify source values to display an in-cell drop-down box."
+      },
+      {
+        "id": "pyq_excel_row_select",
+        "topic": "MS Office",
+        "question": "In MS Excel, which shortcut key is used to select the entire current row?",
+        "options": [
+          "Alt + Space",
+          "Ctrl + Space",
+          "Shift + Space",
+          "Windows Logo key + Space"
+        ],
+        "answer": 2,
+        "explanation": "Shift + Space selects the entire row. Ctrl + Space selects the entire column. Alt + Space opens the window system menu."
+      },
+      {
+        "id": "pyq_excel_general_format",
+        "topic": "MS Office",
+        "question": "In MS Excel, which symbol used with Ctrl + Shift changes the cell format to General?",
+        "options": [
+          "#",
+          "@",
+          "~",
+          "!"
+        ],
+        "answer": 2,
+        "explanation": "Ctrl + Shift + ~ (tilde) resets the number format of the selected cells to General."
+      },
+      {
+        "id": "pyq_excel_scientific_shortcut",
+        "topic": "MS Office",
+        "question": "In MS Excel, which keyboard shortcut is used to apply the Scientific number format (e.g. 1.23E+06) to the selected cells?",
+        "options": [
+          "Ctrl + Shift + ~",
+          "Ctrl + Shift + ^",
+          "Ctrl + Shift + #",
+          "Ctrl + Shift + @"
+        ],
+        "answer": 1,
+        "explanation": "Ctrl + Shift + ^ applies the Scientific number format. Meanwhile: Ctrl + Shift + ~ applies General format, Ctrl + Shift + # applies Date format, Ctrl + Shift + @ applies Time format, Ctrl + Shift + $ applies Currency format, and Ctrl + Shift + % applies Percentage format."
+      },
+      {
+        "id": "pyq_excel_left_len",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "If you apply the formula =LEFT(B3, LEN(B3)-4) in cell C3 and drag it down to C6, what result will you get in cell C5?",
+        "code": "   |    B (Code)   | C (Alphabets) |\n---+---------------+---------------+\n 3 | A85444        | A8            |\n 4 | CFA9724       | CFA           |\n 5 | FZTA3105      | ?             |\n 6 | ZXX9434       | ZXX           |",
+        "options": [
+          "FZTA",
+          "3105",
+          "FZT",
+          "105"
+        ],
+        "answer": 0,
+        "explanation": "In cell C5, the formula evaluates B5 (\"FZTA3105\"). LEN(\"FZTA3105\") = 8. LEN(B5) - 4 = 8 - 4 = 4. LEFT(\"FZTA3105\", 4) extracts the first 4 characters from the left: \"FZTA\"."
+      },
+      {
+        "id": "pyq_vlookup_rules",
+        "topic": "MS Office",
+        "question": "Which of the following statements is/are correct for VLOOKUP in MS Excel?\n1. Looks for a value in the leftmost column of the selected table\n2. Looks for a value in the rightmost column of the selected table\n3. Cannot find a value in a column to the left of the lookup column",
+        "options": [
+          "Only 2",
+          "1 and 3",
+          "2 and 3",
+          "Only 1"
+        ],
+        "answer": 1,
+        "explanation": "Statements 1 and 3 are correct. VLOOKUP strictly searches the leftmost (first) column of the lookup range and retrieves values from columns to the right. It cannot search or return data to the left (INDEX/MATCH or XLOOKUP is required to look left)."
+      },
+      {
+        "id": "pyq_vlookup_approx",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "If the formula =VLOOKUP(60000, A2:D6, 2, TRUE) is applied in cell B8, what would be the outcome?",
+        "code": "   |       A      |       B        |    C    |    D      |\n---+--------------+----------------+---------+-----------+\n 1 | Train Number | Train Name     | Arrival | Departure |\n 2 | 31567        | Golden Arrow   | 10:30   | 10:40     |\n 3 | 54678        | Polar Express  | 09:15   | 09:45     |\n 4 | 57892        | Indian Pacific | 12:38   | 12:55     |\n 5 | 63045        | Super Chief    | 14:34   | 14:54     |\n 6 | 70398        | Flying Scotsman| 08:40   | 09:00     |",
+        "options": [
+          "Super Chief",
+          "Indian Pacific",
+          "Polar Express",
+          "#N/A"
+        ],
+        "answer": 1,
+        "explanation": "With range_lookup = TRUE (approximate match), the lookup column must be sorted in ascending order. VLOOKUP searches for the largest value that is less than or equal to 60000. Since 57892 <= 60000 < 63045, it matches row 4 (57892) and returns the value from column 2 (Train Name): \"Indian Pacific\"."
+      },
+      {
         "id": "t1",
         "topic": "Pseudocode",
         "question": "What is the output of the following code?",

@@ -262,9 +262,10 @@ function renderQuestion() {
 
   let codeHtml = '';
   if (q.code) {
+    const lang = q.codeLang || 'C++';
     codeHtml = `
       <div class="code-snippet">
-        <span class="code-lang">C++</span>${escapeHtml(q.code)}</div>
+        <span class="code-lang">${lang}</span>${escapeHtml(q.code)}</div>
     `;
   }
 
