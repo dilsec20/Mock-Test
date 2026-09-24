@@ -96,6 +96,538 @@ window.COMPANY_DATA["accenture"] = {
   "questionBank": {
     "technical_mcq": [
       {
+        "id": "exp_cloud_docker_container",
+        "topic": "Cloud",
+        "question": "What is the primary difference between a Docker Container and a traditional Virtual Machine (VM)?",
+        "options": [
+          "Containers require dedicated hypervisor software like ESXi",
+          "Containers share the host OS kernel and are much lighter weight than VMs which run a full guest OS",
+          "Containers cannot run Linux applications",
+          "VMs boot in seconds while containers take minutes"
+        ],
+        "answer": 1,
+        "explanation": "Containers share the host operating system kernel and isolate applications at user-space level, making them lightweight and fast to boot (seconds). VMs run a full guest OS on top of a hypervisor, consuming significantly more memory and disk."
+      },
+      {
+        "id": "exp_cloud_service_models",
+        "topic": "Cloud",
+        "question": "A company wants to build and deploy web applications without having to purchase, configure, or manage underlying operating systems, runtimes, or server patching. Which cloud service model should they choose?",
+        "options": [
+          "IaaS (Infrastructure as a Service)",
+          "PaaS (Platform as a Service)",
+          "SaaS (Software as a Service)",
+          "On-Premises"
+        ],
+        "answer": 1,
+        "explanation": "PaaS (Platform as a Service, e.g. AWS Elastic Beanstalk, Heroku, Azure App Services) provides the development environment, runtime, and OS management, allowing developers to focus solely on their code and deployment."
+      },
+      {
+        "id": "exp_sec_cia_triad",
+        "topic": "Security",
+        "question": "A hacker intercepts a financial transaction message and changes the transfer amount from $100 to $10,000 before forwarding it. Which pillar of the CIA Triad has been violated?",
+        "options": [
+          "Confidentiality",
+          "Integrity",
+          "Availability",
+          "Non-repudiation"
+        ],
+        "answer": 1,
+        "explanation": "Integrity ensures that data remains accurate, complete, and uncorrupted by unauthorized modification during transit or storage. Unauthorized alteration directly violates Integrity."
+      },
+      {
+        "id": "exp_net_arp_purpose",
+        "topic": "Networking",
+        "question": "When a host knows the destination IP address of another device on the local network but needs to find its hardware MAC address for Ethernet transmission, which protocol does it broadcast?",
+        "options": [
+          "ICMP",
+          "ARP (Address Resolution Protocol)",
+          "DHCP",
+          "SNMP"
+        ],
+        "answer": 1,
+        "explanation": "ARP (Address Resolution Protocol) broadcasts a query across the local subnet: \"Who has IP x.x.x.x? Tell my MAC address.\" The owner replies with its MAC address, which is stored in the ARP cache."
+      },
+      {
+        "id": "exp_sec_symmetric_asymmetric",
+        "topic": "Security",
+        "question": "Which of the following encryption algorithms is an ASYMMETRIC (public-key) cipher rather than a symmetric cipher?",
+        "options": [
+          "AES (Advanced Encryption Standard)",
+          "DES (Data Encryption Standard)",
+          "RSA (Rivest-Shamir-Adleman)",
+          "Blowfish"
+        ],
+        "answer": 2,
+        "explanation": "RSA is an asymmetric cipher utilizing a public key for encryption and a private key for decryption. AES, DES, and Blowfish are symmetric ciphers where both parties share the same secret key."
+      },
+      {
+        "id": "exp_net_http_status_codes",
+        "topic": "Networking",
+        "question": "A web server receives a valid request from a client, but refuses to authorize access because the client lacks required permissions. Which HTTP status code is returned?",
+        "options": [
+          "401 Unauthorized",
+          "403 Forbidden",
+          "404 Not Found",
+          "502 Bad Gateway"
+        ],
+        "answer": 1,
+        "explanation": "403 Forbidden means the server understands who you are but explicitly denies access (insufficient permissions). 401 Unauthorized means authentication credentials are missing or invalid."
+      },
+      {
+        "id": "exp_net_dns_records",
+        "topic": "Networking",
+        "question": "Which DNS record type maps a domain name (like mail.google.com) to the mail servers responsible for accepting incoming emails for that domain?",
+        "options": [
+          "A Record",
+          "CNAME Record",
+          "MX (Mail Exchanger) Record",
+          "TXT Record"
+        ],
+        "answer": 2,
+        "explanation": "MX (Mail Exchanger) records specify the mail servers that handle incoming email for a domain. A records map domain to IPv4, AAAA to IPv6, and CNAME creates an alias."
+      },
+      {
+        "id": "exp_net_nat_concept",
+        "topic": "Networking",
+        "question": "Which network technology allows an entire private office network of 500 computers with private IP addresses (192.168.x.x) to share a single public IPv4 address to access the internet?",
+        "options": [
+          "DHCP (Dynamic Host Configuration Protocol)",
+          "NAT (Network Address Translation)",
+          "DNS (Domain Name System)",
+          "ARP (Address Resolution Protocol)"
+        ],
+        "answer": 1,
+        "explanation": "NAT (Network Address Translation, specifically PAT/NAT overload) maps multiple private IP addresses and source ports behind a single routable public IP address, conserving IPv4 addresses."
+      },
+      {
+        "id": "exp_win_run_excel",
+        "topic": "MS Office",
+        "question": "To quickly launch Microsoft Word via the Windows Run dialog box (Win + R), what command must you type?",
+        "options": [
+          "word",
+          "msword",
+          "winword",
+          "word.exe"
+        ],
+        "answer": 2,
+        "explanation": "The executable command for Microsoft Word in the Run dialog is \"winword\". For Excel it is \"excel\", and for PowerPoint it is \"powerpnt\"."
+      },
+      {
+        "id": "exp_win_task_manager_direct",
+        "topic": "MS Office",
+        "question": "Which key combination directly opens the Windows Task Manager without passing through the intermediate security screen?",
+        "options": [
+          "Ctrl + Alt + Del",
+          "Ctrl + Shift + Esc",
+          "Alt + Tab",
+          "Windows Logo key + X"
+        ],
+        "answer": 1,
+        "explanation": "Ctrl + Shift + Esc directly opens Task Manager immediately. In contrast, Ctrl + Alt + Del opens the Windows security options menu (Lock, Switch user, Sign out, Task Manager)."
+      },
+      {
+        "id": "exp_win_snipping_tool_shortcut",
+        "topic": "MS Office",
+        "question": "What is the default Windows keyboard shortcut to instantly capture a rectangular, window, or freeform screen clipping to the clipboard?",
+        "options": [
+          "Ctrl + Alt + Del",
+          "Windows Logo key + Shift + S",
+          "Alt + F4",
+          "Ctrl + Shift + Esc"
+        ],
+        "answer": 1,
+        "explanation": "Windows Logo key + Shift + S triggers the Snipping Tool overlay, enabling rectangular, freeform, window, or full-screen captures directly to the clipboard."
+      },
+      {
+        "id": "exp_win_clipboard_history",
+        "topic": "MS Office",
+        "question": "In Windows 10/11, which keyboard shortcut opens the Clipboard History to view and paste multiple previously copied items?",
+        "options": [
+          "Ctrl + V",
+          "Windows Logo key + V",
+          "Alt + V",
+          "Shift + V"
+        ],
+        "answer": 1,
+        "explanation": "Windows Logo key + V opens the Windows Clipboard History, allowing you to access and paste multiple text snippets and screenshots copied previously."
+      },
+      {
+        "id": "exp_outlook_out_of_office",
+        "topic": "MS Office",
+        "question": "Which feature in MS Outlook automatically sends a pre-written reply to anyone who emails you while you are away on vacation?",
+        "options": [
+          "Automatic Replies (Out of Office)",
+          "Quick Steps",
+          "Delay Delivery",
+          "Mail Merge"
+        ],
+        "answer": 0,
+        "explanation": "File > Automatic Replies (Out of Office) configures auto-responses for internal and external senders during a scheduled date and time window."
+      },
+      {
+        "id": "exp_email_protocols",
+        "topic": "MS Office",
+        "question": "Which email protocol is responsible for SENDING outgoing mail from an email client to a mail server?",
+        "options": [
+          "IMAP (Internet Message Access Protocol)",
+          "POP3 (Post Office Protocol 3)",
+          "SMTP (Simple Mail Transfer Protocol)",
+          "HTTP"
+        ],
+        "answer": 2,
+        "explanation": "SMTP (Simple Mail Transfer Protocol, standard ports 25, 587, 465) sends outgoing email. IMAP and POP3 are incoming protocols used to retrieve and sync emails from the server."
+      },
+      {
+        "id": "exp_mail_bcc_privacy",
+        "topic": "MS Office",
+        "question": "A company needs to email an announcement to 2,000 customers without exposing any customer's email address to other recipients. Where should the customer addresses be placed?",
+        "options": [
+          "To field",
+          "Cc (Carbon Copy) field",
+          "Bcc (Blind Carbon Copy) field",
+          "Subject line"
+        ],
+        "answer": 2,
+        "explanation": "Bcc (Blind Carbon Copy) hides all recipient email addresses from other recipients. Entries in \"To\" and \"Cc\" are visible to everyone who receives the email."
+      },
+      {
+        "id": "exp_ppt_presenter_view",
+        "topic": "MS Office",
+        "question": "Which PowerPoint feature displays speaker notes, an upcoming slide preview, and an elapsed timer on the presenter's monitor while the projector shows only the current slide?",
+        "options": [
+          "Reading View",
+          "Presenter View",
+          "Outline View",
+          "Slide Sorter View"
+        ],
+        "answer": 1,
+        "explanation": "Presenter View (Alt + F5 or multi-monitor slideshow) provides the speaker with private notes, slide navigation controls, timer, and preview of upcoming animations while the audience sees clean full-screen slides."
+      },
+      {
+        "id": "exp_ppt_custom_show",
+        "topic": "MS Office",
+        "question": "You have a 50-slide master deck and need to present only 15 specific slides to executive leadership without deleting or reordering the original file. Which feature should you use?",
+        "options": [
+          "Slide Show > Set Up Slide Show > Browsed at a kiosk",
+          "Slide Show > Custom Slide Show",
+          "File > Export as Video",
+          "Review > Translate"
+        ],
+        "answer": 1,
+        "explanation": "Slide Show > Custom Slide Show allows you to create named subsets of slides (e.g. \"Executive Summary\") from a larger presentation without altering or duplicating the original presentation."
+      },
+      {
+        "id": "exp_ppt_transition_vs_animation",
+        "topic": "MS Office",
+        "question": "In MS PowerPoint, what is the fundamental difference between a Transition and an Animation?",
+        "options": [
+          "Transitions apply to individual text/images; Animations apply between slides",
+          "Transitions apply to the movement when entering a new slide; Animations apply to elements inside a slide",
+          "Transitions only work with video clips; Animations only work with shapes",
+          "Transitions require audio; Animations are silent"
+        ],
+        "answer": 1,
+        "explanation": "A Transition controls how the entire slide enters and exits the screen. An Animation controls the movement, entrance, emphasis, or exit of specific individual objects (bullet points, charts, images) within a slide."
+      },
+      {
+        "id": "exp_ppt_screen_black_white",
+        "topic": "MS Office",
+        "question": "During a live slide show presentation, which single key can the presenter press to turn the screen completely black to redirect the audience's attention to the speaker?",
+        "options": [
+          "Spacebar",
+          "B (or .)",
+          "Esc",
+          "Ctrl + B"
+        ],
+        "answer": 1,
+        "explanation": "Pressing \"B\" (or period \".\") during a PowerPoint slideshow blacks out the screen. Pressing \"W\" (or comma \",\") whites out the screen. Pressing any key returns to the slide."
+      },
+      {
+        "id": "exp_ppt_slide_master",
+        "topic": "MS Office",
+        "question": "You need to add the company logo and copyright notice to all 80 slides in a PowerPoint presentation. What is the most efficient method?",
+        "options": [
+          "Paste the logo manually onto each slide",
+          "Add the logo to the Slide Master (View > Slide Master)",
+          "Convert the presentation to a PDF with a header",
+          "Use Rehearse Timings"
+        ],
+        "answer": 1,
+        "explanation": "View > Slide Master controls the default layout, backgrounds, fonts, and recurring visual elements (like logos or footers) for the entire presentation. Any element placed on the Master slide automatically appears on every slide."
+      },
+      {
+        "id": "exp_word_document_compare",
+        "topic": "MS Office",
+        "question": "A manager wants to see all differences between an original contract draft and a revised draft returned by a client. Which feature automatically marks the differences?",
+        "options": [
+          "Mail Merge",
+          "Review > Compare",
+          "View > Split Window",
+          "File > Inspect Document"
+        ],
+        "answer": 1,
+        "explanation": "Review > Compare takes two versions of a document (original and revised) and produces a third combined document displaying all additions and deletions as Track Changes."
+      },
+      {
+        "id": "exp_word_subscript_superscript",
+        "topic": "MS Office",
+        "question": "Which keyboard shortcuts toggle Subscript (e.g. H2O) and Superscript (e.g. X2) respectively in MS Word?",
+        "options": [
+          "Ctrl + = for Subscript, and Ctrl + Shift + + for Superscript",
+          "Alt + = for Subscript, and Alt + Shift + + for Superscript",
+          "Ctrl + - for Subscript, and Ctrl + + for Superscript",
+          "Shift + - for Subscript, and Shift + + for Superscript"
+        ],
+        "answer": 0,
+        "explanation": "Ctrl + = toggles Subscript (lowers text below the baseline, e.g. chemical formulas). Ctrl + Shift + + (or Ctrl + Plus) toggles Superscript (raises text above the baseline, e.g. mathematical powers)."
+      },
+      {
+        "id": "exp_word_watermark",
+        "topic": "MS Office",
+        "question": "Under which tab in modern MS Word do you find the Watermark option (e.g. adding \"CONFIDENTIAL\" or \"DRAFT\" diagonally across pages)?",
+        "options": [
+          "Insert tab",
+          "Layout tab",
+          "Design tab",
+          "References tab"
+        ],
+        "answer": 2,
+        "explanation": "In modern versions of MS Word (2013+), Watermarks, Page Color, and Page Borders are located under the Design tab in the Page Background group."
+      },
+      {
+        "id": "exp_word_nonbreaking_space",
+        "topic": "MS Office",
+        "question": "You want to prevent two words (e.g. \"100 kg\" or \"Mr. Smith\") from being separated across a line break at the end of a line. What should you insert between them?",
+        "options": [
+          "Soft break (Shift + Enter)",
+          "Non-breaking space (Ctrl + Shift + Space)",
+          "Em dash (Alt + Ctrl + -)",
+          "Tab stop"
+        ],
+        "answer": 1,
+        "explanation": "Pressing Ctrl + Shift + Space inserts a Non-Breaking Space. It keeps the two adjacent words together on the same line so they never split across a line break."
+      },
+      {
+        "id": "exp_word_drop_cap",
+        "topic": "MS Office",
+        "question": "In magazine and newspaper layouts, the first large capital letter of a paragraph drops down across multiple lines. What is this MS Word feature called?",
+        "options": [
+          "WordArt",
+          "Drop Cap",
+          "SmartArt",
+          "Superscript"
+        ],
+        "answer": 1,
+        "explanation": "Under Insert > Drop Cap, you can create a decorative large capital letter at the beginning of a paragraph. The two primary styles are \"Dropped\" and \"In margin\"."
+      },
+      {
+        "id": "exp_word_format_painter_shortcut",
+        "topic": "MS Office",
+        "question": "In MS Word, which shortcut keys allow you to COPY and PASTE character formatting without using the mouse?",
+        "options": [
+          "Ctrl + C to copy, Ctrl + V to paste",
+          "Ctrl + Shift + C to copy formatting, Ctrl + Shift + V to paste formatting",
+          "Alt + C to copy formatting, Alt + V to paste formatting",
+          "Ctrl + Alt + C to copy formatting, Ctrl + Alt + V to paste formatting"
+        ],
+        "answer": 1,
+        "explanation": "Ctrl + Shift + C copies the selected text's formatting (font, size, color, highlights) into memory, and Ctrl + Shift + V applies that copied formatting to any newly selected text."
+      },
+      {
+        "id": "exp_word_table_of_contents",
+        "topic": "MS Office",
+        "question": "To automatically generate a Table of Contents in MS Word using References > Table of Contents, which formatting must be applied to your document headings?",
+        "options": [
+          "Bold and 14pt font",
+          "Built-in Heading Styles (Heading 1, Heading 2, Heading 3)",
+          "Underline and Bullet formatting",
+          "Bookmarks"
+        ],
+        "answer": 1,
+        "explanation": "Word's automatic Table of Contents generator scans the document for built-in Heading Styles (Heading 1 for main chapters, Heading 2 for sub-headings, etc.). Manual font sizing or bolding is not recognized."
+      },
+      {
+        "id": "exp_word_section_break",
+        "topic": "MS Office",
+        "question": "You want page 5 of a 10-page Word report to be in Landscape orientation while all other pages remain Portrait. What must you insert before and after page 5?",
+        "options": [
+          "Page Break",
+          "Section Break (Next Page)",
+          "Column Break",
+          "Line Break"
+        ],
+        "answer": 1,
+        "explanation": "Page orientation, headers, footers, and margins are section-level formatting properties. To change orientation for a specific page without altering the rest of the document, you must isolate it with Section Breaks (Next Page)."
+      },
+      {
+        "id": "exp_excel_and_logic_drag",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "If the formula =AND(B2>=50, B2<=100) is applied in C2 and dragged to C5, how many cells in column C will evaluate to TRUE?",
+        "code": "   |    A    |  B (Score) |\n---+---------+------------+\n 2 | Student |     45     |\n 3 | Student |     50     |\n 4 | Student |     75     |\n 5 | Student |    105     |",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "B3 (50): 50>=50 AND 50<=100 -> TRUE. B4 (75): 75>=50 AND 75<=100 -> TRUE. B2 (45) is <50 (FALSE), and B5 (105) is >100 (FALSE). Total TRUE cells = 2."
+      },
+      {
+        "id": "exp_excel_sumif_criteria",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "What will be the result of =SUMIF(B2:B5, \">50\", C2:C5) on this inventory table?",
+        "code": "   |     A     |     B    |     C    |\n---+-----------+----------+----------+\n 1 |   Item    | Quantity | Cost ($) |\n 2 | Laptops   |    40    |   2000   |\n 3 | Monitors  |    60    |   1200   |\n 4 | Keyboards |    80    |    800   |\n 5 | Mice      |    30    |    300   |",
+        "options": [
+          "2000",
+          "4300",
+          "2300",
+          "140"
+        ],
+        "answer": 0,
+        "explanation": "SUMIF checks Column B (Quantity) for values > 50. Row 3 (Monitors: 60) and Row 4 (Keyboards: 80) qualify. It sums their corresponding values in Column C (Cost): 1200 + 800 = 2000."
+      },
+      {
+        "id": "exp_excel_pmt_function",
+        "topic": "MS Office",
+        "question": "In Excel's financial function =PMT(rate, nper, pv), what does \"nper\" represent?",
+        "options": [
+          "The nominal payment amount",
+          "The net present value of the loan",
+          "The total number of payment periods for the loan",
+          "The interest rate per period"
+        ],
+        "answer": 2,
+        "explanation": "In =PMT(rate, nper, pv), \"nper\" stands for Number of Periods (e.g. 5 years * 12 months = 60 periods). \"rate\" is interest rate per period, and \"pv\" is present value (loan amount)."
+      },
+      {
+        "id": "exp_excel_goal_seek",
+        "topic": "MS Office",
+        "question": "You want to know what sales volume is needed to reach a net profit of $100,000. Which Excel What-If Analysis tool adjusts an input value to achieve a specific target formula outcome?",
+        "options": [
+          "Scenario Manager",
+          "Goal Seek",
+          "Data Table",
+          "Solver"
+        ],
+        "answer": 1,
+        "explanation": "Goal Seek (Data > What-If Analysis > Goal Seek) works backwards from a desired result: you specify the target cell value and the single input cell to change to achieve it."
+      },
+      {
+        "id": "exp_excel_freeze_panes",
+        "topic": "MS Office",
+        "question": "You have a large spreadsheet with 10,000 rows. When scrolling down, the header row vanishes. Which feature keeps row 1 visible at all times?",
+        "options": [
+          "Page Break Preview",
+          "Split Screen",
+          "View > Freeze Panes > Freeze Top Row",
+          "Data > Filter"
+        ],
+        "answer": 2,
+        "explanation": "View > Freeze Panes > Freeze Top Row locks Row 1 so it remains visible on screen as you scroll down through thousands of rows of data."
+      },
+      {
+        "id": "exp_excel_flash_fill",
+        "topic": "MS Office",
+        "question": "Which Excel feature automatically detects a pattern from your example and fills the remaining column data without formulas?",
+        "options": [
+          "AutoFilter (Ctrl + Shift + L)",
+          "Flash Fill (Ctrl + E)",
+          "Data Consolidation",
+          "Format Painter (Ctrl + Shift + C)"
+        ],
+        "answer": 1,
+        "explanation": "Flash Fill (shortcut Ctrl + E, found under Data tab) automatically senses patterns in adjacent columns (like splitting first and last names or formatting phone numbers) and fills in the rest of the column."
+      },
+      {
+        "id": "exp_excel_errors_ref",
+        "topic": "MS Office",
+        "question": "In MS Excel, what causes the #REF! error to occur?",
+        "options": [
+          "A formula attempts to divide a number by zero or an empty cell",
+          "A cell reference in the formula is invalid or refers to a deleted row/column",
+          "The column is too narrow to display the calculated number",
+          "A function name is misspelled in the formula"
+        ],
+        "answer": 1,
+        "explanation": "#REF! indicates an invalid cell reference, typically caused when a row, column, or sheet referenced in the formula has been deleted. #DIV/0! is division by zero, #### is column too narrow, and #NAME? is misspelled function name."
+      },
+      {
+        "id": "exp_excel_countif_wildcard",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "What is the result of =COUNTIF(A2:A6, \"*East*\") on this list of branches?",
+        "code": "   |        A        |\n---+-----------------+\n 2 | North East Hub  |\n 3 | South Zone      |\n 4 | Eastern Express |\n 5 | Far East Depot  |\n 6 | West Coast      |",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "answer": 1,
+        "explanation": "The wildcard pattern \"*East*\" matches any text containing \"East\" anywhere in the string. It matches A2 (\"North East Hub\"), A4 (\"Eastern Express\"), and A5 (\"Far East Depot\"). Total count = 3."
+      },
+      {
+        "id": "exp_excel_string_mid",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "What is the output of the formula =MID(A2, 4, 3) applied to the cell below?",
+        "code": "   |         A         |\n---+-------------------+\n 2 | ACCENTURE2026TECH |",
+        "options": [
+          "ENT",
+          "CEN",
+          "ACC",
+          "TUR"
+        ],
+        "answer": 0,
+        "explanation": "MID(text, start_num, num_chars) starts at character 4 (1=A, 2=C, 3=C, 4=E) and extracts 3 characters: \"E\", \"N\", \"T\" -> \"ENT\"."
+      },
+      {
+        "id": "exp_excel_cell_referencing",
+        "topic": "MS Office",
+        "question": "In cell C2, the formula is =$A$1 * B2. If this cell is copied and pasted into cell D4, what will the formula become?",
+        "options": [
+          "=$A$1 * B4",
+          "=$B$3 * C4",
+          "=$A$1 * C4",
+          "=$B$1 * C4"
+        ],
+        "answer": 2,
+        "explanation": "In =$A$1 * B2, $A$1 is an absolute reference so both column and row remain fixed as $A$1. B2 is a relative reference: moving from C2 to D4 shifts 1 column right (B -> C) and 2 rows down (2 -> 4), resulting in C4. Thus, the formula becomes =$A$1 * C4."
+      },
+      {
+        "id": "exp_excel_index_match",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "To find the Employee Name whose ID is \"E103\" from the table below, which formula will successfully return the name?",
+        "code": "   |      A       |       B       |      C      |\n---+--------------+---------------+-------------+\n 1 |    Name      |   Department  | Employee ID |\n 2 | Alice Walker | IT            | E101        |\n 3 | Bob Martin   | HR            | E102        |\n 4 | Charlie Ray  | Finance       | E103        |\n 5 | Diana Ross   | Marketing     | E104        |",
+        "options": [
+          "=VLOOKUP(\"E103\", A2:C5, 1, FALSE)",
+          "=INDEX(A2:A5, MATCH(\"E103\", C2:C5, 0))",
+          "=HLOOKUP(\"E103\", A2:C5, 1, FALSE)",
+          "=LOOKUP(\"E103\", A2:C5, 1)"
+        ],
+        "answer": 1,
+        "explanation": "Since Employee ID is in Column C and the target Name is in Column A (to the left), VLOOKUP fails because it cannot look left. INDEX(A2:A5, MATCH(\"E103\", C2:C5, 0)) correctly matches row 3 in column C and retrieves \"Charlie Ray\" from column A."
+      },
+      {
+        "id": "exp_excel_hlookup",
+        "topic": "MS Office",
+        "codeLang": "Excel Table",
+        "question": "If the formula =HLOOKUP(25, A1:E3, 3, TRUE) is applied in cell B5, what will be the returned value?",
+        "code": "   |    A   |    B   |    C   |    D   |    E   |\n---+--------+--------+--------+--------+--------+\n 1 |   10   |   20   |   30   |   40   |   50   |\n 2 | Silver |  Gold  |Platinum| Diamond| Elite  |\n 3 |  100   |  250   |  500   |  750   |  1000  |",
+        "options": [
+          "500",
+          "250",
+          "Gold",
+          "#N/A"
+        ],
+        "answer": 1,
+        "explanation": "HLOOKUP searches horizontally across Row 1 for the lookup value. With range_lookup = TRUE (approximate match), it finds the largest value <= 25, which is 20 (Column B). Row index 3 retrieves the value in Row 3 of Column B: 250."
+      },
+      {
         "id": "pyq_security_stateful_firewall",
         "topic": "Security",
         "question": "A stateful firewall maintains which of the following tables to track the status of active network connections?",
