@@ -1168,26 +1168,6 @@ function finishAssessment() {
   else if (overallPct >= 60) feedbackEl.textContent = '👍 Good speed and spatial reasoning. Ready for Accenture!';
   else feedbackEl.textContent = '💪 Keep practicing! Speed and directional awareness improve with practice.';
 
-  // If in Full Mock Mode or redirected from fullmock, show proceed button to Stage 4 (Coding)
-  const params = new URLSearchParams(window.location.search);
-  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
-  const nextStageEl = document.getElementById('fullmock-next-stage');
-  if (nextStageEl && isFullMock) {
-    nextStageEl.innerHTML = `
-      <div style="margin: 20px auto; max-width: 500px; padding: 20px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(0, 212, 255, 0.25)); border: 2px solid var(--accent-purple); border-radius: 16px; text-align: center; box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);">
-        <div style="font-size: 2rem; margin-bottom: 4px;">🎉</div>
-        <h3 style="margin-bottom: 6px; color: #fff;">Stage 3 Complete!</h3>
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
-          Next in Full Mock: <strong>Stage 4 — Coding Assessment (3 Problems • 60 min)</strong>
-        </p>
-        <a href="test.html?company=accenture&section=coding&from=fullmock" class="btn btn-primary btn-lg" style="box-shadow: 0 0 20px rgba(0,212,255,0.4); text-decoration: none;">
-          🚀 Proceed to Stage 4: Coding Assessment →
-        </a>
-      </div>
-    `;
-    nextStageEl.classList.remove('hidden');
-  }
-
   // Save to localStorage for My Results history
   const timeTaken = 20 * 60 - cogState.overallTimeRemaining;
   const resultRecord = {
@@ -1252,5 +1232,69 @@ function finishAssessment() {
     localStorage.setItem(key, JSON.stringify(history));
   } catch (e) {
     console.error('Failed to save result:', e);
+  }
+
+  // If in Full Mock Mode or redirected from fullmock, save stage3 and auto-advance to Stage 4 (Coding)
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+
+  if (isFullMock) {
+    let fullMock = {};
+    try {
+      fullMock = JSON.parse(localStorage.getItem('mockprep_current_fullmock')) || {};
+    } catch(e) { fullMock = {}; }
+    fullMock.id = fullMock.id || ('fm_' + Date.now().toString(36));
+    fullMock.stage3 = resultRecord;
+    try {
+      localStorage.setItem('mockprep_current_fullmock', JSON.stringify(fullMock));
+    } catch(e) {}
+
+    // Show Auto-Transition Modal to Stage 4: Algorithmic Coding
+    const transModal = document.getElementById('fullmock-transition-modal');
+    if (transModal) {
+      transModal.classList.add('active');
+      let countdown = 3;
+      const timerEl = document.getElementById('fm-trans-timer');
+      const btn = document.getElementById('fm-trans-btn');
+      if (timerEl) timerEl.textContent = countdown;
+      const targetUrl = 'test.html?company=accenture&section=coding&mode=fullmock';
+
+      let hasNavigated = false;
+      const proceed = () => {
+        if (hasNavigated) return;
+        hasNavigated = true;
+        clearInterval(transTimer);
+        window.location.href = targetUrl;
+      };
+
+      if (btn) btn.onclick = proceed;
+
+      const transTimer = setInterval(() => {
+        countdown--;
+        if (timerEl) timerEl.textContent = countdown;
+        if (countdown <= 0) {
+          proceed();
+        }
+      }, 1000);
+    } else {
+      window.location.href = 'test.html?company=accenture&section=coding&mode=fullmock';
+    }
+  }
+
+  const nextStageEl = document.getElementById('fullmock-next-stage');
+  if (nextStageEl && isFullMock) {
+    nextStageEl.innerHTML = `
+      <div style="margin: 20px auto; max-width: 500px; padding: 20px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(0, 212, 255, 0.25)); border: 2px solid var(--accent-purple); border-radius: 16px; text-align: center; box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);">
+        <div style="font-size: 2rem; margin-bottom: 4px;">🎉</div>
+        <h3 style="margin-bottom: 6px; color: #fff;">Stage 3 Complete!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+          Next in Full Mock: <strong>Stage 4 — Coding Assessment (3 Problems • 60 min)</strong>
+        </p>
+        <a href="test.html?company=accenture&section=coding&mode=fullmock" class="btn btn-primary btn-lg" style="box-shadow: 0 0 20px rgba(0,212,255,0.4); text-decoration: none;">
+          🚀 Proceed to Stage 4: Coding Assessment →
+        </a>
+      </div>
+    `;
+    nextStageEl.classList.remove('hidden');
   }
 }

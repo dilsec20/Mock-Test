@@ -769,8 +769,25 @@
           <button class="btn btn-ghost btn-lg" onclick="location.reload()">🔄 Play Again</button>
         </div>
       </div>
+  <!-- Auto-Transition Modal for Full Mock Test -->
+  <div class="modal-overlay" id="fullmock-transition-modal">
+    <div class="modal" style="max-width: 520px; text-align: center; border: 2px solid var(--accent-purple); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.35);">
+      <div style="font-size: 3rem; margin-bottom: 6px;">🎮⚡</div>
+      <h3 style="font-size: 1.4rem; color: #fff; margin-bottom: 6px;">Stage 3 Complete!</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 16px;">
+        Gamified Cognitive Games completed successfully.
+      </p>
+      <div style="background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+        <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Next Recruitment Stage</div>
+        <div style="font-weight: 700; color: #a78bfa; font-size: 1.05rem; margin-top: 4px;">Stage 4: Algorithmic Coding Assessment (Final Stage • 60 min)</div>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">
+        Auto-advancing in <strong id="fm-trans-timer" style="color: #a78bfa; font-size: 1.3rem;">3</strong>s...
+      </p>
+      <button class="btn btn-primary btn-lg" id="fm-trans-btn" style="width: 100%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-primary));">
+        Proceed to Stage 4 ➔
+      </button>
     </div>
-
   </div>
 
   <script src="js/cognitive-engine.js"></script>

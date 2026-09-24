@@ -71,7 +71,10 @@
         <!-- Injected by JS -->
       </div>
 
-      <!-- Full Mock Test Progression Banner (Shown when coming from full mock test) -->
+      <!-- Full Mock Grand Recruitment Scorecard Section -->
+      <div id="fullmock-grand-scorecard" class="hidden"></div>
+
+      <!-- Full Mock Test Progression Banner (Shown when coming from intermediate stage) -->
       <div id="fullmock-next-stage" class="hidden"></div>
 
       <!-- Tabs -->
@@ -100,8 +103,8 @@
       <div class="tab-content" id="tab-review">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
           <h3>Answer Review</h3>
-          <div style="display: flex; gap: var(--space-sm);">
-            <button class="btn btn-sm btn-ghost" onclick="filterReview('all')">All</button>
+          <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;" id="review-filter-buttons">
+            <button class="btn btn-sm btn-ghost active" onclick="filterReview('all')">All</button>
             <button class="btn btn-sm btn-ghost" onclick="filterReview('incorrect')">❌ Incorrect</button>
             <button class="btn btn-sm btn-ghost" onclick="filterReview('correct')">✅ Correct</button>
             <button class="btn btn-sm btn-ghost" onclick="filterReview('skipped')">⬜ Skipped</button>

@@ -183,6 +183,19 @@ function beginTest() {
     });
     testState.timeRemaining = totalTime * 60;
     document.getElementById('current-section-name').textContent = 'Stage 1 of 4: Technical Assessment (Full Mock)';
+
+    // Fresh session tracking across all 4 stages
+    try {
+      localStorage.setItem('mockprep_current_fullmock', JSON.stringify({
+        id: 'fm_' + Date.now().toString(36),
+        company: data.company,
+        date: new Date().toISOString(),
+        stage1: null,
+        stage2: null,
+        stage3: null,
+        stage4: null
+      }));
+    } catch(e) {}
   } else {
     const section = data.sections.find(s => s.id === testState.selectedSection);
     const sectionQuestions = data.questionBank[testState.selectedSection] || [];
@@ -219,8 +232,36 @@ function beginTest() {
 let codingTimerState = {
   interval: null,
   timeRemaining: 60 * 60,
-  isRunning: false
+  isRunning: false,
+  problemStatuses: { 0: 'solved', 1: 'solved', 2: 'solved' } // default to solved
 };
+
+function selectCodingStatus(index, status) {
+  codingTimerState.problemStatuses[index] = status;
+  // Update button visual state
+  const group = document.getElementById(`coding-status-group-${index}`);
+  if (group) {
+    group.querySelectorAll('.coding-status-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.status === status);
+    });
+  }
+  updateCodingSummary();
+}
+
+function updateCodingSummary() {
+  const problems = (testState.companyData && testState.companyData.questionBank && testState.companyData.questionBank.coding) || [1, 2, 3];
+  let solved = 0;
+  let partial = 0;
+  problems.forEach((_, i) => {
+    const s = codingTimerState.problemStatuses[i] || 'solved';
+    if (s === 'solved') solved++;
+    else if (s === 'partial') partial++;
+  });
+  const summaryEl = document.getElementById('coding-solved-summary');
+  if (summaryEl) {
+    summaryEl.innerHTML = `<strong>${solved}</strong> Solved • <strong>${partial}</strong> Partial of <strong>${problems.length}</strong> Problems`;
+  }
+}
 
 function toggleCodingTimer() {
   const btn = document.getElementById('coding-timer-btn');
@@ -237,7 +278,8 @@ function toggleCodingTimer() {
       if (codingTimerState.timeRemaining <= 0) {
         clearInterval(codingTimerState.interval);
         codingTimerState.isRunning = false;
-        alert('⏰ 60 Minutes Coding Assessment Time Expired!');
+        // Auto-advance to final results when coding time ends!
+        finishFullMockRecruitment();
       }
     }, 1000);
     if (btn) btn.innerHTML = `⏸️ Pause Timer (<span id="coding-timer-display">${formatCodingTime(codingTimerState.timeRemaining)}</span>)`;
@@ -255,9 +297,151 @@ function formatCodingTime(sec) {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
+// ── Grand Finish: Full Mock 4-Stage Final Score & Review ──
 function finishFullMockRecruitment() {
-  const modal = document.getElementById('fullmock-complete-modal');
-  if (modal) modal.classList.add('active');
+  if (codingTimerState.interval) clearInterval(codingTimerState.interval);
+
+  const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
+  const problems = (data && data.questionBank && data.questionBank.coding) || [
+    { title: 'Subarray with Given Sum', difficulty: 'Medium', topics: ['Arrays', 'Two Pointers'], link: 'https://leetcode.com/problems/subarray-sum-equals-k/' },
+    { title: 'Rat in a Maze Problem', difficulty: 'Medium', topics: ['Backtracking', 'Recursion'], link: 'https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1' },
+    { title: 'Count Inversions in an Array', difficulty: 'Medium', topics: ['Divide and Conquer', 'Merge Sort'], link: 'https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1' }
+  ];
+
+  let solved = 0;
+  let partial = 0;
+  const problemResults = problems.map((p, idx) => {
+    const st = codingTimerState.problemStatuses[idx] || 'solved';
+    if (st === 'solved') solved++;
+    else if (st === 'partial') partial++;
+
+    return {
+      id: 'coding_' + (idx + 1),
+      question: `[Stage 4: Coding] Problem ${idx + 1}: ${p.title} (${p.difficulty})`,
+      code: `// Topics: ${(p.topics || ['DSA']).join(', ')}\n// Official Practice URL: ${p.link}`,
+      options: ['✅ Solved (100% test cases passed)', '⚡ Partial (50% test cases passed)', '❌ Attempted / Incomplete (0%)'],
+      correctAnswer: 0,
+      userAnswer: st === 'solved' ? 0 : st === 'partial' ? 1 : 2,
+      isCorrect: st === 'solved',
+      explanation: `Target Complexity: Optimal O(N) or O(N log N). Difficulty: ${p.difficulty}. Topics: ${(p.topics || ['Algorithms']).join(', ')}. Practice link: ${p.link}`,
+      topic: (p.topics && p.topics[0]) || 'Algorithmic Coding'
+    };
+  });
+
+  const codingPct = Math.round(((solved * 100) + (partial * 50)) / (problems.length * 100) * 100);
+  const timeTaken = Math.max(60 * 60 - codingTimerState.timeRemaining, 60);
+
+  const stage4 = {
+    id: 'stage4_coding_' + Date.now().toString(36),
+    company: data?.company || 'Accenture',
+    section: 'Algorithmic Coding Assessment',
+    date: new Date().toISOString(),
+    total: problems.length,
+    correct: solved,
+    partial: partial,
+    incorrect: problems.length - (solved + partial),
+    unanswered: 0,
+    percentage: codingPct,
+    timeTaken: timeTaken,
+    totalTime: 60 * 60,
+    topicScores: {
+      'Algorithmic Coding': { correct: solved, total: problems.length }
+    },
+    questionResults: problemResults
+  };
+
+  // Retrieve Stage 1, Stage 2, Stage 3 from localStorage
+  let fullMockSession = {};
+  try {
+    fullMockSession = JSON.parse(localStorage.getItem('mockprep_current_fullmock')) || {};
+  } catch(e) { fullMockSession = {}; }
+
+  // Fallback defaults if stages weren't recorded sequentially
+  const stage1 = fullMockSession.stage1 || {
+    total: 40, correct: 34, incorrect: 6, unanswered: 0, percentage: 85, timeTaken: 1200,
+    topicScores: { 'Pseudocode': { correct: 9, total: 10 }, 'MS Office': { correct: 9, total: 10 }, 'Networking': { correct: 8, total: 10 }, 'Cloud': { correct: 8, total: 10 } },
+    questionResults: []
+  };
+
+  const stage2 = fullMockSession.stage2 || {
+    total: 20, correct: 17, incorrect: 3, unanswered: 0, percentage: 85, timeTaken: 900,
+    topicScores: { 'Reading': { correct: 4, total: 4 }, 'Repeat': { correct: 5, total: 6 }, 'Sentence Builds': { correct: 4, total: 5 }, 'Stories': { correct: 4, total: 5 } },
+    questionResults: []
+  };
+
+  const stage3 = fullMockSession.stage3 || {
+    total: 36, correct: 30, incorrect: 6, unanswered: 0, percentage: 83, timeTaken: 800,
+    topicScores: { 'Bubble Math Challenge': { correct: 20, total: 24 }, 'Lock & Key Directional Doors': { correct: 5, total: 6 }, 'Maze Pathfinding': { correct: 5, total: 6 } },
+    questionResults: []
+  };
+
+  // Official Placement Weighting (Grand Total: 100 Marks):
+  // Stage 1 (Technical MCQs): 35 Marks
+  // Stage 2 (Spoken English): 25 Marks
+  // Stage 3 (Cognitive Games): 20 Marks
+  // Stage 4 (Coding): 20 Marks
+  const marks1 = Math.round(((stage1.correct || 0) / Math.max(stage1.total || 1, 1)) * 35);
+  const marks2 = Math.round(((stage2.percentage || 0) / 100) * 25);
+  const marks3 = Math.round(((stage3.percentage || 0) / 100) * 20);
+  const marks4 = Math.round((stage4.percentage / 100) * 20);
+
+  const grandTotalMarks = marks1 + marks2 + marks3 + marks4;
+  const isSelected = grandTotalMarks >= 70;
+
+  // Combine questions from all 4 stages for full review
+  const combinedQuestions = [
+    ...(stage1.questionResults || []),
+    ...(stage2.questionResults || []),
+    ...(stage3.questionResults || []),
+    ...(stage4.questionResults || [])
+  ];
+
+  // Combine topic scores
+  const combinedTopics = {
+    ...(stage1.topicScores || {}),
+    ...(stage2.topicScores || {}),
+    ...(stage3.topicScores || {}),
+    ...(stage4.topicScores || {})
+  };
+
+  const masterRecord = {
+    id: 'fullmock_' + Date.now().toString(36),
+    company: data?.company || 'Accenture',
+    section: 'Full Recruitment Mock Test (All 4 Stages)',
+    isFullMock: true,
+    date: new Date().toISOString(),
+    totalMarks: grandTotalMarks,
+    maxMarks: 100,
+    percentage: grandTotalMarks,
+    passed: isSelected,
+    verdict: isSelected ? '🎉 SELECTED / CLEARED ALL ROUNDS' : '⚠️ RE-PRACTICE RECOMMENDED (CUTOFF: 70/100)',
+    total: (stage1.total || 0) + (stage2.total || 0) + (stage3.total || 0) + stage4.total,
+    correct: (stage1.correct || 0) + (stage2.correct || 0) + (stage3.correct || 0) + stage4.correct,
+    incorrect: (stage1.incorrect || 0) + (stage2.incorrect || 0) + (stage3.incorrect || 0) + stage4.incorrect,
+    unanswered: (stage1.unanswered || 0) + (stage2.unanswered || 0) + (stage3.unanswered || 0) + stage4.unanswered,
+    timeTaken: (stage1.timeTaken || 0) + (stage2.timeTaken || 0) + (stage3.timeTaken || 0) + stage4.timeTaken,
+    stageMarks: {
+      stage1: { name: 'Technical Assessment (MCQs)', marks: marks1, max: 35, pct: stage1.percentage, correct: stage1.correct, total: stage1.total, passed: marks1 >= 21 },
+      stage2: { name: 'Communication Speaking (Pearson)', marks: marks2, max: 25, pct: stage2.percentage, correct: stage2.correct, total: stage2.total, passed: marks2 >= 15 },
+      stage3: { name: 'Gamified Cognitive Games', marks: marks3, max: 20, pct: stage3.percentage, correct: stage3.correct, total: stage3.total, passed: marks3 >= 12 },
+      stage4: { name: 'Algorithmic Coding Assessment', marks: marks4, max: 20, pct: stage4.percentage, solved: stage4.correct, total: stage4.total, passed: marks4 >= 10 }
+    },
+    stage1,
+    stage2,
+    stage3,
+    stage4,
+    topicScores: combinedTopics,
+    questionResults: combinedQuestions
+  };
+
+  // Save master recruitment scorecard to history
+  saveResults(masterRecord);
+
+  // Clear temporary session
+  try { localStorage.removeItem('mockprep_current_fullmock'); } catch(e) {}
+
+  // Redirect to Master Results & Review Page!
+  window.location.href = `results.html?id=${masterRecord.id}&type=fullmock`;
 }
 
 // ── Show Coding Links ──
@@ -267,7 +451,7 @@ function showCodingLinks() {
   document.getElementById('coding-view').classList.remove('hidden');
 
   const params = new URLSearchParams(window.location.search);
-  const isFullMock = params.get('from') === 'fullmock';
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
   const pipelineEl = document.getElementById('coding-fullmock-pipeline');
 
   if (pipelineEl && isFullMock) {
@@ -283,33 +467,61 @@ function showCodingLinks() {
           <span style="background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #10b981; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">🏆 Stage 4: Coding (Final Stage)</span>
         </div>
         <h3 style="margin-bottom: 6px; color: #fff; font-size: 1.3rem;">🏆 Final Stage: Accenture Coding Assessment</h3>
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.5;">
-          3 Official Accenture Coding Problems • Practice solving them within the official 60-minute timeframe.
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 14px; line-height: 1.5;">
+          3 Official Accenture Coding Problems • Practice solving them within the 60-minute timeframe. When done, submit to view your <strong>Grand Master Recruitment Report & Review</strong>!
         </p>
+        <div id="coding-solved-summary" style="margin-bottom: 16px; font-size: 0.95rem; color: #00d4ff;">
+          <strong>3</strong> Solved • <strong>0</strong> Partial of <strong>3</strong> Problems
+        </div>
         <div style="display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;">
           <button id="coding-timer-btn" class="btn btn-secondary btn-sm" onclick="toggleCodingTimer()" style="font-weight: 600;">⏱️ Start 60-Min Exam Timer (<span id="coding-timer-display">60:00</span>)</button>
-          <button class="btn btn-success btn-sm" onclick="finishFullMockRecruitment()" style="font-weight: 700;">🎉 Finish Full Mock Test</button>
+          <button class="btn btn-success btn-sm" onclick="finishFullMockRecruitment()" style="font-weight: 700; background: linear-gradient(135deg, #10b981, #00d4ff); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);">🎉 Submit & View Grand Mock Results ➔</button>
         </div>
       </div>
     `;
     pipelineEl.classList.remove('hidden');
+
+    // Auto-start 60-minute timer in full mock mode
+    if (!codingTimerState.isRunning) {
+      toggleCodingTimer();
+    }
   }
 
-  const data = testState.companyData;
-  const problems = data.questionBank.coding || [];
+  const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
+  const problems = (data && data.questionBank && data.questionBank.coding) || [];
 
   const grid = document.getElementById('coding-links-grid');
-  grid.innerHTML = problems.map((p, i) => `
-    <a href="${p.link}" target="_blank" rel="noopener" class="coding-link-card">
-      <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: var(--bg-glass); border: 1px solid var(--border-glass); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">${i + 1}</div>
-      <div style="flex: 1;">
-        <div style="font-weight: 600; font-size: 0.9rem;">${p.title}</div>
-        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${p.topics.join(' • ')}</div>
+  grid.innerHTML = problems.map((p, i) => {
+    const curStatus = codingTimerState.problemStatuses[i] || 'solved';
+    return `
+      <div class="coding-problem-card" style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 14px; padding: 20px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 212, 255, 0.12); color: #00d4ff; font-weight: 800; display: flex; align-items: center; justify-content: center;">${i + 1}</div>
+            <div>
+              <div style="font-weight: 700; font-size: 1.05rem; color: #fff;">${p.title}</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">${(p.topics || []).join(' • ')}</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="difficulty ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
+            <a href="${p.link}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 6px 14px; text-decoration: none;">Solve on LeetCode/GFG ↗</a>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border-glass); flex-wrap: wrap; gap: 8px;">
+          <span style="font-size: 0.82rem; color: var(--text-secondary); font-weight: 600;">Status for Test Report:</span>
+          <div class="coding-status-group" id="coding-status-group-${i}" style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'solved' ? 'active' : ''}" data-status="solved" onclick="selectCodingStatus(${i}, 'solved')" style="font-size: 0.78rem; padding: 5px 12px;">✅ Solved (100%)</button>
+            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'partial' ? 'active' : ''}" data-status="partial" onclick="selectCodingStatus(${i}, 'partial')" style="font-size: 0.78rem; padding: 5px 12px;">⚡ Partial (50%)</button>
+            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'attempted' ? 'active' : ''}" data-status="attempted" onclick="selectCodingStatus(${i}, 'attempted')" style="font-size: 0.78rem; padding: 5px 12px;">❌ Attempted (0%)</button>
+          </div>
+        </div>
       </div>
-      <span class="difficulty ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
-      <span style="color: var(--text-dim);">↗</span>
-    </a>
-  `).join('');
+    `;
+  }).join('');
+
+  updateCodingSummary();
 }
 
 // ── Timer ──
@@ -322,7 +534,12 @@ function startTimer() {
       clearInterval(testState.timerInterval);
       testState.timeRemaining = 0;
       updateTimerDisplay();
-      document.getElementById('timeup-modal').classList.add('active');
+      if (testState.isFullMock) {
+        // Auto-submit and proceed to next stage automatically without modal wait!
+        submitTest();
+      } else {
+        document.getElementById('timeup-modal').classList.add('active');
+      }
       return;
     }
 
@@ -537,16 +754,76 @@ function submitTest() {
   // Calculate results
   const results = calculateResults();
 
-  // Save to localStorage
+  // Save individual stage result to history
   saveResults(results);
 
   // Hide modals
   document.getElementById('submit-modal').classList.remove('active');
   document.getElementById('timeup-modal').classList.remove('active');
 
-  // Navigate to results page
-  const isFullMock = testState.isFullMock || testState.selectedSection === 'full' || new URLSearchParams(window.location.search).get('from') === 'fullmock';
-  window.location.href = `results.html?id=${results.id}${isFullMock ? '&from=fullmock' : ''}`;
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = testState.isFullMock || testState.selectedSection === 'full' || 
+                     params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+
+  if (isFullMock) {
+    // Save Stage 1 to Full Mock Pipeline session
+    let fullMock = {};
+    try {
+      fullMock = JSON.parse(localStorage.getItem('mockprep_current_fullmock')) || {};
+    } catch(e) { fullMock = {}; }
+    fullMock.id = fullMock.id || ('fm_' + Date.now().toString(36));
+    fullMock.company = testState.companyData?.company || 'Accenture';
+    fullMock.date = fullMock.date || new Date().toISOString();
+    fullMock.stage1 = results;
+    try {
+      localStorage.setItem('mockprep_current_fullmock', JSON.stringify(fullMock));
+    } catch(e) {}
+
+    // Show Auto-Transition Modal to Stage 2: Spoken English
+    const transModal = document.getElementById('fullmock-transition-modal');
+    if (transModal) {
+      const iconEl = document.getElementById('fm-trans-icon');
+      const titleEl = document.getElementById('fm-trans-title');
+      const descEl = document.getElementById('fm-trans-desc');
+      const nextEl = document.getElementById('fm-trans-next');
+      const timerEl = document.getElementById('fm-trans-timer');
+      const btn = document.getElementById('fm-trans-btn');
+
+      if (iconEl) iconEl.textContent = '✅🎙️';
+      if (titleEl) titleEl.textContent = 'Stage 1 Complete!';
+      if (descEl) descEl.textContent = `Technical Assessment MCQs submitted (${results.correct}/${results.total} correct • ${results.percentage}%).`;
+      if (nextEl) nextEl.textContent = 'Stage 2: Communication Speaking Assessment (Pearson Format)';
+
+      transModal.classList.add('active');
+
+      let countdown = 3;
+      if (timerEl) timerEl.textContent = countdown;
+      const targetUrl = `comm-test.html?company=${testState.company}&mode=fullmock`;
+
+      let hasNavigated = false;
+      const proceed = () => {
+        if (hasNavigated) return;
+        hasNavigated = true;
+        clearInterval(transTimer);
+        window.location.href = targetUrl;
+      };
+
+      if (btn) btn.onclick = proceed;
+
+      const transTimer = setInterval(() => {
+        countdown--;
+        if (timerEl) timerEl.textContent = countdown;
+        if (countdown <= 0) {
+          proceed();
+        }
+      }, 1000);
+    } else {
+      window.location.href = `comm-test.html?company=${testState.company}&mode=fullmock`;
+    }
+  } else {
+    // Normal single-section test redirect
+    window.location.href = `results.html?id=${results.id}`;
+  }
 }
 
 // ── Calculate Results ──

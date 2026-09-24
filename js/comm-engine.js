@@ -900,35 +900,7 @@ function finishTest() {
     document.getElementById('result-subtitle').textContent = '💪 Keep practicing! Focus on speaking clearly and at a steady pace.';
   }
 
-  // If in Full Mock Mode or redirected from fullmock, show proceed button to Stage 3 (Cognitive Games)
-  const params = new URLSearchParams(window.location.search);
-  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
-  const nextStageEl = document.getElementById('fullmock-next-stage');
-  if (nextStageEl && isFullMock) {
-    nextStageEl.innerHTML = `
-      <div style="margin: 24px auto; max-width: 650px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 212, 255, 0.2)); border: 2px solid #10b981; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 35px rgba(16, 185, 129, 0.35);">
-        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
-          <span style="color: var(--text-dim); align-self: center;">→</span>
-          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 2: Spoken English</span>
-          <span style="color: var(--text-dim); align-self: center;">→</span>
-          <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">⚡ Stage 3: Gamified Cognitive (Next)</span>
-          <span style="color: var(--text-dim); align-self: center;">→</span>
-          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 4px 12px; border-radius: 99px; font-size: 0.75rem;">Stage 4: Coding</span>
-        </div>
-        <h3 style="margin-bottom: 8px; font-size: 1.3rem; color: #fff;">🎉 Stage 2 Complete!</h3>
-        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
-          Next up in your Full Mock Test: <strong>Stage 3 — Gamified Cognitive Assessment</strong> featuring Bubble Math (14s countdown & auto-skip), Directional Doors (4m timer), and Maze Pathfinding (4m timer).
-        </p>
-        <a href="cognitive-games.html?company=accenture&mode=assessment&from=fullmock" class="btn btn-primary btn-lg" style="font-size: 1.05rem; padding: 14px 32px; box-shadow: 0 4px 25px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-          <span>🎮</span> Proceed to Stage 3: Gamified Cognitive Games →
-        </a>
-      </div>
-    `;
-    nextStageEl.classList.remove('hidden');
-  }
-
-  // Save to localStorage for My Results history
+  // Compile and save results
   const timeTaken = 20 * 60 - commState.overallTimeRemaining;
   const questionResults = [];
   commState.parts.forEach(part => {
@@ -985,6 +957,78 @@ function finishTest() {
     }
   } catch (e) {
     console.error('Failed to save result:', e);
+  }
+
+  // If in Full Mock Mode or redirected from fullmock, save stage2 and auto-advance to Stage 3 (Cognitive Games)
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+
+  if (isFullMock) {
+    let fullMock = {};
+    try {
+      fullMock = JSON.parse(localStorage.getItem('mockprep_current_fullmock')) || {};
+    } catch(e) { fullMock = {}; }
+    fullMock.id = fullMock.id || ('fm_' + Date.now().toString(36));
+    fullMock.stage2 = resultRecord;
+    try {
+      localStorage.setItem('mockprep_current_fullmock', JSON.stringify(fullMock));
+    } catch(e) {}
+
+    // Show Auto-Transition Modal to Stage 3: Gamified Cognitive Games
+    const transModal = document.getElementById('fullmock-transition-modal');
+    if (transModal) {
+      transModal.classList.add('active');
+      let countdown = 3;
+      const timerEl = document.getElementById('fm-trans-timer');
+      const btn = document.getElementById('fm-trans-btn');
+      if (timerEl) timerEl.textContent = countdown;
+      const targetUrl = 'cognitive-games.html?company=accenture&mode=fullmock';
+
+      let hasNavigated = false;
+      const proceed = () => {
+        if (hasNavigated) return;
+        hasNavigated = true;
+        clearInterval(transTimer);
+        window.location.href = targetUrl;
+      };
+
+      if (btn) btn.onclick = proceed;
+
+      const transTimer = setInterval(() => {
+        countdown--;
+        if (timerEl) timerEl.textContent = countdown;
+        if (countdown <= 0) {
+          proceed();
+        }
+      }, 1000);
+    } else {
+      window.location.href = 'cognitive-games.html?company=accenture&mode=fullmock';
+    }
+  }
+
+  const nextStageEl = document.getElementById('fullmock-next-stage');
+  if (nextStageEl && isFullMock) {
+    nextStageEl.innerHTML = `
+      <div style="margin: 24px auto; max-width: 650px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 212, 255, 0.2)); border: 2px solid #10b981; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 35px rgba(16, 185, 129, 0.35);">
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 2: Spoken English</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">⚡ Stage 3: Gamified Cognitive (Next)</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 4px 12px; border-radius: 99px; font-size: 0.75rem;">Stage 4: Coding</span>
+        </div>
+        <h3 style="margin-bottom: 8px; font-size: 1.3rem; color: #fff;">🎉 Stage 2 Complete!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+          Next up in your Full Mock Test: <strong>Stage 3 — Gamified Cognitive Assessment</strong> featuring Bubble Math (14s countdown & auto-skip), Directional Doors (4m timer), and Maze Pathfinding (4m timer).
+        </p>
+        <a href="cognitive-games.html?company=accenture&mode=fullmock" class="btn btn-primary btn-lg" style="font-size: 1.05rem; padding: 14px 32px; box-shadow: 0 4px 25px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <span>🎮</span> Proceed to Stage 3: Gamified Cognitive Games →
+        </a>
+      </div>
+    `;
+    nextStageEl.classList.remove('hidden');
   }
 }
 
