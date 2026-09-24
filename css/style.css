@@ -553,19 +553,26 @@ code, .code-block {
 /* ── Section Selector (before test) ── */
 .section-selector {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-md);
-  padding: var(--space-xl) 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 20px 0 12px;
 }
 
 .section-option {
   background: var(--bg-glass);
   border: 2px solid var(--border-glass);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  min-height: 142px;
+  padding: 18px 20px;
   cursor: pointer;
   transition: all var(--transition-base);
   text-align: left;
+}
+
+.full-mock-card {
+  grid-column: 1 / -1;
+  min-height: 0;
+  padding: 18px 20px;
 }
 
 .section-option:hover {
@@ -592,6 +599,33 @@ code, .code-block {
 .section-option .section-meta {
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.section-select-page {
+  min-height: calc(100vh - 76px);
+  padding: 34px 20px 40px;
+}
+
+.section-select-page .container-narrow {
+  max-width: 1080px;
+}
+
+.section-select-page h2 {
+  margin-bottom: 6px;
+}
+
+.section-select-page .subtitle {
+  margin-bottom: 8px;
+}
+
+.section-select-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.section-select-actions .btn {
+  min-width: 190px;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1956,6 +1990,26 @@ body.in-exam-mode .container {
   .score-summary-grid { grid-template-columns: repeat(2, 1fr); }
   .coding-links-grid { grid-template-columns: 1fr; }
   .container, .container-narrow { padding: 0 var(--space-md); }
+
+  .section-select-page {
+    padding: 24px 14px 92px;
+  }
+
+  .section-select-actions {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    padding: 12px 14px;
+    background: rgba(10, 14, 26, 0.94);
+    border-top: 1px solid var(--border-glass);
+    backdrop-filter: blur(14px);
+  }
+
+  .section-select-actions .btn {
+    width: min(100%, 360px);
+  }
 }
 
 @media (max-width: 480px) {

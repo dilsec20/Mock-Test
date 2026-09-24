@@ -326,7 +326,7 @@ function updateCodingSummary() {
   let solved = 0;
   let partial = 0;
   problems.forEach((_, i) => {
-    const s = codingTimerState.problemStatuses[i] || 'solved';
+    const s = codingTimerState.problemStatuses[i] || 'attempted';
     if (s === 'solved') solved++;
     else if (s === 'partial') partial++;
   });
@@ -387,7 +387,7 @@ function finishFullMockRecruitment() {
   let solved = 0;
   let partial = 0;
   const problemResults = problems.map((p, idx) => {
-    const st = codingTimerState.problemStatuses[idx] || 'solved';
+    const st = codingTimerState.problemStatuses[idx] || 'attempted';
     if (st === 'solved') solved++;
     else if (st === 'partial') partial++;
 
@@ -586,7 +586,7 @@ function showCodingLinks() {
 
   const currentIndex = Math.min(codingTimerState.activeIndex, Math.max(0, problems.length - 1));
   const currentProblem = problems[currentIndex];
-  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'solved';
+  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'attempted';
 
   grid.innerHTML = `
     <div class="coding-proctor-shell">
@@ -671,7 +671,7 @@ function renderCodingProblemPanel() {
   const currentIndex = Math.min(codingTimerState.activeIndex, problems.length - 1);
   codingTimerState.activeIndex = currentIndex;
   const currentProblem = problems[currentIndex];
-  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'solved';
+  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'attempted';
 
   if (!grid) return;
 
