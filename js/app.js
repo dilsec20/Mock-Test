@@ -23,7 +23,7 @@ const COMPANIES = [
     id: 'capgemini',
     name: 'Capgemini',
     logo: 'C>',
-    examDate: '2026-10-15',
+    examDate: null,
     examName: 'Capgemini New Hiring Assessment',
     dataFile: 'data/capgemini-data.js',
     color: '#0070AD',
@@ -49,7 +49,7 @@ function renderCompanyCards() {
   if (!grid) return;
 
   grid.innerHTML = COMPANIES.map((company, index) => {
-    const daysLeft = getDaysLeft(company.examDate);
+    const daysLeft = company.examDate ? getDaysLeft(company.examDate) : null;
     const isUpcoming = daysLeft >= 0;
     const urgencyClass = daysLeft <= 3 ? 'color: var(--accent-red);' :
                          daysLeft <= 7 ? 'color: var(--accent-orange);' :
@@ -62,7 +62,7 @@ function renderCompanyCards() {
           <div>
             <h3>${company.name}</h3>
             <div class="exam-date">
-              ${isUpcoming ? `📅 Exam: ${formatDate(company.examDate)} • <span style="${urgencyClass} font-weight: 700;">${daysLeft} days left</span>` : '✅ Exam Completed'}
+              ${company.examDate ? (isUpcoming ? `📅 Exam: ${formatDate(company.examDate)} • <span style="${urgencyClass} font-weight: 700;">${daysLeft} days left</span>` : '✅ Exam Completed') : '📅 Exam date: To be announced'}
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ function renderCompanyCards() {
 // ── Countdown Timer ──
 function initCountdown() {
   const upcoming = COMPANIES
-    .filter(c => getDaysLeft(c.examDate) >= 0)
+    .filter(c => c.examDate && getDaysLeft(c.examDate) >= 0)
     .sort((a, b) => new Date(a.examDate) - new Date(b.examDate));
 
   if (upcoming.length === 0) return;
