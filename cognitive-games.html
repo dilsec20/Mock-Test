@@ -129,6 +129,23 @@
       overflow: hidden;
       margin-bottom: var(--space-xl);
     }
+    .bubble-timer-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 8px 0 16px;
+    }
+    .bubble-timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #f59e0b);
+      transition: width 1s linear, background 0.3s ease;
+      width: 100%;
+    }
+    .bubble-timer-fill.danger {
+      background: #ef4444 !important;
+    }
     .bubble-progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
@@ -542,6 +559,9 @@
 
   <div class="game-page-container">
 
+    <!-- Full Mock Test Pipeline Indicator (Shown when in full mock test) -->
+    <div id="fullmock-pipeline-indicator" class="hidden"></div>
+
     <!-- Mode & Tab Switcher -->
     <div class="game-nav-tabs">
       <button class="game-tab-btn active" id="tab-bubble" onclick="switchGame('bubble')">
@@ -584,10 +604,15 @@
         <div>
           <div class="bubble-meta-row">
             <span id="bubble-question-num">Question: 1 / 24</span>
+            <span id="bubble-question-timer" style="font-weight: 800; font-size: 1.1rem; color: #22c55e;">⏱️ 14s</span>
             <span id="bubble-round-score">Score: 0</span>
           </div>
           <div class="bubble-progress-bar">
             <div class="bubble-progress-fill" id="bubble-progress-fill" style="width: 4%;"></div>
+          </div>
+          <!-- 14s per Question Countdown Track -->
+          <div class="bubble-timer-track">
+            <div class="bubble-timer-fill" id="bubble-timer-fill" style="width: 100%;"></div>
           </div>
           <div>
             <div class="bubble-prompt low-high" id="bubble-prompt-badge">
@@ -734,6 +759,9 @@
             <div style="font-size: 0.75rem; color: var(--accent-green);">Spatial Navigation</div>
           </div>
         </div>
+
+        <!-- Full Mock Test Next Stage Card (Shown when taking full mock test) -->
+        <div id="fullmock-next-stage" class="hidden"></div>
 
         <div style="margin-top: var(--space-xl);">
           <a href="results.html" class="btn btn-primary btn-lg" style="margin-right: 12px;">📊 View in My Results</a>

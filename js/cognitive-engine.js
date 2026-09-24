@@ -49,6 +49,7 @@ class SoundFX {
 const sfx = new SoundFX();
 
 // ── State ──
+// ── State ──
 const cogState = {
   activeGame: 'bubble', // 'bubble', 'lockkey', 'maze', 'results'
   isAssessmentMode: false,
@@ -56,17 +57,19 @@ const cogState = {
   overallTimer: null,
   totalScore: 0,
 
-  // Bubble Math State
+  // Bubble Math State (14s per question)
   bubble: {
     questionIndex: 0,
     totalQuestions: 24,
     score: 0,
     currentQuestion: null,
     selectedBubbles: [],
-    isEvaluating: false
+    isEvaluating: false,
+    questionTimer: null,
+    timeRemaining: 14
   },
 
-  // Lock & Key State
+  // Lock & Key State (4 min total)
   lockkey: {
     currentLevel: 1,
     maxLevel: 6,
@@ -78,10 +81,12 @@ const cogState = {
     keysTotal: 0,
     keysCollected: 0,
     resetsCount: 0,
-    isCompleted: false
+    isCompleted: false,
+    timer: null,
+    timeRemaining: 4 * 60 // 4 minutes
   },
 
-  // Maze State
+  // Maze State (4 min total)
   maze: {
     currentLevel: 1,
     maxLevel: 6,
@@ -92,15 +97,39 @@ const cogState = {
     exitPos: { r: 0, c: 0 },
     stepsTaken: 0,
     optimalSteps: 0,
-    isCompleted: false
+    isCompleted: false,
+    timer: null,
+    timeRemaining: 4 * 60 // 4 minutes
   }
 };
 
 // ── Initialize ──
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if URL has ?mode=assessment
   const params = new URLSearchParams(window.location.search);
-  if (params.get('mode') === 'assessment') {
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+
+  if (isFullMock) {
+    const pipelineEl = document.getElementById('fullmock-pipeline-indicator');
+    if (pipelineEl) {
+      pipelineEl.innerHTML = `
+        <div style="margin-bottom: 20px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(124, 58, 237, 0.15)); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 14px; padding: 14px 20px; text-align: center;">
+          <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+            <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 3px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
+            <span style="color: var(--text-dim); align-self: center;">→</span>
+            <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 3px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 700;">✅ Stage 2: Spoken English</span>
+            <span style="color: var(--text-dim); align-self: center;">→</span>
+            <span style="background: rgba(245, 158, 11, 0.25); border: 1px solid #f59e0b; color: #f59e0b; padding: 3px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 700;">⚡ Stage 3: Gamified Cognitive</span>
+            <span style="color: var(--text-dim); align-self: center;">→</span>
+            <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 3px 12px; border-radius: 99px; font-size: 0.74rem;">Stage 4: Coding</span>
+          </div>
+          <div style="font-size: 0.9rem; color: #fff; font-weight: 700;">Full Mock Test • Stage 3 of 4: Gamified Cognitive Games (Bubble 14s • Doors 4m • Maze 4m)</div>
+        </div>
+      `;
+      pipelineEl.classList.remove('hidden');
+    }
+  }
+
+  if (params.get('mode') === 'assessment' || isFullMock) {
     startAssessmentMode();
   } else {
     initBubbleGame();
@@ -114,6 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function switchGame(gameId) {
   cogState.activeGame = gameId;
 
+  // Clear timers when switching
+  clearInterval(cogState.bubble.questionTimer);
+  clearInterval(cogState.lockkey.timer);
+  clearInterval(cogState.maze.timer);
+
   // Update tabs
   document.querySelectorAll('.game-tab-btn').forEach(btn => btn.classList.remove('active'));
   const activeTab = document.getElementById(`tab-${gameId}`);
@@ -126,21 +160,24 @@ function switchGame(gameId) {
 
   // Update titles
   const titles = {
-    bubble: { title: '⚡ Bubble Math Challenge', sub: 'Click circles from LOW → HIGH or HIGH → LOW' },
-    lockkey: { title: '🔐 Lock & Key Memory Game', sub: 'Directional Doors: Some doors only open from one side!' },
-    maze: { title: '🗺️ Maze Pathfinding', sub: 'Find the optimal path to the exit avoiding obstacles' },
+    bubble: { title: '⚡ Bubble Math Challenge', sub: 'Click circles from LOW → HIGH or HIGH → LOW (14s per question)' },
+    lockkey: { title: '🔐 Lock & Key Memory Game', sub: 'Directional Doors: Enter in arrow direction only! (4 min total)' },
+    maze: { title: '🗺️ Maze Pathfinding', sub: 'Find the shortest path to the exit avoiding walls (4 min total)' },
     results: { title: '📊 Cognitive Results', sub: 'Your cognitive assessment performance summary' }
   };
   const t = titles[gameId] || titles.bubble;
   document.getElementById('active-game-title').textContent = t.title;
   document.getElementById('active-game-subtitle').textContent = t.sub;
 
-  if (gameId === 'bubble' && !cogState.bubble.currentQuestion) {
-    initBubbleGame();
+  if (gameId === 'bubble') {
+    if (!cogState.bubble.currentQuestion) initBubbleGame();
+    else resumeBubbleTimer();
   } else if (gameId === 'lockkey') {
     loadLockKeyLevel(cogState.lockkey.currentLevel);
+    startLockKeyTimer();
   } else if (gameId === 'maze') {
     loadMazeLevel(cogState.maze.currentLevel);
+    startMazeTimer();
   }
 }
 
@@ -153,8 +190,10 @@ function startAssessmentMode() {
   cogState.bubble.score = 0;
   cogState.lockkey.currentLevel = 1;
   cogState.lockkey.score = 0;
+  cogState.lockkey.timeRemaining = 4 * 60;
   cogState.maze.currentLevel = 1;
   cogState.maze.score = 0;
+  cogState.maze.timeRemaining = 4 * 60;
 
   // Start overall countdown
   clearInterval(cogState.overallTimer);
@@ -181,6 +220,59 @@ function updateTimerDisplay() {
     el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
     if (cogState.overallTimeRemaining < 120) el.style.color = '#ef4444';
   }
+}
+
+function startLockKeyTimer() {
+  clearInterval(cogState.lockkey.timer);
+  updateLockKeyTimerDisplay();
+  cogState.lockkey.timer = setInterval(() => {
+    cogState.lockkey.timeRemaining--;
+    updateLockKeyTimerDisplay();
+    if (cogState.lockkey.timeRemaining <= 0) {
+      clearInterval(cogState.lockkey.timer);
+      showDoorAlert('⏱️ 4 Minutes Complete! Advancing to Game 3: Maze Pathfinding...');
+      setTimeout(() => {
+        switchGame('maze');
+        loadMazeLevel(1);
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function updateLockKeyTimerDisplay() {
+  const el = document.getElementById('session-timer-display');
+  if (!el) return;
+  const s = Math.max(0, cogState.lockkey.timeRemaining);
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  el.textContent = `${m}:${sec.toString().padStart(2, '0')}`;
+  el.style.color = s < 60 ? '#ef4444' : (s < 120 ? '#f59e0b' : 'var(--text-primary)');
+}
+
+function startMazeTimer() {
+  clearInterval(cogState.maze.timer);
+  updateMazeTimerDisplay();
+  cogState.maze.timer = setInterval(() => {
+    cogState.maze.timeRemaining--;
+    updateMazeTimerDisplay();
+    if (cogState.maze.timeRemaining <= 0) {
+      clearInterval(cogState.maze.timer);
+      showMazeAlert('⏱️ 4 Minutes Complete! Finishing cognitive assessment...');
+      setTimeout(() => {
+        finishAssessment();
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function updateMazeTimerDisplay() {
+  const el = document.getElementById('session-timer-display');
+  if (!el) return;
+  const s = Math.max(0, cogState.maze.timeRemaining);
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  el.textContent = `${m}:${sec.toString().padStart(2, '0')}`;
+  el.style.color = s < 60 ? '#ef4444' : (s < 120 ? '#f59e0b' : 'var(--text-primary)');
 }
 
 function updateScoreDisplay() {
@@ -265,6 +357,7 @@ function initBubbleGame() {
 }
 
 function renderNextBubbleQuestion() {
+  clearInterval(cogState.bubble.questionTimer);
   cogState.bubble.questionIndex++;
   if (cogState.bubble.questionIndex > cogState.bubble.totalQuestions) {
     onBubbleGameFinished();
@@ -276,6 +369,7 @@ function renderNextBubbleQuestion() {
   cogState.bubble.currentQuestion = generateMathBubbleQuestion(count);
   cogState.bubble.selectedBubbles = [];
   cogState.bubble.isEvaluating = false;
+  cogState.bubble.timeRemaining = 14;
 
   // Update question header
   document.getElementById('bubble-question-num').textContent =
@@ -291,6 +385,17 @@ function renderNextBubbleQuestion() {
   promptEl.textContent = `Click circles from ${q.modeText}`;
   promptEl.className = `bubble-prompt ${q.isHighToLow ? 'high-low' : 'low-high'}`;
 
+  // Start 14s timer for this bubble question
+  updateBubbleTimerDisplay();
+  cogState.bubble.questionTimer = setInterval(() => {
+    cogState.bubble.timeRemaining--;
+    updateBubbleTimerDisplay();
+    if (cogState.bubble.timeRemaining <= 0) {
+      clearInterval(cogState.bubble.questionTimer);
+      handleBubbleTimeout();
+    }
+  }, 1000);
+
   // Render bubbles
   const container = document.getElementById('bubbles-container');
   container.innerHTML = q.bubbles.map((b, i) => `
@@ -298,6 +403,63 @@ function renderNextBubbleQuestion() {
       <div class="expression-text">${b.expr}</div>
     </div>
   `).join('');
+}
+
+function updateBubbleTimerDisplay() {
+  const timerEl = document.getElementById('bubble-question-timer');
+  const fillEl = document.getElementById('bubble-timer-fill');
+  const s = Math.max(0, cogState.bubble.timeRemaining);
+  if (timerEl) {
+    timerEl.textContent = `⏱️ ${s}s`;
+    if (s <= 4) {
+      timerEl.style.color = '#ef4444';
+      if (fillEl) fillEl.classList.add('danger');
+    } else if (s <= 7) {
+      timerEl.style.color = '#f59e0b';
+      if (fillEl) fillEl.classList.remove('danger');
+    } else {
+      timerEl.style.color = '#22c55e';
+      if (fillEl) fillEl.classList.remove('danger');
+    }
+  }
+  if (fillEl) {
+    fillEl.style.width = `${(s / 14) * 100}%`;
+  }
+}
+
+function resumeBubbleTimer() {
+  clearInterval(cogState.bubble.questionTimer);
+  updateBubbleTimerDisplay();
+  cogState.bubble.questionTimer = setInterval(() => {
+    cogState.bubble.timeRemaining--;
+    updateBubbleTimerDisplay();
+    if (cogState.bubble.timeRemaining <= 0) {
+      clearInterval(cogState.bubble.questionTimer);
+      handleBubbleTimeout();
+    }
+  }, 1000);
+}
+
+function handleBubbleTimeout() {
+  if (cogState.bubble.isEvaluating) return;
+  cogState.bubble.isEvaluating = true;
+  sfx.buzzer();
+
+  const container = document.getElementById('bubbles-container');
+  if (container) {
+    const bubbleEls = container.querySelectorAll('.math-bubble');
+    bubbleEls.forEach(el => el.classList.add('wrong'));
+  }
+
+  const promptEl = document.getElementById('bubble-prompt-badge');
+  if (promptEl) {
+    promptEl.textContent = '⏳ Time Up! (14s expired — auto skipping)';
+    promptEl.className = 'bubble-prompt high-low';
+  }
+
+  setTimeout(() => {
+    renderNextBubbleQuestion();
+  }, 1100);
 }
 
 function handleBubbleClick(index) {
@@ -325,6 +487,7 @@ function handleBubbleClick(index) {
 }
 
 function evaluateBubbleAnswer() {
+  clearInterval(cogState.bubble.questionTimer);
   cogState.bubble.isEvaluating = true;
   const q = cogState.bubble.currentQuestion;
 
@@ -1004,6 +1167,26 @@ function finishAssessment() {
   if (overallPct >= 80) feedbackEl.textContent = '🎉 Outstanding! Top 5% Cognitive Performance!';
   else if (overallPct >= 60) feedbackEl.textContent = '👍 Good speed and spatial reasoning. Ready for Accenture!';
   else feedbackEl.textContent = '💪 Keep practicing! Speed and directional awareness improve with practice.';
+
+  // If in Full Mock Mode or redirected from fullmock, show proceed button to Stage 4 (Coding)
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+  const nextStageEl = document.getElementById('fullmock-next-stage');
+  if (nextStageEl && isFullMock) {
+    nextStageEl.innerHTML = `
+      <div style="margin: 20px auto; max-width: 500px; padding: 20px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(0, 212, 255, 0.25)); border: 2px solid var(--accent-purple); border-radius: 16px; text-align: center; box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);">
+        <div style="font-size: 2rem; margin-bottom: 4px;">🎉</div>
+        <h3 style="margin-bottom: 6px; color: #fff;">Stage 3 Complete!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+          Next in Full Mock: <strong>Stage 4 — Coding Assessment (3 Problems • 60 min)</strong>
+        </p>
+        <a href="test.html?company=accenture&section=coding&from=fullmock" class="btn btn-primary btn-lg" style="box-shadow: 0 0 20px rgba(0,212,255,0.4); text-decoration: none;">
+          🚀 Proceed to Stage 4: Coding Assessment →
+        </a>
+      </div>
+    `;
+    nextStageEl.classList.remove('hidden');
+  }
 
   // Save to localStorage for My Results history
   const timeTaken = 20 * 60 - cogState.overallTimeRemaining;

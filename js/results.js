@@ -53,10 +53,45 @@ function showResultView() {
 
   renderScoreCircle();
   renderScoreSummary();
+  renderFullMockProgression();
   renderTopicBreakdown();
   renderRecommendations();
   renderReviewList();
   renderHistoryList('full-history-list');
+}
+
+// ── Full Mock Recruitment Progression ──
+function renderFullMockProgression() {
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || (currentResult && currentResult.section && currentResult.section.includes('Full Mock'));
+  const nextStageEl = document.getElementById('fullmock-next-stage');
+  if (!nextStageEl) return;
+
+  if (isFullMock) {
+    nextStageEl.innerHTML = `
+      <div style="margin: 24px auto 32px; max-width: 680px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(124, 58, 237, 0.16)); border: 2px solid var(--accent-primary); border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 35px rgba(0, 212, 255, 0.25);">
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 1: Technical MCQ (Done)</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(0, 212, 255, 0.2); border: 1px solid #00d4ff; color: #00d4ff; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">⚡ Stage 2: Spoken English (Next)</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 4px 12px; border-radius: 99px; font-size: 0.75rem;">Stage 3: Cognitive Games</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 4px 12px; border-radius: 99px; font-size: 0.75rem;">Stage 4: Coding</span>
+        </div>
+        <h3 style="margin-bottom: 8px; font-size: 1.35rem; color: #fff;">🎉 Stage 1: Technical Assessment Complete!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+          Accenture's next recruitment stage is the <strong>Spoken Communication Assessment (Pearson / Versant Format)</strong> with Reading, Repeat with auto-audio, Sentence Builds, and Voice Pronunciation Replay.
+        </p>
+        <a href="comm-test.html?company=accenture&from=fullmock" class="btn btn-primary btn-lg" style="font-size: 1.05rem; padding: 14px 34px; box-shadow: 0 4px 25px rgba(0, 212, 255, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <span>🎙️</span> Proceed to Stage 2: Spoken English Test →
+        </a>
+      </div>
+    `;
+    nextStageEl.classList.remove('hidden');
+  } else {
+    nextStageEl.classList.add('hidden');
+  }
 }
 
 // ── Score Circle Animation ──

@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.COMPANY_DATA && window.COMPANY_DATA[testState.company]) {
     testState.companyData = window.COMPANY_DATA[testState.company];
     renderSectionSelector();
+
+    const sectionParam = params.get('section');
+    if (sectionParam === 'coding') {
+      selectSection('coding');
+      showCodingLinks();
+    } else if (sectionParam) {
+      selectSection(sectionParam);
+    }
   } else {
     console.error('No data found for company:', testState.company);
     document.getElementById('company-name-display').textContent = 'Error: No data found for ' + testState.company + '. Please go back and try again.';
@@ -45,13 +53,26 @@ function renderSectionSelector() {
 
   let html = '';
 
-  // Full Test option
+  // Full Mock Test option (All 4 Official Stages Pipeline)
   html += `
-    <div class="section-option" data-section="full" onclick="selectSection('full')">
-      <div class="section-icon">🎯</div>
-      <h4>Full Mock Test (MCQ)</h4>
-      <div class="section-meta">
-        All written sections combined • ${testableSections.reduce((sum, s) => sum + s.questions, 0)} questions • ${testableSections.reduce((sum, s) => sum + s.duration, 0)} min
+    <div class="section-option full-mock-card" data-section="full" onclick="selectSection('full')" style="border: 2px solid var(--accent-primary); background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.12));">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="section-icon" style="font-size: 1.8rem;">🏆</div>
+          <div>
+            <h4 style="margin: 0; font-size: 1.15rem; color: #fff;">Full Recruitment Mock Test</h4>
+            <span style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 700; letter-spacing: 0.5px;">OFFICIAL 4-STAGE RECRUITMENT FLOW</span>
+          </div>
+        </div>
+        <span style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: #fff; padding: 4px 12px; border-radius: 99px; font-size: 0.72rem; font-weight: 800;">ALL 4 STAGES</span>
+      </div>
+      <div class="section-meta" style="margin-top: 6px; line-height: 1.6;">
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+          <span style="background: rgba(0, 212, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.3); color: #00d4ff; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600;">1️⃣ Stage 1: Technical Assessment (MCQs)</span>
+          <span style="background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.3); color: #a78bfa; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600;">2️⃣ Stage 2: Spoken English (Pearson)</span>
+          <span style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600;">3️⃣ Stage 3: Gamified Cognitive (14s Bubbles, 4m Doors & Maze)</span>
+          <span style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600;">4️⃣ Stage 4: Coding Assessment (60 min)</span>
+        </div>
       </div>
     </div>
   `;
@@ -149,6 +170,7 @@ function beginTest() {
 
   if (testState.selectedSection === 'full') {
     // Combine all written testable sections (excluding speaking, gamified & coding)
+    testState.isFullMock = true;
     testState.questions = [];
     let totalTime = 0;
     data.sections.filter(s => !s.isExternal && !s.isSpeaking && !s.isGamified).forEach(section => {
@@ -160,7 +182,7 @@ function beginTest() {
       totalTime += section.duration;
     });
     testState.timeRemaining = totalTime * 60;
-    document.getElementById('current-section-name').textContent = 'Full Mock Test';
+    document.getElementById('current-section-name').textContent = 'Stage 1 of 4: Technical Assessment (Full Mock)';
   } else {
     const section = data.sections.find(s => s.id === testState.selectedSection);
     const sectionQuestions = data.questionBank[testState.selectedSection] || [];
@@ -192,10 +214,84 @@ function beginTest() {
   updateSummary();
 }
 
+// ── Coding Timer & Full Mock Support ──
+let codingTimerState = {
+  interval: null,
+  timeRemaining: 60 * 60,
+  isRunning: false
+};
+
+function toggleCodingTimer() {
+  const btn = document.getElementById('coding-timer-btn');
+  if (codingTimerState.isRunning) {
+    clearInterval(codingTimerState.interval);
+    codingTimerState.isRunning = false;
+    if (btn) btn.innerHTML = `⏱️ Resume 60-Min Timer (<span id="coding-timer-display">${formatCodingTime(codingTimerState.timeRemaining)}</span>)`;
+  } else {
+    codingTimerState.isRunning = true;
+    updateCodingTimerDisplay();
+    codingTimerState.interval = setInterval(() => {
+      codingTimerState.timeRemaining--;
+      updateCodingTimerDisplay();
+      if (codingTimerState.timeRemaining <= 0) {
+        clearInterval(codingTimerState.interval);
+        codingTimerState.isRunning = false;
+        alert('⏰ 60 Minutes Coding Assessment Time Expired!');
+      }
+    }, 1000);
+    if (btn) btn.innerHTML = `⏸️ Pause Timer (<span id="coding-timer-display">${formatCodingTime(codingTimerState.timeRemaining)}</span>)`;
+  }
+}
+
+function updateCodingTimerDisplay() {
+  const el = document.getElementById('coding-timer-display');
+  if (el) el.textContent = formatCodingTime(codingTimerState.timeRemaining);
+}
+
+function formatCodingTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function finishFullMockRecruitment() {
+  const modal = document.getElementById('fullmock-complete-modal');
+  if (modal) modal.classList.add('active');
+}
+
 // ── Show Coding Links ──
 function showCodingLinks() {
   document.getElementById('section-select-view').classList.add('hidden');
   document.getElementById('coding-view').classList.remove('hidden');
+
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock';
+  const pipelineEl = document.getElementById('coding-fullmock-pipeline');
+
+  if (pipelineEl && isFullMock) {
+    pipelineEl.innerHTML = `
+      <div style="margin-bottom: 24px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(16, 185, 129, 0.15)); border: 2px solid #10b981; border-radius: 16px; padding: 22px; text-align: center; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.25);">
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 2: Spoken English</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 3: Cognitive Games</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #10b981; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">🏆 Stage 4: Coding (Final Stage)</span>
+        </div>
+        <h3 style="margin-bottom: 6px; color: #fff; font-size: 1.3rem;">🏆 Final Stage: Accenture Coding Assessment</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.5;">
+          3 Official Accenture Coding Problems • Practice solving them within the official 60-minute timeframe.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <button id="coding-timer-btn" class="btn btn-secondary btn-sm" onclick="toggleCodingTimer()" style="font-weight: 600;">⏱️ Start 60-Min Exam Timer (<span id="coding-timer-display">60:00</span>)</button>
+          <button class="btn btn-success btn-sm" onclick="finishFullMockRecruitment()" style="font-weight: 700;">🎉 Finish Full Mock Test</button>
+        </div>
+      </div>
+    `;
+    pipelineEl.classList.remove('hidden');
+  }
 
   const data = testState.companyData;
   const problems = data.questionBank.coding || [];
@@ -442,7 +538,8 @@ function submitTest() {
   document.getElementById('timeup-modal').classList.remove('active');
 
   // Navigate to results page
-  window.location.href = `results.html?id=${results.id}`;
+  const isFullMock = testState.isFullMock || testState.selectedSection === 'full' || new URLSearchParams(window.location.search).get('from') === 'fullmock';
+  window.location.href = `results.html?id=${results.id}${isFullMock ? '&from=fullmock' : ''}`;
 }
 
 // ── Calculate Results ──

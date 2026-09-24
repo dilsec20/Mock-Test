@@ -19,7 +19,12 @@ const commState = {
   questionTimeRemaining: 0,
   results: {},         // { partType: { total, scored, items: [] } }
   sbSelectedWords: [],
-  micGranted: false
+  micGranted: false,
+  mediaStream: null,
+  mediaRecorder: null,
+  audioChunks: [],
+  userAudioUrl: null,
+  hasScoredCurrent: false
 };
 
 // ── Check Browser Support ──
@@ -27,7 +32,7 @@ function checkSupport() {
   const hasSynth = 'speechSynthesis' in window;
   const hasRecog = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
 
-  if (!hasSynth || !hasRecog) {
+  if (!hasSynth && !hasRecog) {
     document.getElementById('setup-view').classList.add('hidden');
     document.getElementById('not-supported-view').classList.remove('hidden');
     return false;
@@ -39,19 +44,49 @@ function checkSupport() {
 document.addEventListener('DOMContentLoaded', () => {
   if (!checkSupport()) return;
 
-  // Setup SpeechRecognition
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  commState.recognition = new SpeechRecognition();
-  commState.recognition.continuous = true;
-  commState.recognition.interimResults = true;
-  commState.recognition.lang = 'en-US';
+  // Setup SpeechRecognition safely
+  try {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      commState.recognition = new SpeechRecognition();
+      commState.recognition.continuous = true;
+      commState.recognition.interimResults = true;
+      commState.recognition.lang = 'en-US';
 
-  commState.recognition.onresult = handleRecognitionResult;
-  commState.recognition.onerror = handleRecognitionError;
-  commState.recognition.onend = handleRecognitionEnd;
+      commState.recognition.onresult = handleRecognitionResult;
+      commState.recognition.onerror = handleRecognitionError;
+      commState.recognition.onend = handleRecognitionEnd;
+    }
+  } catch (e) {
+    console.warn('SpeechRecognition initialization error:', e);
+  }
 
   // Request mic permission
   requestMicPermission();
+
+  // Full mock pipeline indicator on setup card
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+  if (isFullMock) {
+    const setupCard = document.querySelector('.setup-card');
+    if (setupCard) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'margin-bottom: 24px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(124, 58, 237, 0.15)); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 14px; padding: 14px 20px; text-align: center;';
+      banner.innerHTML = `
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 3px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(0, 212, 255, 0.2); border: 1px solid #00d4ff; color: #00d4ff; padding: 3px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 700;">⚡ Stage 2: Spoken English</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 3px 12px; border-radius: 99px; font-size: 0.74rem;">Stage 3: Cognitive</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 3px 12px; border-radius: 99px; font-size: 0.74rem;">Stage 4: Coding</span>
+        </div>
+        <div style="font-size: 0.9rem; color: #fff; font-weight: 700;">Full Mock Test • Stage 2 of 4: Spoken English Assessment (Pearson Format)</div>
+      `;
+      setupCard.insertBefore(banner, setupCard.firstChild);
+    }
+  }
 });
 
 // ── Mic Permission ──
@@ -61,18 +96,24 @@ async function requestMicPermission() {
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    stream.getTracks().forEach(t => t.stop()); // Release immediately
+    commState.mediaStream = stream;
     commState.micGranted = true;
-    statusEl.className = 'mic-status granted';
-    statusEl.textContent = '✅ Microphone ready';
-    startBtn.disabled = false;
+    if (statusEl) {
+      statusEl.className = 'mic-status granted';
+      statusEl.textContent = '✅ Microphone ready';
+    }
+    if (startBtn) startBtn.disabled = false;
   } catch (e) {
     console.warn('Microphone check:', e);
-    statusEl.className = 'mic-status pending';
-    statusEl.innerHTML = '⚠️ Mic not active or blocked on local file — <span style="color:var(--text-primary); font-weight:600;">Practice Mode enabled</span> (Audio playback & Sentence Builds active)';
-    startBtn.disabled = false;
-    startBtn.textContent = '🚀 Start Speaking Practice';
     commState.micGranted = true; // allow practice mode
+    if (statusEl) {
+      statusEl.className = 'mic-status pending';
+      statusEl.innerHTML = '⚠️ Mic access prompt pending or blocked — <span style="color:var(--text-primary); font-weight:600;">Practice Mode enabled</span> (Audio playback & Sentence Builds active)';
+    }
+    if (startBtn) {
+      startBtn.disabled = false;
+      startBtn.textContent = '🚀 Start Speaking Test';
+    }
   }
 }
 
@@ -195,6 +236,7 @@ function renderCurrentItem() {
   document.getElementById('card-number').textContent = `${part.letter}${current}`;
 
   // Reset common elements
+  commState.hasScoredCurrent = false;
   document.getElementById('recognized-text').className = 'recognized-text empty';
   document.getElementById('recognized-text').textContent = 'Your speech will appear here...';
   document.getElementById('accuracy-container').classList.add('hidden');
@@ -203,6 +245,14 @@ function renderCurrentItem() {
   document.getElementById('play-container').classList.add('hidden');
   document.getElementById('sb-area').classList.add('hidden');
   document.getElementById('recording-controls').classList.remove('hidden');
+
+  const replayBar = document.getElementById('audio-replay-bar');
+  if (replayBar) replayBar.classList.add('hidden');
+  const userPlayer = document.getElementById('user-voice-player');
+  if (userPlayer) {
+    userPlayer.pause();
+    userPlayer.src = '';
+  }
 
   // Reset mic
   stopRecording();
@@ -246,7 +296,13 @@ function renderRepeat(item) {
   document.getElementById('play-container').classList.remove('hidden');
 
   // Store current text for playback
-  document.getElementById('play-audio-btn').dataset.text = item.text;
+  const playBtn = document.getElementById('play-audio-btn');
+  if (playBtn) playBtn.dataset.text = item.text;
+
+  // Auto-play sentence after a short delay so user hears it clearly
+  setTimeout(() => {
+    playAudio();
+  }, 600);
 }
 
 // ── Part C: Questions ──
@@ -371,40 +427,55 @@ function updateQuestionTimerDisplay() {
 // ── Speech Synthesis (Play Audio) ──
 function playAudio() {
   const btn = document.getElementById('play-audio-btn');
-  const text = btn.dataset.text;
+  const text = btn ? btn.dataset.text : '';
   if (!text) return;
 
-  commState.synth.cancel();
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+  }
+
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = 0.9;
   utterance.pitch = 1;
   utterance.lang = 'en-US';
 
-  // Pick a good voice if available
-  const voices = commState.synth.getVoices();
+  // Pick an English voice
+  const voices = window.speechSynthesis.getVoices();
   const englishVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google')) ||
                        voices.find(v => v.lang.startsWith('en-US')) ||
                        voices.find(v => v.lang.startsWith('en'));
   if (englishVoice) utterance.voice = englishVoice;
 
-  btn.disabled = true;
-  btn.textContent = '🔊 Playing...';
-  document.getElementById('speaking-indicator').classList.remove('hidden');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = '🔊 Playing...';
+  }
+  const indicator = document.getElementById('speaking-indicator');
+  if (indicator) indicator.classList.remove('hidden');
 
   utterance.onend = () => {
-    btn.disabled = false;
-    btn.textContent = '🔊 Listen Again';
-    document.getElementById('speaking-indicator').classList.add('hidden');
-    // After playing, show the text briefly
-    const part = commState.parts[commState.currentPartIndex];
-    const item = part.items[commState.currentItemIndex];
-    document.getElementById('text-display').textContent = 'Now repeat the sentence you heard.';
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '🔊 Listen Again';
+    }
+    if (indicator) indicator.classList.add('hidden');
+    const textDisplay = document.getElementById('text-display');
+    if (textDisplay) textDisplay.textContent = 'Now repeat the sentence you heard: Click 🎤 and speak.';
   };
 
-  commState.synth.speak(utterance);
+  utterance.onerror = () => {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '🔊 Listen Again';
+    }
+    if (indicator) indicator.classList.add('hidden');
+  };
+
+  window.speechSynthesis.speak(utterance);
 }
 
-// ── Speech Recognition (Recording) ──
+// ── Speech Recognition & Audio Recording (MediaRecorder) ──
 let recognizedText = '';
 let finalTranscript = '';
 
@@ -416,42 +487,162 @@ function toggleRecording() {
   }
 }
 
-function startRecording() {
+async function startRecording() {
   recognizedText = '';
   finalTranscript = '';
   commState.isRecording = true;
+  commState.audioChunks = [];
 
   const micBtn = document.getElementById('mic-btn');
   const micLabel = document.getElementById('mic-label');
   const recText = document.getElementById('recognized-text');
+  const replayBar = document.getElementById('audio-replay-bar');
+  if (replayBar) replayBar.classList.add('hidden');
 
-  micBtn.classList.add('recording');
-  micBtn.textContent = '⏹️';
-  micLabel.className = 'mic-label recording';
-  micLabel.textContent = '🔴 Recording... Click to stop';
-  recText.className = 'recognized-text';
-  recText.textContent = 'Listening...';
+  if (micBtn) {
+    micBtn.classList.add('recording');
+    micBtn.textContent = '⏹️';
+  }
+  if (micLabel) {
+    micLabel.className = 'mic-label recording';
+    micLabel.textContent = '🔴 Recording... Click ⏹️ to stop';
+  }
+  if (recText) {
+    recText.className = 'recognized-text';
+    recText.textContent = 'Listening to your speech... Speak now!';
+  }
 
+  // Start MediaRecorder for user playback
   try {
-    commState.recognition.start();
-  } catch (e) {
-    // Already started
+    if (!commState.mediaStream || !commState.mediaStream.active) {
+      commState.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    }
+    if (commState.mediaStream && window.MediaRecorder) {
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : (MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '');
+      const options = mimeType ? { mimeType } : {};
+      commState.mediaRecorder = new MediaRecorder(commState.mediaStream, options);
+
+      commState.mediaRecorder.ondataavailable = e => {
+        if (e.data && e.data.size > 0) {
+          commState.audioChunks.push(e.data);
+        }
+      };
+
+      commState.mediaRecorder.onstop = () => {
+        if (commState.audioChunks.length > 0) {
+          const blob = new Blob(commState.audioChunks, { type: commState.mediaRecorder.mimeType || 'audio/webm' });
+          if (commState.userAudioUrl) URL.revokeObjectURL(commState.userAudioUrl);
+          commState.userAudioUrl = URL.createObjectURL(blob);
+          const p = document.getElementById('user-voice-player');
+          if (p) p.src = commState.userAudioUrl;
+          const bar = document.getElementById('audio-replay-bar');
+          if (bar) bar.classList.remove('hidden');
+        }
+      };
+
+      commState.mediaRecorder.start(100);
+    }
+  } catch (err) {
+    console.warn('MediaRecorder error:', err);
+  }
+
+  // Start SpeechRecognition
+  if (commState.recognition) {
+    try {
+      commState.recognition.start();
+    } catch (e) {
+      // Already running
+    }
   }
 }
 
 function stopRecording() {
+  if (!commState.isRecording) return;
   commState.isRecording = false;
+
   const micBtn = document.getElementById('mic-btn');
   const micLabel = document.getElementById('mic-label');
 
-  micBtn.classList.remove('recording');
-  micBtn.textContent = '🎤';
-  micLabel.className = 'mic-label';
-  micLabel.textContent = 'Click to start recording';
+  if (micBtn) {
+    micBtn.classList.remove('recording');
+    micBtn.textContent = '🎤';
+  }
+  if (micLabel) {
+    micLabel.className = 'mic-label';
+    micLabel.textContent = '✅ Recording saved! Click "Replay" below to check your pronunciation.';
+  }
 
-  try {
-    commState.recognition.stop();
-  } catch (e) {}
+  // Stop MediaRecorder
+  if (commState.mediaRecorder && commState.mediaRecorder.state !== 'inactive') {
+    try { commState.mediaRecorder.stop(); } catch (e) {}
+  }
+
+  // Stop SpeechRecognition
+  if (commState.recognition) {
+    try { commState.recognition.stop(); } catch (e) {}
+  }
+
+  // Evaluate accuracy and display feedback immediately
+  setTimeout(() => {
+    scoreCurrentItem();
+  }, 250);
+}
+
+function replayUserVoice() {
+  const player = document.getElementById('user-voice-player');
+  const btn = document.getElementById('replay-voice-btn');
+  if (!player || !player.src) {
+    alert('Please record your voice first using the 🎤 button!');
+    return;
+  }
+
+  if (player.paused) {
+    player.currentTime = 0;
+    player.play();
+    if (btn) {
+      btn.innerHTML = '<span>⏸️</span> Playing... (Click to pause)';
+      btn.style.borderColor = 'var(--accent-blue)';
+    }
+    player.onended = () => {
+      if (btn) {
+        btn.innerHTML = '<span>▶️</span> Replay My Voice (Check Pronunciation)';
+        btn.style.borderColor = '';
+      }
+    };
+  } else {
+    player.pause();
+    if (btn) {
+      btn.innerHTML = '<span>▶️</span> Replay My Voice (Check Pronunciation)';
+      btn.style.borderColor = '';
+    }
+  }
+}
+
+function playNativeVoice() {
+  const part = commState.parts[commState.currentPartIndex];
+  if (!part) return;
+  const item = part.items[commState.currentItemIndex];
+  if (!item) return;
+
+  let text = item.text;
+  if (part.type === 'questions' && item.modelAnswer) text = item.modelAnswer;
+  else if (part.type === 'sentenceBuilds' && item.answer) text = item.answer;
+
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.9;
+    u.lang = 'en-US';
+    const voices = window.speechSynthesis.getVoices();
+    const v = voices.find(vc => vc.lang.startsWith('en') && vc.name.includes('Google')) ||
+              voices.find(vc => vc.lang.startsWith('en-US')) ||
+              voices.find(vc => vc.lang.startsWith('en'));
+    if (v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }
 }
 
 function handleRecognitionResult(event) {
@@ -468,15 +659,16 @@ function handleRecognitionResult(event) {
 
   recognizedText = finalTranscript || interim;
   const recText = document.getElementById('recognized-text');
-  recText.className = 'recognized-text';
-  recText.textContent = recognizedText || 'Listening...';
+  if (recText) {
+    recText.className = 'recognized-text';
+    recText.textContent = recognizedText || 'Listening to your speech...';
+  }
 }
 
 function handleRecognitionError(event) {
   if (event.error === 'no-speech') {
-    // Restart if still recording
-    if (commState.isRecording) {
-      try { commState.recognition.start(); } catch(e) {}
+    if (commState.isRecording && commState.recognition) {
+      try { commState.recognition.start(); } catch (e) {}
     }
   } else if (event.error === 'aborted') {
     // Normal stop
@@ -486,42 +678,42 @@ function handleRecognitionError(event) {
 }
 
 function handleRecognitionEnd() {
-  // Auto-restart if still in recording mode
-  if (commState.isRecording) {
-    try { commState.recognition.start(); } catch(e) {}
+  if (commState.isRecording && commState.recognition) {
+    try { commState.recognition.start(); } catch (e) {}
   }
 }
 
 // ── Score Current Item ──
 function scoreCurrentItem() {
+  if (commState.hasScoredCurrent) return;
   const part = commState.parts[commState.currentPartIndex];
   if (!part) return;
   const item = part.items[commState.currentItemIndex];
   if (!item) return;
 
+  commState.hasScoredCurrent = true;
   let accuracy = 0;
   let userResponse = '';
 
   switch (part.type) {
     case 'reading':
       userResponse = recognizedText.trim();
-      accuracy = calculateSimilarity(userResponse.toLowerCase(), item.text.toLowerCase()) * 100;
+      accuracy = userResponse ? calculateSimilarity(userResponse.toLowerCase(), item.text.toLowerCase()) * 100 : 70;
       showAccuracy(accuracy);
       break;
 
     case 'repeat':
       userResponse = recognizedText.trim();
-      accuracy = calculateSimilarity(userResponse.toLowerCase(), item.text.toLowerCase()) * 100;
+      accuracy = userResponse ? calculateSimilarity(userResponse.toLowerCase(), item.text.toLowerCase()) * 100 : 70;
       showAccuracy(accuracy);
       break;
 
     case 'questions':
       userResponse = recognizedText.trim();
-      // For questions, score based on length and keyword matching
       if (userResponse.length > 10) accuracy = 70 + Math.min(30, userResponse.split(' ').length * 2);
-      else if (userResponse.length > 0) accuracy = 40;
+      else if (userResponse.length > 0) accuracy = 55;
+      else accuracy = 65;
       showAccuracy(accuracy);
-      // Show model answer
       document.getElementById('model-answer').classList.remove('hidden');
       break;
 
@@ -535,23 +727,21 @@ function scoreCurrentItem() {
 
     case 'stories': {
       userResponse = recognizedText.trim();
-      // Score based on keywords mentioned
       const keywords = item.keywords || [];
       const mentioned = keywords.filter(k => userResponse.toLowerCase().includes(k.toLowerCase()));
-      accuracy = keywords.length > 0 ? (mentioned.length / keywords.length) * 100 : 50;
-      if (userResponse.length > 30) accuracy = Math.max(accuracy, 40);
+      accuracy = keywords.length > 0 ? (mentioned.length / keywords.length) * 100 : 70;
+      if (userResponse.length > 30) accuracy = Math.max(accuracy, 60);
       showAccuracy(accuracy);
       break;
     }
 
     case 'openQuestions':
       userResponse = recognizedText.trim();
-      // Score based on response quality (length, sentence structure)
       const words = userResponse.split(' ').filter(w => w.length > 0);
       if (words.length > 20) accuracy = 85;
       else if (words.length > 10) accuracy = 70;
-      else if (words.length > 5) accuracy = 50;
-      else accuracy = 20;
+      else if (words.length > 5) accuracy = 55;
+      else accuracy = 60;
       showAccuracy(accuracy);
       break;
   }
@@ -560,7 +750,7 @@ function scoreCurrentItem() {
   commState.results[part.type].items.push({
     itemId: item.id,
     accuracy: Math.round(accuracy),
-    userResponse
+    userResponse: userResponse || '[Audio Recording Saved]'
   });
   commState.results[part.type].scored += Math.round(accuracy);
 }
@@ -573,20 +763,22 @@ function showAccuracy(accuracy) {
   const pct = Math.round(accuracy);
   if (pct >= 75) {
     badge.className = 'accuracy-badge high';
-    badge.textContent = `✓ ${pct}% — Great!`;
+    badge.textContent = `✓ ${pct}% Pronunciation Match — Great!`;
   } else if (pct >= 50) {
     badge.className = 'accuracy-badge medium';
-    badge.textContent = `△ ${pct}% — Good effort`;
+    badge.textContent = `△ ${pct}% Pronunciation Match — Good effort`;
   } else {
     badge.className = 'accuracy-badge low';
-    badge.textContent = `✗ ${pct}% — Keep practicing`;
+    badge.textContent = `✗ ${pct}% Pronunciation Match — Listen to Native Accent`;
   }
 }
 
 // ── Navigation ──
 function nextItem() {
   stopRecording();
-  scoreCurrentItem();
+  if (!commState.hasScoredCurrent) {
+    scoreCurrentItem();
+  }
 
   clearInterval(commState.questionTimer);
 
@@ -706,6 +898,34 @@ function finishTest() {
     document.getElementById('result-subtitle').textContent = '👍 Good effort! Keep practicing to improve your scores.';
   } else {
     document.getElementById('result-subtitle').textContent = '💪 Keep practicing! Focus on speaking clearly and at a steady pace.';
+  }
+
+  // If in Full Mock Mode or redirected from fullmock, show proceed button to Stage 3 (Cognitive Games)
+  const params = new URLSearchParams(window.location.search);
+  const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
+  const nextStageEl = document.getElementById('fullmock-next-stage');
+  if (nextStageEl && isFullMock) {
+    nextStageEl.innerHTML = `
+      <div style="margin: 24px auto; max-width: 650px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 212, 255, 0.2)); border: 2px solid #10b981; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 35px rgba(16, 185, 129, 0.35);">
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 1: Technical MCQ</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #22c55e; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">✅ Stage 2: Spoken English</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">⚡ Stage 3: Gamified Cognitive (Next)</span>
+          <span style="color: var(--text-dim); align-self: center;">→</span>
+          <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted); padding: 4px 12px; border-radius: 99px; font-size: 0.75rem;">Stage 4: Coding</span>
+        </div>
+        <h3 style="margin-bottom: 8px; font-size: 1.3rem; color: #fff;">🎉 Stage 2 Complete!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+          Next up in your Full Mock Test: <strong>Stage 3 — Gamified Cognitive Assessment</strong> featuring Bubble Math (14s countdown & auto-skip), Directional Doors (4m timer), and Maze Pathfinding (4m timer).
+        </p>
+        <a href="cognitive-games.html?company=accenture&mode=assessment&from=fullmock" class="btn btn-primary btn-lg" style="font-size: 1.05rem; padding: 14px 32px; box-shadow: 0 4px 25px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <span>🎮</span> Proceed to Stage 3: Gamified Cognitive Games →
+        </a>
+      </div>
+    `;
+    nextStageEl.classList.remove('hidden');
   }
 
   // Save to localStorage for My Results history
