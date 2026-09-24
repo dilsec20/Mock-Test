@@ -11,7 +11,7 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar">
+  <nav class="navbar" id="main-navbar">
     <a href="index.html" class="navbar-brand">
       <span class="logo-icon">🎯</span>
       <span>MockPrep</span>
@@ -39,84 +39,108 @@
     </div>
   </div>
 
-  <!-- Test View (hidden initially) -->
-  <div id="test-view" class="hidden">
-    <!-- Test Header -->
-    <div class="container">
-      <div class="test-header-bar">
+  <!-- Test View (Exam Environment, fixed 100vh viewport) -->
+  <div id="test-view" class="hidden exam-mode-view">
+    <!-- Test Top Header Bar -->
+    <header class="exam-header-bar">
+      <div class="exam-header-left">
+        <a href="index.html" class="exam-brand" title="Exit Test">
+          <span class="logo-icon">🎯</span>
+          <span class="exam-brand-title">MockPrep</span>
+        </a>
+        <div class="exam-divider"></div>
         <div class="test-info">
           <span class="test-section-name" id="current-section-name">Technical MCQ</span>
           <span class="test-progress-text" id="progress-text">Question 1 of 45</span>
         </div>
+      </div>
+
+      <div class="exam-header-right">
         <div class="timer-display" id="timer-display">
           <span class="timer-icon">⏱️</span>
           <span id="timer-value">45:00</span>
         </div>
+        <button class="btn btn-sm btn-danger exam-submit-top" onclick="showSubmitModal()">
+          📤 Submit Test
+        </button>
       </div>
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
-      </div>
+    </header>
+
+    <!-- Slim Progress Bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
     </div>
 
-    <!-- Test Layout -->
-    <div class="container">
-      <div class="test-layout">
-        <!-- Main Question Area -->
-        <div class="test-main">
-          <div class="question-card" id="question-card">
-            <!-- Question content injected by JS -->
-          </div>
-
-          <!-- Question Actions -->
-          <div class="question-actions">
-            <div class="question-actions-left">
-              <button class="btn btn-ghost flag-btn" id="flag-btn" onclick="toggleFlag()">
-                🚩 Flag for Review
-              </button>
-              <button class="btn btn-ghost" onclick="clearAnswer()">
-                ✕ Clear
-              </button>
-            </div>
-            <div class="question-actions-right">
-              <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">
-                ← Previous
-              </button>
-              <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">
-                Next →
-              </button>
-            </div>
-          </div>
+    <!-- Main Exam Workspace (fills remaining 100vh height without page scroll) -->
+    <div class="exam-workspace">
+      <!-- Left Column: Question Area -->
+      <div class="exam-question-column">
+        <!-- Scrollable Question Content (if extra long, scrolls inside here ONLY) -->
+        <div class="exam-question-body question-card" id="question-card">
+          <!-- Question content injected by JS -->
         </div>
 
-        <!-- Sidebar -->
-        <div class="test-sidebar">
-          <div class="sidebar-card">
-            <h4>Question Navigator</h4>
-            <div class="question-nav-grid" id="question-nav">
-              <!-- Injected by JS -->
-            </div>
-            <div class="nav-legend">
-              <div class="legend-item"><div class="legend-dot current"></div> Current</div>
-              <div class="legend-item"><div class="legend-dot answered"></div> Answered</div>
-              <div class="legend-item"><div class="legend-dot flagged"></div> Flagged</div>
-              <div class="legend-item"><div class="legend-dot unanswered"></div> Not Visited</div>
-            </div>
+        <!-- Pinned Bottom Action Footer: ALWAYS visible on screen! -->
+        <div class="exam-action-bar">
+          <div class="exam-actions-left">
+            <button class="btn btn-ghost flag-btn" id="flag-btn" onclick="toggleFlag()">
+              🚩 Flag for Review
+            </button>
+            <button class="btn btn-ghost" onclick="clearAnswer()">
+              ✕ Clear Response
+            </button>
           </div>
-
-          <div class="sidebar-card" style="margin-top: var(--space-md);">
-            <h4>Test Summary</h4>
-            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
-              <div>✅ Answered: <strong id="answered-count" style="color: var(--accent-green);">0</strong></div>
-              <div>🚩 Flagged: <strong id="flagged-count" style="color: var(--accent-orange);">0</strong></div>
-              <div>⬜ Remaining: <strong id="remaining-count" style="color: var(--text-muted);">0</strong></div>
-            </div>
+          <div class="exam-actions-right">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">
+              ← Previous
+            </button>
+            <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">
+              Next Question →
+            </button>
           </div>
-
-          <button class="btn btn-danger" style="width: 100%; margin-top: var(--space-md);" onclick="showSubmitModal()">
-            📤 Submit Test
-          </button>
         </div>
       </div>
+
+      <!-- Right Column: Sidebar Navigator -->
+      <aside class="exam-sidebar">
+        <div class="sidebar-header">
+          <h4>Question Navigator</h4>
+          <span class="total-q-badge" id="total-q-badge">Navigator</span>
+        </div>
+
+        <!-- Question Grid with smooth auto-scroll -->
+        <div class="question-nav-grid-wrapper">
+          <div class="question-nav-grid" id="question-nav">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <div class="nav-legend">
+          <div class="legend-item"><div class="legend-dot current"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot answered"></div> Answered</div>
+          <div class="legend-item"><div class="legend-dot flagged"></div> Flagged</div>
+          <div class="legend-item"><div class="legend-dot unanswered"></div> Unvisited</div>
+        </div>
+
+        <div class="exam-sidebar-summary">
+          <div class="summary-pill answered">
+            <span>✅ Answered</span>
+            <strong id="answered-count">0</strong>
+          </div>
+          <div class="summary-pill flagged">
+            <span>🚩 Flagged</span>
+            <strong id="flagged-count">0</strong>
+          </div>
+          <div class="summary-pill remaining">
+            <span>⬜ Remaining</span>
+            <strong id="remaining-count">0</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-danger exam-submit-bottom" onclick="showSubmitModal()">
+          📤 Submit Test
+        </button>
+      </aside>
     </div>
   </div>
 

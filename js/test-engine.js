@@ -204,6 +204,7 @@ function beginTest() {
   testState.isSubmitted = false;
 
   // Switch views
+  document.body.classList.add('in-exam-mode');
   document.getElementById('section-select-view').classList.add('hidden');
   document.getElementById('test-view').classList.remove('hidden');
 
@@ -261,6 +262,7 @@ function finishFullMockRecruitment() {
 
 // ── Show Coding Links ──
 function showCodingLinks() {
+  document.body.classList.remove('in-exam-mode');
   document.getElementById('section-select-view').classList.add('hidden');
   document.getElementById('coding-view').classList.remove('hidden');
 
@@ -354,6 +356,7 @@ function renderQuestion() {
   if (!q) return;
 
   const card = document.getElementById('question-card');
+  if (card) card.scrollTop = 0;
   const selectedAnswer = testState.answers[q.id];
 
   let codeHtml = '';
@@ -385,6 +388,9 @@ function renderQuestion() {
     `Question ${testState.currentIndex + 1} of ${testState.questions.length}`;
   document.getElementById('progress-bar').style.width =
     `${((testState.currentIndex + 1) / testState.questions.length) * 100}%`;
+
+  const totalBadge = document.getElementById('total-q-badge');
+  if (totalBadge) totalBadge.textContent = `${testState.questions.length} Qs`;
 
   // Update flag button
   const flagBtn = document.getElementById('flag-btn');
@@ -521,6 +527,7 @@ function hideSubmitModal() {
 function submitTest() {
   if (testState.isSubmitted) return;
   testState.isSubmitted = true;
+  document.body.classList.remove('in-exam-mode');
 
   // Stop timer
   if (testState.timerInterval) {
