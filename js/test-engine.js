@@ -233,8 +233,41 @@ let codingTimerState = {
   interval: null,
   timeRemaining: 60 * 60,
   isRunning: false,
-  problemStatuses: { 0: 'solved', 1: 'solved', 2: 'solved' } // default to solved
+  selectedProblems: [],
+  problemStatuses: {},
+  activeIndex: 0
 };
+
+function getCodingProblemPool() {
+  const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
+  const problems = (data && data.questionBank && data.questionBank.coding) || [];
+
+  if (!problems.length) return [];
+
+  const shuffled = [...problems].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(2, shuffled.length));
+}
+
+function prepareCodingAttempt() {
+  codingTimerState.selectedProblems = getCodingProblemPool();
+  codingTimerState.problemStatuses = {};
+  codingTimerState.activeIndex = 0;
+  codingTimerState.timeRemaining = 60 * 60;
+  codingTimerState.isRunning = false;
+
+  if (codingTimerState.interval) {
+    clearInterval(codingTimerState.interval);
+    codingTimerState.interval = null;
+  }
+
+  const timerBtn = document.getElementById('coding-timer-btn');
+  if (timerBtn) {
+    timerBtn.innerHTML = `⏱️ Start 60-Min Exam Timer (<span id="coding-timer-display">${formatCodingTime(codingTimerState.timeRemaining)}</span>)`;
+  }
+
+  updateCodingTimerDisplay();
+  updateCodingSummary();
+}
 
 function selectCodingStatus(index, status) {
   codingTimerState.problemStatuses[index] = status;
@@ -249,7 +282,10 @@ function selectCodingStatus(index, status) {
 }
 
 function updateCodingSummary() {
-  const problems = (testState.companyData && testState.companyData.questionBank && testState.companyData.questionBank.coding) || [1, 2, 3];
+  const problems = codingTimerState.selectedProblems.length
+    ? codingTimerState.selectedProblems
+    : ((testState.companyData && testState.companyData.questionBank && testState.companyData.questionBank.coding) || [1, 2]);
+
   let solved = 0;
   let partial = 0;
   problems.forEach((_, i) => {
@@ -302,11 +338,12 @@ function finishFullMockRecruitment() {
   if (codingTimerState.interval) clearInterval(codingTimerState.interval);
 
   const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
-  const problems = (data && data.questionBank && data.questionBank.coding) || [
-    { title: 'Subarray with Given Sum', difficulty: 'Medium', topics: ['Arrays', 'Two Pointers'], link: 'https://leetcode.com/problems/subarray-sum-equals-k/' },
-    { title: 'Rat in a Maze Problem', difficulty: 'Medium', topics: ['Backtracking', 'Recursion'], link: 'https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1' },
-    { title: 'Count Inversions in an Array', difficulty: 'Medium', topics: ['Divide and Conquer', 'Merge Sort'], link: 'https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1' }
-  ];
+  const problems = codingTimerState.selectedProblems.length
+    ? codingTimerState.selectedProblems
+    : ((data && data.questionBank && data.questionBank.coding) || [
+        { title: 'Subarray with Given Sum', difficulty: 'Medium', topics: ['Arrays', 'Two Pointers'], link: 'https://leetcode.com/problems/subarray-sum-equals-k/' },
+        { title: 'Rat in a Maze Problem', difficulty: 'Medium', topics: ['Backtracking', 'Recursion'], link: 'https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1' }
+      ]).slice(0, 2);
 
   let solved = 0;
   let partial = 0;
@@ -446,6 +483,8 @@ function finishFullMockRecruitment() {
 
 // ── Show Coding Links ──
 function showCodingLinks() {
+  prepareCodingAttempt();
+
   document.body.classList.remove('in-exam-mode');
   document.getElementById('section-select-view').classList.add('hidden');
   document.getElementById('coding-view').classList.remove('hidden');
@@ -468,10 +507,10 @@ function showCodingLinks() {
         </div>
         <h3 style="margin-bottom: 6px; color: #fff; font-size: 1.3rem;">🏆 Final Stage: Accenture Coding Assessment</h3>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 14px; line-height: 1.5;">
-          3 Official Accenture Coding Problems • Practice solving them within the 60-minute timeframe. When done, submit to view your <strong>Grand Master Recruitment Report & Review</strong>!
+          2 Random Accenture Coding Problems • Solve them within the 60-minute timeframe. When done, submit to view your <strong>Grand Master Recruitment Report & Review</strong>!
         </p>
         <div id="coding-solved-summary" style="margin-bottom: 16px; font-size: 0.95rem; color: #00d4ff;">
-          <strong>3</strong> Solved • <strong>0</strong> Partial of <strong>3</strong> Problems
+          <strong>2</strong> Solved • <strong>0</strong> Partial of <strong>2</strong> Problems
         </div>
         <div style="display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;">
           <button id="coding-timer-btn" class="btn btn-secondary btn-sm" onclick="toggleCodingTimer()" style="font-weight: 600;">⏱️ Start 60-Min Exam Timer (<span id="coding-timer-display">60:00</span>)</button>
@@ -488,38 +527,149 @@ function showCodingLinks() {
   }
 
   const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
-  const problems = (data && data.questionBank && data.questionBank.coding) || [];
+  const problems = codingTimerState.selectedProblems.length
+    ? codingTimerState.selectedProblems
+    : (((data && data.questionBank && data.questionBank.coding) || []).slice(0, 2));
 
   const grid = document.getElementById('coding-links-grid');
-  grid.innerHTML = problems.map((p, i) => {
-    const curStatus = codingTimerState.problemStatuses[i] || 'solved';
-    return `
-      <div class="coding-problem-card" style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 14px; padding: 20px; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 212, 255, 0.12); color: #00d4ff; font-weight: 800; display: flex; align-items: center; justify-content: center;">${i + 1}</div>
-            <div>
-              <div style="font-weight: 700; font-size: 1.05rem; color: #fff;">${p.title}</div>
-              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">${(p.topics || []).join(' • ')}</div>
-            </div>
+  if (!grid) return;
+
+  const currentIndex = Math.min(codingTimerState.activeIndex, Math.max(0, problems.length - 1));
+  const currentProblem = problems[currentIndex];
+  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'solved';
+
+  grid.innerHTML = `
+    <div class="coding-proctor-shell">
+      <div class="coding-proctor-header">
+        <div class="coding-proctor-info">
+          <div class="coding-kicker">Coding Assessment</div>
+          <h3>Problem ${currentIndex + 1} of ${problems.length}</h3>
+        </div>
+        <div class="coding-proctor-summary">
+          <span class="coding-pill coding-pill-blue">${currentProblem.difficulty}</span>
+          <span class="coding-pill coding-pill-green">⏱️ 60 min</span>
+        </div>
+      </div>
+
+      <div class="coding-proctor-panel">
+        <div class="coding-proctor-topbar">
+          <div class="coding-problem-meta">
+            ${(currentProblem.topics || []).map(topic => `<span class="coding-topic">${topic}</span>`).join('')}
           </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span class="difficulty ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
-            <a href="${p.link}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 6px 14px; text-decoration: none;">Solve on LeetCode/GFG ↗</a>
+          <a href="${currentProblem.link}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm coding-link-btn">Practice Link ↗</a>
+        </div>
+
+        <div class="coding-problem-detail">
+          <div class="coding-problem-label">Current Problem</div>
+          <h3>${currentProblem.title}</h3>
+          <div class="coding-problem-body">
+            ${currentProblem.description || 'Solve this coding problem within the allotted time.'}
+          </div>
+
+          <div class="coding-status-block">
+            <div class="coding-status-label">Status for Test Report</div>
+            <div class="coding-status-group" id="coding-status-group-${currentIndex}">
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'solved' ? 'active' : ''}" data-status="solved" onclick="selectCodingStatus(${currentIndex}, 'solved')">✅ Solved (100%)</button>
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'partial' ? 'active' : ''}" data-status="partial" onclick="selectCodingStatus(${currentIndex}, 'partial')">⚡ Partial (50%)</button>
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'attempted' ? 'active' : ''}" data-status="attempted" onclick="selectCodingStatus(${currentIndex}, 'attempted')">❌ Attempted (0%)</button>
+            </div>
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border-glass); flex-wrap: wrap; gap: 8px;">
-          <span style="font-size: 0.82rem; color: var(--text-secondary); font-weight: 600;">Status for Test Report:</span>
-          <div class="coding-status-group" id="coding-status-group-${i}" style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'solved' ? 'active' : ''}" data-status="solved" onclick="selectCodingStatus(${i}, 'solved')" style="font-size: 0.78rem; padding: 5px 12px;">✅ Solved (100%)</button>
-            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'partial' ? 'active' : ''}" data-status="partial" onclick="selectCodingStatus(${i}, 'partial')" style="font-size: 0.78rem; padding: 5px 12px;">⚡ Partial (50%)</button>
-            <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'attempted' ? 'active' : ''}" data-status="attempted" onclick="selectCodingStatus(${i}, 'attempted')" style="font-size: 0.78rem; padding: 5px 12px;">❌ Attempted (0%)</button>
-          </div>
+        <div class="coding-proctor-footer">
+          <button class="btn btn-secondary" onclick="moveCodingProblem(-1)" ${currentIndex === 0 ? 'disabled' : ''}>← Previous</button>
+          <button class="btn btn-primary" onclick="moveCodingProblem(1)">${currentIndex === problems.length - 1 ? 'Finish & View Results →' : 'Next Problem →'}</button>
         </div>
       </div>
-    `;
-  }).join('');
+    </div>
+  `;
+
+  updateCodingSummary();
+}
+
+function moveCodingProblem(direction) {
+  const problems = codingTimerState.selectedProblems.length
+    ? codingTimerState.selectedProblems
+    : [];
+
+  if (!problems.length) return;
+
+  const nextIndex = codingTimerState.activeIndex + direction;
+  if (nextIndex < 0 || nextIndex >= problems.length) {
+    if (nextIndex >= problems.length) {
+      finishFullMockRecruitment();
+    }
+    return;
+  }
+
+  codingTimerState.activeIndex = nextIndex;
+  renderCodingProblemPanel();
+}
+
+function renderCodingProblemPanel() {
+  const problems = codingTimerState.selectedProblems.length
+    ? codingTimerState.selectedProblems
+    : [];
+
+  if (!problems.length) {
+    const grid = document.getElementById('coding-links-grid');
+    if (grid) grid.innerHTML = '<div style="padding: 20px; color: var(--text-secondary);">No coding problems selected.</div>';
+    return;
+  }
+
+  const grid = document.getElementById('coding-links-grid');
+  const currentIndex = Math.min(codingTimerState.activeIndex, problems.length - 1);
+  codingTimerState.activeIndex = currentIndex;
+  const currentProblem = problems[currentIndex];
+  const curStatus = codingTimerState.problemStatuses[currentIndex] || 'solved';
+
+  if (!grid) return;
+
+  grid.innerHTML = `
+    <div class="coding-proctor-shell">
+      <div class="coding-proctor-header">
+        <div class="coding-proctor-info">
+          <div class="coding-kicker">Coding Assessment</div>
+          <h3>Problem ${currentIndex + 1} of ${problems.length}</h3>
+        </div>
+        <div class="coding-proctor-summary">
+          <span class="coding-pill coding-pill-blue">${currentProblem.difficulty}</span>
+          <span class="coding-pill coding-pill-green">⏱️ 60 min</span>
+        </div>
+      </div>
+
+      <div class="coding-proctor-panel">
+        <div class="coding-proctor-topbar">
+          <div class="coding-problem-meta">
+            ${(currentProblem.topics || []).map(topic => `<span class="coding-topic">${topic}</span>`).join('')}
+          </div>
+          <a href="${currentProblem.link}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm coding-link-btn">Practice Link ↗</a>
+        </div>
+
+        <div class="coding-problem-detail">
+          <div class="coding-problem-label">Current Problem</div>
+          <h3>${currentProblem.title}</h3>
+          <div class="coding-problem-body">
+            ${currentProblem.description || 'Solve this coding problem within the allotted time.'}
+          </div>
+
+          <div class="coding-status-block">
+            <div class="coding-status-label">Status for Test Report</div>
+            <div class="coding-status-group" id="coding-status-group-${currentIndex}">
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'solved' ? 'active' : ''}" data-status="solved" onclick="selectCodingStatus(${currentIndex}, 'solved')">✅ Solved (100%)</button>
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'partial' ? 'active' : ''}" data-status="partial" onclick="selectCodingStatus(${currentIndex}, 'partial')">⚡ Partial (50%)</button>
+              <button type="button" class="btn btn-sm coding-status-btn ${curStatus === 'attempted' ? 'active' : ''}" data-status="attempted" onclick="selectCodingStatus(${currentIndex}, 'attempted')">❌ Attempted (0%)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="coding-proctor-footer">
+          <button class="btn btn-secondary" onclick="moveCodingProblem(-1)" ${currentIndex === 0 ? 'disabled' : ''}>← Previous</button>
+          <button class="btn btn-primary" onclick="moveCodingProblem(1)">${currentIndex === problems.length - 1 ? 'Finish & View Results →' : 'Next Problem →'}</button>
+        </div>
+      </div>
+    </div>
+  `;
 
   updateCodingSummary();
 }
