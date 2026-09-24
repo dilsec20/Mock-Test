@@ -1288,7 +1288,7 @@ function finishAssessment() {
         <div style="font-size: 2rem; margin-bottom: 4px;">🎉</div>
         <h3 style="margin-bottom: 6px; color: #fff;">Stage 3 Complete!</h3>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
-          Next in Full Mock: <strong>Stage 4 — Coding Assessment (2 Random Problems • 60 min)</strong>
+          Next in Full Mock: <strong>Stage 4 — Coding Assessment (2 DSA + 1 SQL + 1 Frontend DOM • 60 min)</strong>
         </p>
         <a href="test.html?company=accenture&section=coding&mode=fullmock" class="btn btn-primary btn-lg" style="box-shadow: 0 0 20px rgba(0,212,255,0.4); text-decoration: none;">
           🚀 Proceed to Stage 4: Coding Assessment →

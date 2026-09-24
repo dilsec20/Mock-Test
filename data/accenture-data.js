@@ -82,13 +82,13 @@ window.COMPANY_DATA["accenture"] = {
       "id": "coding",
       "name": "Coding Assessment",
       "icon": "🖥️",
-      "questions": 15,
-      "duration": 0,
-      "description": "Practice coding problems on external platforms (GFG/LeetCode)",
+      "questions": 4,
+      "duration": 60,
+      "description": "Two DSA problems, one SQL problem, and one frontend DOM problem",
       "topics": [
-        "Arrays",
-        "Strings",
-        "Number Problems"
+        "DSA",
+        "SQL",
+        "Frontend DOM"
       ],
       "isExternal": true
     }
@@ -7152,6 +7152,216 @@ window.COMPANY_DATA["accenture"] = {
         ],
         "link": "https://leetcode.com/problems/longest-palindromic-substring/",
         "description": "Return the longest substring that reads the same forward and backward."
+      },
+      {
+        "id": "sql1",
+        "category": "sql",
+        "title": "Combine Two Tables",
+        "difficulty": "Easy",
+        "topics": [
+          "SQL",
+          "LEFT JOIN"
+        ],
+        "link": "https://leetcode.com/problems/combine-two-tables/",
+        "description": "Return each person's first and last name together with their city and state, including people without an address."
+      },
+      {
+        "id": "sql2",
+        "category": "sql",
+        "title": "Second Highest Salary",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "Subquery",
+          "DISTINCT"
+        ],
+        "link": "https://leetcode.com/problems/second-highest-salary/",
+        "description": "Find the second highest distinct salary from the Employee table and return null when it does not exist."
+      },
+      {
+        "id": "sql3",
+        "category": "sql",
+        "title": "Department Highest Salary",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "JOIN",
+          "GROUP BY"
+        ],
+        "link": "https://leetcode.com/problems/department-highest-salary/",
+        "description": "Find employees who earn the highest salary in each department."
+      },
+      {
+        "id": "sql4",
+        "category": "sql",
+        "title": "Rank Scores",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "Window Functions",
+          "DENSE_RANK"
+        ],
+        "link": "https://leetcode.com/problems/rank-scores/",
+        "description": "Rank scores from highest to lowest while assigning the same rank to equal scores."
+      },
+      {
+        "id": "sql5",
+        "category": "sql",
+        "title": "Consecutive Numbers",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "Self Join",
+          "Window Functions"
+        ],
+        "link": "https://leetcode.com/problems/consecutive-numbers/",
+        "description": "Find values that appear at least three times consecutively in a log."
+      },
+      {
+        "id": "sql6",
+        "category": "sql",
+        "title": "Duplicate Emails",
+        "difficulty": "Easy",
+        "topics": [
+          "SQL",
+          "GROUP BY",
+          "HAVING"
+        ],
+        "link": "https://leetcode.com/problems/duplicate-emails/",
+        "description": "Find email addresses that appear more than once by grouping rows and filtering with HAVING COUNT(*) > 1."
+      },
+      {
+        "id": "sql7",
+        "category": "sql",
+        "title": "Customers Who Never Order",
+        "difficulty": "Easy",
+        "topics": [
+          "SQL",
+          "LEFT JOIN",
+          "NULL Filtering"
+        ],
+        "link": "https://leetcode.com/problems/customers-who-never-order/",
+        "description": "Use a LEFT JOIN to find customers with no matching order row."
+      },
+      {
+        "id": "sql8",
+        "category": "sql",
+        "title": "Customer Who Visited but Did Not Make Any Transactions",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "LEFT JOIN",
+          "GROUP BY",
+          "COUNT"
+        ],
+        "link": "https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/",
+        "description": "Join Visits and Transactions, keep visits without transactions, and count them per customer."
+      },
+      {
+        "id": "sql9",
+        "category": "sql",
+        "title": "Average Time of Process per Machine",
+        "difficulty": "Easy",
+        "topics": [
+          "SQL",
+          "JOIN",
+          "GROUP BY",
+          "AVG"
+        ],
+        "link": "https://leetcode.com/problems/average-time-of-process-per-machine/",
+        "description": "Join start and end machine activity rows, calculate process duration, and average it per machine."
+      },
+      {
+        "id": "sql10",
+        "category": "sql",
+        "title": "Monthly Transactions I",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "GROUP BY",
+          "Conditional Aggregation"
+        ],
+        "link": "https://leetcode.com/problems/monthly-transactions-i/",
+        "description": "Group transactions by month and country and calculate total, approved count, and approved amount."
+      },
+      {
+        "id": "sql11",
+        "category": "sql",
+        "title": "Managers with at Least 5 Direct Reports",
+        "difficulty": "Medium",
+        "topics": [
+          "SQL",
+          "SELF JOIN",
+          "GROUP BY",
+          "HAVING"
+        ],
+        "link": "https://leetcode.com/problems/managers-with-at-least-5-direct-reports/",
+        "description": "Self-join employees to managers, group direct reports by manager, and filter groups with HAVING COUNT(*) >= 5."
+      },
+      {
+        "id": "front1",
+        "category": "frontend",
+        "title": "DOM Counter Component",
+        "difficulty": "Easy",
+        "topics": [
+          "Frontend",
+          "DOM",
+          "Events"
+        ],
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event",
+        "description": "Build a counter with increment, decrement, and reset buttons using addEventListener and DOM text updates."
+      },
+      {
+        "id": "front2",
+        "category": "frontend",
+        "title": "Todo List with Event Delegation",
+        "difficulty": "Medium",
+        "topics": [
+          "Frontend",
+          "DOM",
+          "Event Delegation"
+        ],
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener",
+        "description": "Create a todo list that adds items, toggles completion, and deletes items using one delegated listener on the list."
+      },
+      {
+        "id": "front3",
+        "category": "frontend",
+        "title": "Form Validation Skeleton",
+        "difficulty": "Medium",
+        "topics": [
+          "Frontend",
+          "DOM",
+          "Form Validation"
+        ],
+        "link": "https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation",
+        "description": "Build a registration form that validates required fields, email format, password length, and displays inline errors without page reload."
+      },
+      {
+        "id": "front4",
+        "category": "frontend",
+        "title": "Modal Dialog with DOM Controls",
+        "difficulty": "Easy",
+        "topics": [
+          "Frontend",
+          "DOM",
+          "Accessibility"
+        ],
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement",
+        "description": "Implement an open and close modal with Escape-key handling, backdrop close behavior, and focus returned to the trigger."
+      },
+      {
+        "id": "front5",
+        "category": "frontend",
+        "title": "Live Search Filter",
+        "difficulty": "Medium",
+        "topics": [
+          "Frontend",
+          "DOM",
+          "Input Events"
+        ],
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Element/input_event",
+        "description": "Filter a list as the user types, show an empty-state message, and keep the filtering case-insensitive."
       }
     ],
     "communication_grammar": [

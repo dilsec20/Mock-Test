@@ -282,7 +282,16 @@ function getCodingProblemPool() {
 
   if (!problems.length) return [];
 
-  return getCoverageSelection(data.company, 'coding', problems, 2);
+  const dsaProblems = problems.filter(problem => !problem.category || problem.category === 'dsa');
+  const sqlProblems = problems.filter(problem => problem.category === 'sql');
+  const frontendProblems = problems.filter(problem => problem.category === 'frontend');
+  const selected = [
+    ...getCoverageSelection(data.company, 'coding_dsa', dsaProblems, 2),
+    getCoverageSelection(data.company, 'coding_sql', sqlProblems, 1)[0],
+    getCoverageSelection(data.company, 'coding_frontend', frontendProblems, 1)[0]
+  ].filter(Boolean);
+
+  return shuffleArray(selected);
 }
 
 function prepareCodingAttempt() {
@@ -321,7 +330,7 @@ function selectCodingStatus(index, status) {
 function updateCodingSummary() {
   const problems = codingTimerState.selectedProblems.length
     ? codingTimerState.selectedProblems
-    : ((testState.companyData && testState.companyData.questionBank && testState.companyData.questionBank.coding) || [1, 2]);
+    : [];
 
   let solved = 0;
   let partial = 0;
@@ -379,10 +388,7 @@ function finishFullMockRecruitment() {
   const isFullMock = params.get('from') === 'fullmock' || params.get('mode') === 'fullmock';
   const problems = codingTimerState.selectedProblems.length
     ? codingTimerState.selectedProblems
-    : ((data && data.questionBank && data.questionBank.coding) || [
-        { title: 'Subarray with Given Sum', difficulty: 'Medium', topics: ['Arrays', 'Two Pointers'], link: 'https://leetcode.com/problems/subarray-sum-equals-k/' },
-        { title: 'Rat in a Maze Problem', difficulty: 'Medium', topics: ['Backtracking', 'Recursion'], link: 'https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1' }
-      ]).slice(0, 2);
+    : getCodingProblemPool();
 
   let solved = 0;
   let partial = 0;
@@ -557,10 +563,10 @@ function showCodingLinks() {
         </div>
         <h3 style="margin-bottom: 6px; color: #fff; font-size: 1.3rem;">🏆 Final Stage: Accenture Coding Assessment</h3>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 14px; line-height: 1.5;">
-          2 Random Accenture Coding Problems • Solve them within the 60-minute timeframe. When done, submit to view your <strong>Grand Master Recruitment Report & Review</strong>!
+          2 DSA + 1 SQL + 1 Frontend DOM Problem • Solve them within the 60-minute timeframe. When done, submit to view your <strong>Grand Master Recruitment Report & Review</strong>!
         </p>
         <div id="coding-solved-summary" style="margin-bottom: 16px; font-size: 0.95rem; color: #00d4ff;">
-          <strong>2</strong> Solved • <strong>0</strong> Partial of <strong>2</strong> Problems
+          <strong>0</strong> Solved • <strong>0</strong> Partial of <strong>4</strong> Problems
         </div>
         <div style="display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;">
           <button id="coding-timer-btn" class="btn btn-secondary btn-sm" onclick="toggleCodingTimer()" style="font-weight: 600;">⏱️ Start 60-Min Exam Timer (<span id="coding-timer-display">60:00</span>)</button>
@@ -579,7 +585,7 @@ function showCodingLinks() {
   const data = testState.companyData || (window.COMPANY_DATA && window.COMPANY_DATA[testState.company || 'accenture']);
   const problems = codingTimerState.selectedProblems.length
     ? codingTimerState.selectedProblems
-    : (((data && data.questionBank && data.questionBank.coding) || []).slice(0, 2));
+    : getCodingProblemPool();
 
   const grid = document.getElementById('coding-links-grid');
   if (!grid) return;
