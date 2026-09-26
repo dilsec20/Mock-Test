@@ -107,10 +107,30 @@ const questionBanks = [
   prepareBank(firstQuestionBank.map((question, index) => ({ ...question, prompt: alternatePrompts[1][index] })), 3)
 ];
 
+const imageSpeakingPrompts = [
+  'Describe the image in 60 to 90 seconds. Explain what you notice, what the people may be working on, and how they appear to collaborate.',
+  'Speak about the image for 60 to 90 seconds. Describe the setting, the activity, and one detail that suggests effective teamwork.',
+  'Study the image and speak for 60 to 90 seconds. Describe the scene and explain what a project team might learn from it.'
+];
+const imageSpeakingUrls = [
+  'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85',
+  'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85'
+];
+questionBanks.forEach((bank, index) => {
+  bank[26] = {
+    ...bank[26],
+    prompt: imageSpeakingPrompts[index],
+    image: imageSpeakingUrls[index],
+    imageAlt: 'People collaborating during a workplace meeting',
+    maxSeconds: 90
+  };
+});
+
 const totalQuestionPool = questionBanks.reduce((total, bank) => total + bank.length, 0);
 
 let questions = firstQuestionBank;
-const state = { index: 0, answers: {}, startedAt: null, remaining: 3600, timer: null, recognition: null, recording: false, attempt: 0 };
+const state = { index: 0, answers: {}, startedAt: null, remaining: 3600, timer: null, recognition: null, recording: false, speechTimer: null, attempt: 0 };
 const attemptKey = 'capgemini_communication_attempt_count';
 const $ = id => document.getElementById(id);
 
@@ -156,7 +176,7 @@ function updateTimer() {
 function renderNav() {
   const groups = [...new Set(questions.map(q => q.section))];
   $('question-nav').innerHTML = groups.map(section => `<div class="ca-section">${section}</div><div class="ca-nav">${questions.map((q, i) => q.section === section ? `<button class="${i === state.index ? 'current ' : ''}${state.answers[i] !== undefined ? 'answered' : ''}" data-index="${i}">${i + 1}</button>` : '').join('')}</div>`).join('');
-  $('question-nav').querySelectorAll('button').forEach(button => { button.onclick = () => { state.index = Number(button.dataset.index); renderNav(); renderQuestion(); }; });
+  $('question-nav').querySelectorAll('button').forEach(button => { button.onclick = () => { stopSpeechCapture(); state.index = Number(button.dataset.index); renderNav(); renderQuestion(); }; });
   const answered = Object.keys(state.answers).length;
   $('progress-text').textContent = `${state.index + 1} of ${questions.length} • ${answered} answered`;
   $('progress-fill').style.width = `${(answered / questions.length) * 100}%`;
@@ -165,9 +185,10 @@ function renderNav() {
 function renderQuestion() {
   const q = questions[state.index];
   $('ca-meta').textContent = `Attempt ${state.attempt} of 3 • ${q.section} • Question ${state.index + 1} of ${questions.length}`;
-  $('question-label').textContent = q.type === 'spoken' ? `Maximum recording time: ${q.maxSeconds / 60} minutes` : q.type === 'writing' ? 'Writing task • recommended maximum: 10 minutes' : q.type === 'listening' ? 'Listen before answering' : 'Select one answer';
+  $('question-label').textContent = q.type === 'spoken' ? `Maximum recording time: ${q.maxSeconds} seconds` : q.type === 'writing' ? 'Writing task • recommended maximum: 10 minutes' : q.type === 'listening' ? 'Listen before answering' : 'Select one answer';
   $('question-prompt').textContent = q.prompt;
   let html = q.passage ? `<div class="ca-passage">${q.passage}</div>` : '';
+  if (q.image) html += `<figure class="ca-image-figure"><img src="${escapeHtml(q.image)}" alt="${escapeHtml(q.imageAlt || 'Image speaking prompt')}" loading="eager"><figcaption>Describe the image aloud; avoid assuming details that are not visible.</figcaption></figure>`;
   if (q.audio) html += `<button id="listen-btn" class="btn btn-secondary">🔊 Play audio</button>`;
   if (q.type === 'mcq' || q.type === 'listening') html += `<div class="ca-options">${q.options.map((option, i) => `<label class="ca-option ${state.answers[state.index] === i ? 'selected' : ''}"><input type="radio" name="answer" value="${i}" ${state.answers[state.index] === i ? 'checked' : ''}> <span>${option}</span></label>`).join('')}</div>`;
   if (q.type === 'writing' || q.type === 'spoken') html += `<textarea id="response" class="ca-response" placeholder="Write or speak your response here..."></textarea><div id="word-count" class="ca-help">0 words • minimum ${q.minWords || 100} words</div>${q.type === 'spoken' ? '<button id="mic-btn" class="btn btn-secondary" style="margin-top:10px">🎙️ Start microphone</button>' : ''}`;
@@ -183,27 +204,98 @@ function renderQuestion() {
 function toggleMic() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) { alert('Speech recognition is not available in this browser. Type your response instead.'); return; }
-  if (state.recording) { state.recognition.stop(); return; }
+  if (state.recording) { stopSpeechCapture(); return; }
   state.recognition = new SpeechRecognition(); state.recognition.continuous = true; state.recognition.interimResults = true; state.recognition.lang = 'en-US'; state.recording = true; $('mic-btn').textContent = '⏹️ Stop microphone';
+  state.speechTimer = setTimeout(() => stopSpeechCapture(), (questions[state.index].maxSeconds || 120) * 1000);
   state.recognition.onresult = event => { let text = ''; for (const result of event.results) text += result[0].transcript + ' '; const response = $('response'); if (response) { response.value = text.trim(); state.answers[state.index] = response.value; $('word-count').textContent = `${wordCount(response.value)} words • minimum 100 words`; } };
-  state.recognition.onend = () => { state.recording = false; if ($('mic-btn')) $('mic-btn').textContent = '🎙️ Start microphone'; };
+  state.recognition.onend = () => { clearTimeout(state.speechTimer); state.speechTimer = null; state.recording = false; if ($('mic-btn')) $('mic-btn').textContent = '🎙️ Start microphone'; };
   state.recognition.start();
+}
+
+function stopSpeechCapture() {
+  clearTimeout(state.speechTimer);
+  state.speechTimer = null;
+  if (state.recording && state.recognition) state.recognition.stop();
 }
 
 function move(direction) {
   const q = questions[state.index];
   if (direction > 0 && (q.type === 'writing' || q.type === 'spoken') && wordCount(String(state.answers[state.index] || '')) < (q.minWords || 100)) { alert(`Please provide at least ${q.minWords || 100} words before continuing.`); return; }
+  stopSpeechCapture();
   if (state.index + direction >= questions.length) { finish(false); return; }
   state.index += direction; renderNav(); renderQuestion();
 }
 
 function finish(early) {
-  if (!early && state.remaining > 0 && !confirm('Submit this assessment now?')) return;
-  clearInterval(state.timer); if (state.recognition) state.recognition.stop();
-  let correct = 0; questions.forEach((q, i) => { if (q.type === 'mcq' || q.type === 'listening') { if (state.answers[i] === q.answer) correct++; } else if (wordCount(String(state.answers[i] || '')) >= (q.minWords || 100)) correct++; });
+  if (state.submitted) return;
+  if (early && !confirm('End and submit this assessment now?')) return;
+  state.submitted = true;
+  clearInterval(state.timer); stopSpeechCapture();
+  let correct = 0;
+  let unanswered = 0;
+  const sectionScores = {};
+  const questionResults = questions.map((question, index) => {
+    const userAnswer = state.answers[index];
+    const hasAnswer = userAnswer !== undefined && userAnswer !== '';
+    if (!hasAnswer) unanswered++;
+
+    const isChoice = question.type === 'mcq' || question.type === 'listening';
+    const isCorrect = isChoice
+      ? userAnswer === question.answer
+      : wordCount(String(userAnswer || '')) >= (question.minWords || 100);
+    if (isCorrect) correct++;
+
+    const section = sectionScores[question.section] || { total: 0, correct: 0 };
+    section.total++;
+    if (isCorrect) section.correct++;
+    sectionScores[question.section] = section;
+
+    const options = isChoice ? question.options : [];
+    const explanation = isChoice
+      ? (question.explanation || `The correct answer is ${question.options[question.answer]}.`)
+      : `Practice rubric: ${question.prompt} Minimum response length: ${question.minWords || 100} words. ${hasAnswer ? `Your response (${wordCount(String(userAnswer))} words): ${String(userAnswer)}` : 'No response submitted.'}`;
+
+    return {
+      id: question.id,
+      question: question.passage ? `${question.passage}\n\n${question.prompt}` : question.prompt,
+      options,
+      correctAnswer: isChoice ? question.answer : -1,
+      userAnswer: hasAnswer ? (isChoice ? userAnswer : 0) : -1,
+      isCorrect,
+      explanation,
+      image: question.image || null,
+      topic: question.section
+    };
+  });
+
   const percent = Math.round((correct / questions.length) * 100);
-  localStorage.setItem('capgemini_communication_last_result', JSON.stringify({ date: new Date().toISOString(), total: questions.length, correct, percentage: percent, timeTaken: 3600 - state.remaining }));
-  $('test-view').classList.add('hidden'); $('result-view').classList.remove('hidden'); $('result-summary').textContent = `${correct} of ${questions.length} responses met the practice scoring criteria (${percent}%). Review your written and spoken answers with a mentor or language tool.`;
+  const resultRecord = {
+    id: `cg_comm_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`,
+    company: 'Capgemini',
+    section: `Communication Assessment - Mock ${state.attempt}`,
+    date: new Date().toISOString(),
+    total: questions.length,
+    correct,
+    incorrect: questions.length - correct - unanswered,
+    unanswered,
+    percentage: percent,
+    timeTaken: Math.max(1, 3600 - state.remaining),
+    totalTime: 3600,
+    topicScores: sectionScores,
+    questionResults
+  };
+
+  try {
+    const resultHistory = JSON.parse(localStorage.getItem('mockprep_results') || '[]');
+    resultHistory.unshift(resultRecord);
+    localStorage.setItem('mockprep_results', JSON.stringify(resultHistory.slice(0, 50)));
+    localStorage.setItem('capgemini_communication_last_result', JSON.stringify(resultRecord));
+  } catch (error) {
+    console.error('Could not save communication assessment results:', error);
+  }
+
+  $('review-result-link').href = `results.html?id=${encodeURIComponent(resultRecord.id)}`;
+  $('test-view').classList.add('hidden'); $('result-view').classList.remove('hidden'); $('result-summary').textContent = `Mock ${state.attempt}: ${correct} of ${questions.length} practice points (${percent}%). Your question-by-question review is saved in My Results.`;
 }
 
 document.addEventListener('DOMContentLoaded', init);

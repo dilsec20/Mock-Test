@@ -155,6 +155,7 @@ const challenges = isCapgeminiFullMock
   ? [getCoverageChallenge(workspaceMode, allChallenges)]
   : allChallenges;
 let activeIndex = 0;
+const workspaceResponses = Array(challenges.length).fill(null);
 let secondsRemaining = workspaceMode === 'debugging' ? 20 * 60 : 45 * 60;
 let timerId;
 
@@ -193,6 +194,7 @@ function renderChallengeList() {
 
   elements.list.querySelectorAll('[data-index]').forEach(button => {
     button.addEventListener('click', () => {
+      saveActiveResponse();
       activeIndex = Number(button.dataset.index);
       renderChallenge();
     });
@@ -235,16 +237,19 @@ function startTimer() {
 document.getElementById('run-code-btn').addEventListener('click', () => {
   const hasCode = elements.editor.value.trim().length > 0;
   elements.result.innerHTML = hasCode
-    ? 'Test run complete <span class="cap-result-success">Review sample cases: passed</span>'
-    : 'Test run blocked <span class="cap-result-failure">Add an implementation first</span>';
+    ? 'Code captured <span class="cap-result-success">This practice workspace does not compile or execute code.</span>'
+    : 'No code to review <span class="cap-result-failure">Add an implementation first</span>';
+  saveActiveResponse();
 });
 
 document.getElementById('reset-code-btn').addEventListener('click', () => {
   elements.editor.value = challenges[activeIndex].code;
-  elements.result.innerHTML = 'Test results <span>Not run</span>';
+  elements.result.innerHTML = 'Starter code restored <span>Update it before submitting for review.</span>';
+  saveActiveResponse();
 });
 
 document.getElementById('submit-next-btn').addEventListener('click', () => {
+  saveActiveResponse();
   if (activeIndex === challenges.length - 1) {
     elements.result.innerHTML = 'Assessment complete <span class="cap-result-success">All challenges submitted</span>';
     clearInterval(timerId);
@@ -254,6 +259,37 @@ document.getElementById('submit-next-btn').addEventListener('click', () => {
   activeIndex += 1;
   renderChallenge();
 });
+
+function saveActiveResponse() {
+  workspaceResponses[activeIndex] = {
+    code: elements.editor.value,
+    note: elements.result.textContent.trim()
+  };
+}
+
+function buildWorkspaceQuestionResults() {
+  return challenges.map((challenge, index) => {
+    const response = workspaceResponses[index] || { code: '', note: '' };
+    const details = [
+      challenge.statement,
+      `Constraints: ${challenge.constraints.join('; ')}`,
+      `Sample cases: ${challenge.tests.join('; ')}`
+    ].join('\n');
+
+    return {
+      id: `cg_workspace_${workspaceMode}_${index + 1}`,
+      question: details,
+      code: response.code,
+      options: [],
+      correctAnswer: -1,
+      userAnswer: -1,
+      isCorrect: false,
+      reviewStatus: 'manual',
+      explanation: `${response.note || 'No run note recorded.'} Submitted code is saved for manual review; this workspace does not execute solutions.`,
+      topic: challenge.tag
+    };
+  });
+}
 
 function completeCapgeminiWorkspaceStage() {
   let session = {};
@@ -268,7 +304,9 @@ function completeCapgeminiWorkspaceStage() {
     incorrect: 1,
     percentage: 0,
     date: new Date().toISOString(),
-    challenge: challenges[0].title
+    challenge: challenges[0].title,
+    topicScores: { [challenges[0].tag]: { correct: 0, total: 1 } },
+    questionResults: buildWorkspaceQuestionResults()
   };
 
   if (workspaceMode === 'debugging') {

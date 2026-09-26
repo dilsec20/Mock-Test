@@ -1164,6 +1164,16 @@ function finishCapgeminiFullMock() {
   const stageValues = Object.values(stages);
   const total = stageValues.reduce((sum, stage) => sum + (stage.total || 0), 0);
   const correct = stageValues.reduce((sum, stage) => sum + (stage.correct || 0), 0);
+  const topicScores = {};
+  stageValues.forEach(stage => {
+    Object.entries(stage.topicScores || {}).forEach(([topic, score]) => {
+      const existing = topicScores[topic] || { correct: 0, total: 0 };
+      existing.correct += score.correct || 0;
+      existing.total += score.total || 0;
+      topicScores[topic] = existing;
+    });
+  });
+  const questionResults = stageValues.flatMap(stage => Array.isArray(stage.questionResults) ? stage.questionResults : []);
   const record = {
     id: 'capgemini_full_' + Date.now().toString(36),
     company: 'Capgemini',
@@ -1177,8 +1187,8 @@ function finishCapgeminiFullMock() {
     timeTaken: 0,
     totalTime: 45 * 60,
     stageResults: stages,
-    topicScores: {},
-    questionResults: []
+    topicScores,
+    questionResults
   };
   saveResults(record);
   try { localStorage.removeItem('mockprep_capgemini_fullmock'); } catch (e) {}

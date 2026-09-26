@@ -24,6 +24,9 @@
     .ca-label { color: var(--accent-primary); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
     .ca-prompt { font-size: 1.15rem; line-height: 1.65; margin: 18px 0; }
     .ca-passage { padding: 15px; border-left: 3px solid var(--accent-primary); color: var(--text-secondary); line-height: 1.7; }
+    .ca-image-figure { margin: 16px 0; }
+    .ca-image-figure img { display: block; width: 100%; max-height: 390px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; background: rgba(255,255,255,.05); }
+    .ca-image-figure figcaption { margin-top: 7px; color: var(--text-muted); font-size: .8rem; }
     .ca-options { display: grid; gap: 10px; }
     .ca-option { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border: 1px solid var(--border-glass); border-radius: 9px; cursor: pointer; }
     .ca-option.selected { border-color: var(--accent-primary); background: rgba(0,212,255,.1); }
@@ -55,7 +58,7 @@
         <section class="ca-card"><div id="question-label" class="ca-label"></div><div id="question-prompt" class="ca-prompt"></div><div id="question-content"></div><div id="question-help" class="ca-help"></div><div class="ca-actions"><button id="prev-btn" class="btn btn-ghost">← Previous</button><button id="next-btn" class="btn btn-primary">Next →</button></div></section>
       </div>
     </section>
-    <section id="result-view" class="hidden ca-card ca-start"><div style="font-size:4rem">✅</div><h1>Assessment Submitted</h1><p id="result-summary"></p><a href="index.html" class="btn btn-primary">Back to Home</a></section>
+    <section id="result-view" class="hidden ca-card ca-start"><div style="font-size:4rem">✅</div><h1>Assessment Submitted</h1><p id="result-summary"></p><a id="review-result-link" class="btn btn-primary" href="results.html">Review Answers</a><a href="index.html" class="btn btn-secondary">Back to Home</a></section>
   </main>
   <script src="js/capgemini-communication.js"></script>
 </body>

@@ -512,13 +512,17 @@ function renderReviewList(filter = 'all') {
                     : isStage3 ? '<span style="font-size: 0.7rem; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700;">Stage 3: Cognitive Games</span>'
                     : '<span style="font-size: 0.7rem; background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700;">Stage 4: Coding</span>';
 
-    const badgeClass = q.userAnswer === -1 ? 'skipped-badge' : q.isCorrect ? 'correct-badge' : 'incorrect-badge';
-    const badgeText = q.userAnswer === -1 ? '⬜ Skipped' : q.isCorrect ? '✅ Correct' : '❌ Incorrect / Weak';
+    const isManualReview = q.reviewStatus === 'manual';
+    const badgeClass = isManualReview ? '' : q.userAnswer === -1 ? 'skipped-badge' : q.isCorrect ? 'correct-badge' : 'incorrect-badge';
+    const badgeText = isManualReview ? '📝 Manual review' : q.userAnswer === -1 ? '⬜ Skipped' : q.isCorrect ? '✅ Correct' : '❌ Incorrect / Weak';
 
     let codeHtml = '';
     if (q.code) {
       codeHtml = `<div class="code-snippet" style="font-size: 0.8rem; margin: var(--space-md) 0;">${escapeHtml(q.code)}</div>`;
     }
+    const imageHtml = q.image
+      ? `<figure style="margin: 12px 0;"><img src="${escapeHtml(q.image)}" alt="Image prompt for ${escapeHtml(q.question || 'this response')}" loading="lazy" style="display: block; width: 100%; max-height: 360px; object-fit: contain; border-radius: 8px;"><figcaption class="text-muted" style="font-size: 0.8rem; margin-top: 6px;">Image prompt shown during the assessment</figcaption></figure>`
+      : '';
 
     return `
       <div class="review-question animate-in" style="animation-delay: ${Math.min(i * 0.04, 0.4)}s">
@@ -527,9 +531,10 @@ function renderReviewList(filter = 'all') {
             ${currentResult.isFullMock ? stagePill : ''}
             <div class="question-topic-tag">${escapeHtml(q.topic || 'General')}</div>
           </div>
-          <span class="result-badge ${badgeClass}">${badgeText}</span>
+          <span class="result-badge ${badgeClass}" ${isManualReview ? 'style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);"' : ''}>${badgeText}</span>
         </div>
         <div class="question-text" style="font-size: 0.95rem; line-height: 1.5;">${escapeHtml(q.question)}</div>
+        ${imageHtml}
         ${codeHtml}
         <div class="options-list" style="gap: 6px; margin: 10px 0;">
           ${(q.options || []).map((opt, oi) => {
