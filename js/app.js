@@ -7,7 +7,7 @@ const COMPANIES = [
     id: 'accenture',
     name: 'Accenture',
     logo: 'A>',
-    examDate: '2026-09-28',
+    examDate: '2026-09-30',
     examName: 'Accenture Campus Recruitment',
     dataFile: 'data/accenture.json',
     color: '#A100FF',
