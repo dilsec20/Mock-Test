@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capgemini Communication Assessment | MockPrep</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .ca-shell { max-width: 1120px; margin: 0 auto; padding: 92px 20px 40px; }
+    .ca-header { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 20px; }
+    .ca-header h1 { margin: 0 0 6px; }
+    .ca-meta { color: var(--text-muted); font-size: .9rem; }
+    .ca-timer { padding: 10px 16px; border: 1px solid var(--border-glass); border-radius: 10px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .ca-timer.warning { color: #f59e0b; } .ca-timer.danger { color: #ef4444; }
+    .ca-layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+    .ca-panel, .ca-card { border: 1px solid var(--border-glass); background: var(--bg-glass); border-radius: 14px; padding: 18px; }
+    .ca-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 14px; }
+    .ca-nav button { border: 1px solid var(--border-glass); background: transparent; color: var(--text-primary); border-radius: 7px; padding: 8px 2px; cursor: pointer; }
+    .ca-nav button.current { background: var(--accent-primary); color: #08111c; font-weight: 800; }
+    .ca-nav button.answered { border-color: #22c55e; }
+    .ca-section { color: var(--text-muted); font-size: .78rem; margin: 14px 0 6px; }
+    .ca-progress { height: 7px; background: rgba(255,255,255,.08); border-radius: 8px; overflow: hidden; margin: 14px 0; }
+    .ca-progress div { height: 100%; background: linear-gradient(90deg, var(--accent-primary), #22c55e); }
+    .ca-label { color: var(--accent-primary); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ca-prompt { font-size: 1.15rem; line-height: 1.65; margin: 18px 0; }
+    .ca-passage { padding: 15px; border-left: 3px solid var(--accent-primary); color: var(--text-secondary); line-height: 1.7; }
+    .ca-options { display: grid; gap: 10px; }
+    .ca-option { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border: 1px solid var(--border-glass); border-radius: 9px; cursor: pointer; }
+    .ca-option.selected { border-color: var(--accent-primary); background: rgba(0,212,255,.1); }
+    textarea.ca-response { width: 100%; min-height: 190px; resize: vertical; box-sizing: border-box; padding: 13px; border: 1px solid var(--border-glass); border-radius: 9px; color: var(--text-primary); background: rgba(0,0,0,.16); font: inherit; line-height: 1.55; }
+    .ca-help { color: var(--text-muted); font-size: .85rem; margin-top: 8px; }
+    .ca-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+    .ca-start { max-width: 680px; margin: 110px auto; text-align: center; }
+    .ca-warning { color: #f59e0b; }
+    @media (max-width: 760px) { .ca-layout { grid-template-columns: 1fr; } .ca-panel { order: 2; } .ca-header { align-items: flex-start; flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar"><a href="index.html" class="navbar-brand"><span class="logo-icon">🎯</span><span>MockPrep</span></a><div class="navbar-links"><a href="index.html">Home</a><a href="results.html">My Results</a></div></nav>
+  <main class="ca-shell">
+    <section id="start-view" class="ca-card ca-start">
+      <div style="font-size:4rem">🗣️</div>
+      <h1>Capgemini Communication Assessment</h1>
+      <p class="ca-meta">84-question practice pool • 3 mock papers of 28 questions • 60 minutes each</p>
+      <p>Grammar and sentence correction, business writing, workplace situations, reading, listening, and spoken communication.</p>
+      <p class="ca-warning"><strong>Important:</strong> Each attempt is timed and cannot be paused. Attempts 1, 2, and 3 use separate question papers and remain available later on this device.</p>
+      <button id="start-btn" class="btn btn-primary btn-lg">Start Assessment</button>
+      <p id="locked-message" class="ca-warning hidden">This assessment has already been started on this device. Use the reset control only when you intentionally want to clear practice data.</p>
+      <button id="reset-btn" class="btn btn-ghost btn-sm hidden">Reset practice attempt</button>
+    </section>
+    <section id="test-view" class="hidden">
+      <header class="ca-header"><div><h1>Communication Assessment</h1><div id="ca-meta" class="ca-meta"></div></div><div id="timer" class="ca-timer">60:00</div></header>
+      <div class="ca-layout">
+        <aside class="ca-panel"><strong>Questions</strong><div class="ca-progress"><div id="progress-fill" style="width:0%"></div></div><div id="progress-text" class="ca-meta"></div><div id="question-nav"></div><button id="end-btn" class="btn btn-secondary btn-sm" style="width:100%;margin-top:18px">End Test</button></aside>
+        <section class="ca-card"><div id="question-label" class="ca-label"></div><div id="question-prompt" class="ca-prompt"></div><div id="question-content"></div><div id="question-help" class="ca-help"></div><div class="ca-actions"><button id="prev-btn" class="btn btn-ghost">← Previous</button><button id="next-btn" class="btn btn-primary">Next →</button></div></section>
+      </div>
+    </section>
+    <section id="result-view" class="hidden ca-card ca-start"><div style="font-size:4rem">✅</div><h1>Assessment Submitted</h1><p id="result-summary"></p><a href="index.html" class="btn btn-primary">Back to Home</a></section>
+  </main>
+  <script src="js/capgemini-communication.js"></script>
+</body>
+</html>

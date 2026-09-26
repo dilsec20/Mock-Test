@@ -58,6 +58,15 @@ window.COMPANY_DATA.capgemini = {
       practiceLabel: 'Debugging practice',
     },
     {
+      id: 'communication_assessment',
+      name: 'Communication Assessment (28 Questions)',
+      icon: '🗣️',
+      questions: 28,
+      duration: 60,
+      description: 'Grammar, business writing, workplace situations, reading, listening, and spoken response practice',
+      isCommunication: true
+    },
+    {
       id: 'problem_solving',
       name: 'Problem Solving',
       icon: '🧩',

@@ -187,6 +187,12 @@ function beginTest() {
     return;
   }
 
+  // Capgemini Communication Assessment uses its own mixed written/audio flow.
+  if (testState.selectedSection === 'communication_assessment' && testState.company === 'capgemini') {
+    window.location.href = 'capgemini-communication.html';
+    return;
+  }
+
   // Handle gamified cognitive section separately
   if (testState.selectedSection === 'cognitive_gamified') {
     window.location.href = `cognitive-games.html?company=${testState.company}&mode=assessment`;
