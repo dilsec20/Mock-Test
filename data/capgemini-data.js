@@ -108,11 +108,11 @@ window.COMPANY_DATA.capgemini = {
     },
     {
       id: 'cognitive_assessment',
-      name: 'Cognitive Assessment',
+      name: 'Cognitive Assessment (Aon-style)',
       icon: '🧠',
-      questions: 10,
-      duration: 20,
-      description: 'Motion, grid, logical reasoning, and behavioural practice',
+      questions: 20,
+      duration: 25,
+      description: 'Four modules: Motion Challenge, Grid Challenge, Logical Reasoning, and Behavioural Module',
       practiceUrl: 'https://www.indiabix.com/logical-reasoning/questions-and-answers/',
       practiceLabel: 'Reasoning practice'
     },
@@ -287,19 +287,23 @@ window.COMPANY_DATA.capgemini = {
       {
         id: 'cg_cog_1',
         topic: 'Logical Reasoning',
-        question: 'If every blue tile is adjacent to a red tile and tile A is blue, what must be true?',
-        options: ['A has a red neighbour.', 'A is always in the centre.', 'A cannot move.', 'All tiles are red.'],
-        answer: 0,
-        explanation: 'The condition directly guarantees a red adjacent tile.'
+        question: 'Some employees who work day shifts also work double shifts. All double-shift employees receive a meal break. Which conclusion must be true?',
+        options: ['All day-shift employees receive a meal break.', 'Some day-shift employees receive a meal break.', 'No day-shift employees receive a meal break.', 'Only day-shift employees receive a meal break.'],
+        answer: 1,
+        explanation: 'The employees in the overlap work both day and double shifts, and every double-shift employee receives a meal break.'
       },
       {
         id: 'cg_cog_2',
-        topic: 'Patterns',
-        question: 'Which sequence follows the pattern 2, 6, 12, 20, ...?',
-        options: ['Add consecutive even numbers.', 'Multiply by 2.', 'Add 3 each time.', 'Subtract consecutive numbers.'],
+        topic: 'Logical Reasoning',
+        question: 'A project must finish before the audit. The audit is scheduled after testing, and testing starts only after integration. What must happen before the audit?',
+        options: ['Integration and testing.', 'The audit and integration.', 'Only project planning.', 'Nothing; the order is unknown.'],
         answer: 0,
-        explanation: 'The differences are 4, 6, 8, so the next difference is 10.'
-      }
+        explanation: 'Integration precedes testing, and testing precedes the audit.'
+      },
+      { id: 'cg_cog_3', topic: 'Logical Reasoning', question: 'A, B, C, and D are seated in a row. A is left of B. C is right of B. D is left of A. Which order is possible?', options: ['D, A, B, C', 'A, D, B, C', 'B, A, C, D', 'C, B, A, D'], answer: 0, explanation: 'This order satisfies D left of A, A left of B, and B left of C.' },
+      { id: 'cg_cog_4', topic: 'Logical Reasoning', question: 'A number is increased by 20%, then reduced by 20%. Compared with the original number, the result is:', options: ['The same.', '4% lower.', '4% higher.', '20% lower.'], answer: 1, explanation: 'For an original value of 100, the result is 120 × 0.8 = 96, which is 4% lower.' },
+      { id: 'cg_cog_5', topic: 'Logical Reasoning', question: 'Every approved request has a reference number. Request R has no reference number. What follows?', options: ['Request R is approved.', 'Request R is not approved.', 'Request R is urgent.', 'No conclusion can be made.'], answer: 1, explanation: 'If approval requires a reference number, a request without one cannot be approved.' },
+      { id: 'cg_cog_6', topic: 'Logical Reasoning', question: 'A team completes 18 reviews in 3 hours at a steady rate. How many reviews can it complete in 5 hours?', options: ['24', '27', '30', '36'], answer: 2, explanation: 'The rate is 6 reviews per hour, so 5 hours yields 30 reviews.' }
     ],
     coding: [
       {

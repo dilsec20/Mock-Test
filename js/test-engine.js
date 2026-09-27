@@ -28,7 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSectionSelector();
 
     const sectionParam = params.get('section');
-    if (sectionParam === 'coding') {
+    if (params.get('finalize') === 'capgemini-fullmock' && testState.company === 'capgemini') {
+      finishCapgeminiFullMock();
+      return;
+    } else if (sectionParam === 'coding') {
       selectSection('coding');
       showCodingLinks();
     } else if (sectionParam) {
@@ -193,6 +196,11 @@ function beginTest() {
     return;
   }
 
+  if (testState.selectedSection === 'cognitive_assessment' && testState.company === 'capgemini') {
+    window.location.href = 'capgemini-cognitive.html?mode=practice';
+    return;
+  }
+
   // Handle gamified cognitive section separately
   if (testState.selectedSection === 'cognitive_gamified') {
     window.location.href = `cognitive-games.html?company=${testState.company}&mode=assessment`;
@@ -292,6 +300,10 @@ function beginCapgeminiFullMock() {
 
 function startCapgeminiStage(sectionId) {
   const section = testState.companyData.sections.find(item => item.id === sectionId);
+  if (sectionId === 'cognitive_assessment') {
+    window.location.href = 'capgemini-cognitive.html?mode=fullmock';
+    return;
+  }
   if (!section || section.isExternal || section.isWorkspace) {
     const workspaceMode = section?.workspaceMode || 'debugging';
     window.location.href = `capgemini-workspace.html?company=capgemini&mode=${workspaceMode}&fullmock=capgemini&stage=${workspaceMode}`;

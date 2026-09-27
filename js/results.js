@@ -481,9 +481,9 @@ function renderReviewList(filter = 'all') {
   let questions = currentResult.questionResults || [];
 
   if (filter === 'correct') {
-    questions = questions.filter(q => q.isCorrect);
+    questions = questions.filter(q => q.reviewStatus !== 'reflection' && q.isCorrect);
   } else if (filter === 'incorrect') {
-    questions = questions.filter(q => !q.isCorrect);
+    questions = questions.filter(q => q.reviewStatus !== 'reflection' && !q.isCorrect);
   } else if (filter === 'skipped') {
     questions = questions.filter(q => q.userAnswer === -1);
   } else if (filter === 'stage1') {
@@ -513,8 +513,9 @@ function renderReviewList(filter = 'all') {
                     : '<span style="font-size: 0.7rem; background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700;">Stage 4: Coding</span>';
 
     const isManualReview = q.reviewStatus === 'manual';
-    const badgeClass = isManualReview ? '' : q.userAnswer === -1 ? 'skipped-badge' : q.isCorrect ? 'correct-badge' : 'incorrect-badge';
-    const badgeText = isManualReview ? '📝 Manual review' : q.userAnswer === -1 ? '⬜ Skipped' : q.isCorrect ? '✅ Correct' : '❌ Incorrect / Weak';
+    const isReflection = q.reviewStatus === 'reflection';
+    const badgeClass = isManualReview || isReflection ? '' : q.userAnswer === -1 ? 'skipped-badge' : q.isCorrect ? 'correct-badge' : 'incorrect-badge';
+    const badgeText = isManualReview ? '📝 Manual review' : isReflection ? '↔ Self-reflection' : q.userAnswer === -1 ? '⬜ Skipped' : q.isCorrect ? '✅ Correct' : '❌ Incorrect / Weak';
 
     let codeHtml = '';
     if (q.code) {
@@ -531,7 +532,7 @@ function renderReviewList(filter = 'all') {
             ${currentResult.isFullMock ? stagePill : ''}
             <div class="question-topic-tag">${escapeHtml(q.topic || 'General')}</div>
           </div>
-          <span class="result-badge ${badgeClass}" ${isManualReview ? 'style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);"' : ''}>${badgeText}</span>
+          <span class="result-badge ${badgeClass}" ${(isManualReview || isReflection) ? 'style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);"' : ''}>${badgeText}</span>
         </div>
         <div class="question-text" style="font-size: 0.95rem; line-height: 1.5;">${escapeHtml(q.question)}</div>
         ${imageHtml}

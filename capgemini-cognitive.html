@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capgemini Cognitive Assessment | MockPrep</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .cog-shell { max-width: 1120px; margin: 0 auto; padding: 92px 20px 40px; }
+    .cog-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .cog-head h1 { margin: 0 0 5px; }
+    .cog-muted { color: var(--text-muted); font-size: .9rem; }
+    .cog-timer { border: 1px solid var(--border-glass); border-radius: 8px; padding: 9px 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .cog-layout { display: grid; grid-template-columns: 245px 1fr; gap: 20px; }
+    .cog-panel, .cog-card { border: 1px solid var(--border-glass); border-radius: 12px; background: var(--bg-glass); padding: 18px; }
+    .cog-module { font-size: .75rem; font-weight: 800; color: var(--accent-primary); text-transform: uppercase; }
+    .cog-progress { height: 7px; background: rgba(255,255,255,.08); border-radius: 8px; margin: 12px 0; overflow: hidden; }
+    .cog-progress div { height: 100%; background: linear-gradient(90deg, var(--accent-primary), #22c55e); }
+    .cog-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 12px; }
+    .cog-nav button { border: 1px solid var(--border-glass); color: var(--text-primary); background: transparent; padding: 8px 2px; border-radius: 6px; cursor: pointer; }
+    .cog-nav button.current { background: var(--accent-primary); color: #07131d; font-weight: 800; }
+    .cog-nav button.done { border-color: #22c55e; }
+    .cog-module-label { color: var(--text-muted); font-size: .76rem; margin: 14px 0 5px; }
+    .cog-question { font-size: 1.1rem; line-height: 1.6; margin: 18px 0; }
+    .cog-options { display: grid; gap: 9px; }
+    .cog-option { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid var(--border-glass); border-radius: 8px; cursor: pointer; }
+    .cog-option.selected { border-color: var(--accent-primary); background: rgba(0,212,255,.1); }
+    .cog-motion-grid, .cog-memory-grid { display: grid; grid-template-columns: repeat(4, minmax(48px, 72px)); gap: 9px; justify-content: center; margin: 22px auto; }
+    .cog-cell { aspect-ratio: 1; border: 1px solid var(--border-glass); border-radius: 8px; background: rgba(255,255,255,.04); color: var(--text-primary); font-size: 1.05rem; font-weight: 700; cursor: pointer; }
+    .cog-cell:disabled { cursor: default; }
+    .cog-cell.start { border-color: #22c55e; color: #22c55e; }
+    .cog-cell.goal { border-color: #38bdf8; color: #38bdf8; }
+    .cog-cell.blocked { background: rgba(239,68,68,.22); color: #fca5a5; }
+    .cog-cell.current { background: var(--accent-primary); color: #07131d; }
+    .cog-cell.flash { background: #fbbf24; color: #111827; transform: scale(1.04); }
+    .cog-motion-controls { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .cog-motion-controls button { min-width: 50px; min-height: 44px; font-size: 1.1rem; }
+    .cog-feedback { min-height: 24px; text-align: center; color: var(--text-muted); margin: 12px 0; }
+    .cog-range { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 22px 0; }
+    .cog-range label { color: var(--text-secondary); }
+    .cog-range input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent-primary); }
+    .cog-range-value { text-align: center; font-weight: 800; }
+    .cog-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+    .cog-start { max-width: 740px; margin: 90px auto; text-align: center; }
+    .cog-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 22px 0; text-align: left; }
+    .cog-module-card { padding: 14px; border: 1px solid var(--border-glass); border-radius: 8px; }
+    @media (max-width: 760px) { .cog-layout { grid-template-columns: 1fr; } .cog-panel { order: 2; } .cog-head { align-items: flex-start; flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar"><a href="index.html" class="navbar-brand"><span class="logo-icon">🎯</span><span>MockPrep</span></a><div class="navbar-links"><a href="index.html">Home</a><a href="results.html">My Results</a></div></nav>
+  <main class="cog-shell">
+    <section id="start-view" class="cog-card cog-start">
+      <div style="font-size:3.5rem">🧠</div>
+      <h1>Capgemini Cognitive Assessment</h1>
+      <p class="cog-muted">Aon-style practice based on the four modules in your reference image. This is practice material, not an official Capgemini paper.</p>
+      <div class="cog-modules">
+        <div class="cog-module-card"><strong>Motion Challenge</strong><div class="cog-muted">Route planning and movement control</div></div>
+        <div class="cog-module-card"><strong>Grid Challenge</strong><div class="cog-muted">Working memory and spatial attention</div></div>
+        <div class="cog-module-card"><strong>Logical Reasoning</strong><div class="cog-muted">Inference and analytical reasoning</div></div>
+        <div class="cog-module-card"><strong>Behavioural Module</strong><div class="cog-muted">Work-style self-reflection; no right or wrong answers</div></div>
+      </div>
+      <p class="cog-muted">20 activities • 25 minutes • Motion 4, Grid 4, Logic 6, Behavioural 6</p>
+      <button id="start-btn" class="btn btn-primary btn-lg">Start Cognitive Mock</button>
+    </section>
+    <section id="test-view" class="hidden">
+      <header class="cog-head"><div><h1>Cognitive Assessment</h1><div id="meta" class="cog-muted"></div></div><div id="timer" class="cog-timer">25:00</div></header>
+      <div class="cog-layout">
+        <aside class="cog-panel"><strong>Assessment map</strong><div class="cog-progress"><div id="progress-fill" style="width:0%"></div></div><div id="progress-label" class="cog-muted"></div><div id="question-nav"></div><button id="end-btn" class="btn btn-secondary btn-sm" style="width:100%;margin-top:18px">Submit Assessment</button></aside>
+        <section class="cog-card"><div id="module-label" class="cog-module"></div><div id="question" class="cog-question"></div><div id="activity"></div><div id="feedback" class="cog-feedback" aria-live="polite"></div><div class="cog-actions"><button id="prev-btn" class="btn btn-ghost">← Previous</button><button id="next-btn" class="btn btn-primary">Next →</button></div></section>
+      </div>
+    </section>
+    <section id="result-view" class="hidden cog-card cog-start"><div style="font-size:3.5rem">✅</div><h1>Assessment Submitted</h1><p id="result-summary" class="cog-muted"></p><a id="review-link" class="btn btn-primary" href="results.html">Review Answers</a> <a href="index.html" class="btn btn-secondary">Home</a></section>
+  </main>
+  <script src="data/capgemini-data.js"></script>
+  <script src="js/capgemini-cognitive.js"></script>
+</body>
+</html>
