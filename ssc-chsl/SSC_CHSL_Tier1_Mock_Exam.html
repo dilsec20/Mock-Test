@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ten SSC CHSL Tier-I practice mocks with strict 15-minute section timing and detailed answer review.">
+  <title>SSC CHSL Tier-I Mocks</title>
+  <link rel="stylesheet" href="ssc-chsl-mock.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">S</span><span>SSC CHSL <small>Tier-I Practice</small></span></a>
+    <nav><a href="../index.html#companies">MockPrep Companies</a><a href="../results.html">My Results</a><a href="SOURCES.md">Sources</a></nav>
+  </header>
+
+  <main class="page-shell">
+    <section id="selection-view">
+      <div class="intro-row">
+        <div>
+          <p class="eyebrow">Computer-based mock practice</p>
+          <h1>SSC CHSL Tier-I</h1>
+          <p class="intro-copy">Ten full-length practice papers. Four timed sections. Detailed review after submission.</p>
+        </div>
+        <div class="exam-facts" aria-label="Exam format">
+          <div><strong>100</strong><span>questions</span></div>
+          <div><strong>60</strong><span>minutes</span></div>
+          <div><strong>+2 / −0.5</strong><span>marking</span></div>
+        </div>
+      </div>
+
+      <section class="timing-strip" aria-label="Section timing">
+        <div><span class="timing-index">01</span><span>English Language</span><strong>15 min</strong></div>
+        <div><span class="timing-index">02</span><span>General Intelligence &amp; Reasoning</span><strong>15 min</strong></div>
+        <div><span class="timing-index">03</span><span>Quantitative Aptitude</span><strong>15 min</strong></div>
+        <div><span class="timing-index">04</span><span>General Awareness</span><strong>15 min</strong></div>
+      </section>
+      <p class="timing-note">Sections unlock in order. Submit a section to move on early; otherwise it submits automatically when its 15-minute timer ends. Unused time does not carry over.</p>
+
+      <div id="resume-banner" class="resume-banner hidden">
+        <div><strong>Assessment in progress</strong><span id="resume-copy"></span></div>
+        <button id="resume-btn" class="button button-dark">Resume mock</button>
+        <button id="discard-btn" class="button button-text">Discard</button>
+      </div>
+
+      <div class="section-heading"><div><p class="eyebrow">Choose a paper</p><h2>Mock tests</h2></div><span class="muted">1,000 questions across 10 papers</span></div>
+      <div id="mock-grid" class="mock-grid"></div>
+
+      <details class="source-note">
+        <summary>Question source and pattern note</summary>
+        <p>These are original PYQ-style practice questions based on SSC CHSL Tier-I syllabus topics and publicly listed shift-paper patterns. They are not reproduced official papers. See <a href="SOURCES.md">sources and references</a>.</p>
+      </details>
+    </section>
+
+    <section id="exam-view" class="hidden" aria-live="polite">
+      <div class="exam-topline">
+        <div><p class="eyebrow" id="paper-label"></p><h1 id="section-title"></h1><p id="section-subtitle" class="muted"></p></div>
+        <div class="timer-block"><span>SECTION TIME</span><strong id="timer">15:00</strong></div>
+      </div>
+      <div class="stage-track" id="stage-track"></div>
+      <div class="exam-layout">
+        <aside class="question-sidebar">
+          <div class="sidebar-heading"><strong>Questions</strong><span id="answered-count">0/25 answered</span></div>
+          <div id="question-nav" class="question-nav"></div>
+          <div class="legend"><span><i class="legend-current"></i>Current</span><span><i class="legend-answered"></i>Answered</span><span><i class="legend-flagged"></i>Review</span></div>
+          <button id="submit-section-btn" class="button button-submit">Submit section <span aria-hidden="true">→</span></button>
+        </aside>
+        <section class="question-panel">
+          <div class="question-meta"><span id="question-counter"></span><button id="flag-btn" class="flag-button" type="button">☆ Mark for review</button></div>
+          <h2 id="question-text"></h2>
+          <div id="options-list" class="options-list"></div>
+          <div class="question-footer"><button id="previous-btn" class="button button-text" type="button">← Previous</button><button id="next-btn" class="button button-dark" type="button">Next →</button></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="transition-view" class="hidden transition-screen">
+      <p class="eyebrow">Section submitted</p><h1 id="transition-title"></h1><p id="transition-copy" class="intro-copy"></p>
+      <div class="transition-score" id="transition-score"></div>
+      <button id="continue-btn" class="button button-dark">Continue to next section →</button>
+    </section>
+
+    <section id="result-view" class="hidden">
+      <div class="result-header"><div><p class="eyebrow">Mock complete</p><h1 id="result-title"></h1><p id="result-subtitle" class="muted"></p></div><div class="total-score"><strong id="result-marks"></strong><span>out of 200</span></div></div>
+      <div id="section-results" class="section-results"></div>
+      <div class="review-header"><div><p class="eyebrow">Learn from every answer</p><h2>Answer review</h2></div><select id="review-filter" aria-label="Filter answer review"><option value="all">All questions</option><option value="incorrect">Incorrect</option><option value="skipped">Skipped</option><option value="flagged">Marked for review</option><option value="English Language">English Language</option><option value="General Intelligence & Reasoning">Reasoning</option><option value="Quantitative Aptitude">Quantitative Aptitude</option><option value="General Awareness">General Awareness</option></select></div>
+      <div id="review-list" class="review-list"></div>
+      <div class="result-actions"><button id="back-tests-btn" class="button button-dark">Back to mock tests</button><a href="../results.html" class="button button-secondary">My Results</a><a href="SOURCES.md" class="button button-text">Sources &amp; pattern</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>SSC CHSL Tier-I practice</span><span>Original PYQ-style questions • For preparation use</span></footer>
+  <script src="ssc-chsl-mock-data.js"></script>
+  <script src="ssc-chsl-mock-runner.js"></script>
+</body>
+</html>

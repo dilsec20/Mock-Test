@@ -34,6 +34,21 @@ const COMPANIES = [
       tests: '2 Sections'
     },
     features: ['alpha_<stack> / root_<mind>', '10+ Coding Mocks', 'Hard DSA', 'Java / C++ Debugging', 'React / JavaScript / HTML / CSS', 'AI, Cloud, APIs & DevOps']
+  },
+  {
+    id: 'ssc-chsl',
+    name: 'SSC CHSL',
+    logo: 'SSC',
+    examDate: null,
+    examName: 'SSC Combined Higher Secondary Level Tier-I',
+    color: '#176D55',
+    sections: ['English Language', 'Reasoning', 'Quantitative Aptitude', 'General Awareness'],
+    stats: {
+      questions: '1,000 Pool',
+      duration: '60 min',
+      tests: '10 Mocks'
+    },
+    features: ['25 questions per section', 'Strict 15-minute sections', '+2 / −0.50 scoring', 'Detailed answer review']
   }
 ];
 
@@ -147,6 +162,10 @@ function updateCountdown(targetDate) {
 
 // ── Start Test ──
 function startTest(companyId) {
+  if (companyId === 'ssc-chsl') {
+    window.location.href = 'ssc-chsl/SSC_CHSL_Tier1_Mock_Exam.html';
+    return;
+  }
   window.location.href = `test.html?company=${companyId}`;
 }
 
