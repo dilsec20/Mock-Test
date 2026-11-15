@@ -49,6 +49,22 @@ const COMPANIES = [
       tests: '10 Mocks'
     },
     features: ['25 questions per section', 'Strict 15-minute sections', '+2 / −0.50 scoring', 'Detailed answer review']
+  },
+  {
+    id: 'rrb-ntpc',
+    name: 'RRB NTPC',
+    logo: 'RRB',
+    examDate: null,
+    examName: 'RRB Non-Technical Popular Categories CBT-1',
+    color: '#245f7c',
+    sections: ['Mathematics', 'General Intelligence & Reasoning', 'General Awareness'],
+    stats: {
+      questions: '1,500+ Pool',
+      duration: '90 min',
+      tests: '25 Mocks',
+      testLabel: 'Mocks'
+    },
+    features: ['15 sectional + 10 full mocks', '100 questions per full mock', '+1 / −1/3 scoring', 'UG & Graduate PYQ practice']
   }
 ];
 
@@ -98,7 +114,7 @@ function renderCompanyCards() {
             </div>
             <div class="stat-item">
               <div class="stat-number">${company.stats.tests}</div>
-              <div class="stat-label">Sections</div>
+              <div class="stat-label">${company.stats.testLabel || 'Sections'}</div>
             </div>
           </div>
 
@@ -164,6 +180,10 @@ function updateCountdown(targetDate) {
 function startTest(companyId) {
   if (companyId === 'ssc-chsl') {
     window.location.href = 'ssc-chsl/SSC_CHSL_Tier1_Mock_Exam.html';
+    return;
+  }
+  if (companyId === 'rrb-ntpc') {
+    window.location.href = 'rrb-ntpc/';
     return;
   }
   window.location.href = `test.html?company=${companyId}`;

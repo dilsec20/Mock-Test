@@ -1,0 +1,29 @@
+@import url('../ssc-chsl/ssc-chsl-mock.css');
+
+.brand-mark { background: #245f7c; }
+.timing-strip { grid-template-columns: repeat(3, 1fr); }
+.timing-strip > div:nth-child(2) { border-right: 1px solid var(--line); }
+.timing-strip > div:nth-child(3) { border-right: 0; }
+.timing-note { max-width: 1000px; }
+.test-group { margin-top: 30px; }
+.mock-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.mock-card.sectional-card { min-height: 171px; }
+.mock-card.full-card { border-color: #9ebbc8; }
+.mock-card.full-card .mock-number { color: var(--blue); }
+.test-group + .test-group { padding-top: 12px; border-top: 1px solid var(--line); }
+.stage-track { grid-template-columns: repeat(3, 1fr); }
+.question-badges { display: flex; flex-wrap: wrap; gap: 7px; margin: -8px 0 14px; }
+.badge { display: inline-flex; align-items: center; min-height: 23px; padding: 3px 9px; border-radius: 999px; color: #315a49; background: #e7f3eb; font-size: .68rem; font-weight: 700; }
+.badge.pyq { color: #78480c; background: #fff1d9; }
+.badge.source { color: #385b70; background: #e8f2f6; }
+.result-header { gap: 18px; }
+.review-header select { min-width: 210px; }
+@media (max-width: 900px) {
+  .mock-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+  .timing-strip { grid-template-columns: 1fr; }
+  .timing-strip > div { border-right: 0 !important; border-bottom: 1px solid var(--line); }
+  .timing-strip > div:last-child { border-bottom: 0; }
+  .mock-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
