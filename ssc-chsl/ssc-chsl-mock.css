@@ -144,6 +144,114 @@ h2 { margin-bottom: 0; font-size: 1.8rem; }
 .empty-state { padding: 26px; color: var(--muted); text-align: center; }
 .site-footer { display: flex; justify-content: space-between; gap: 18px; padding: 20px max(24px, calc((100vw - 1180px) / 2)); border-top: 1px solid var(--line); color: var(--muted); font-size: .72rem; }
 
+/* Mode Switcher */
+.mode-switch-bar {
+  display: flex;
+  gap: 12px;
+  margin: 22px 0 28px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 14px rgba(27, 54, 42, 0.04);
+}
+.mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.mode-btn:hover {
+  background: rgba(23, 109, 85, 0.05);
+}
+.mode-btn.active {
+  background: var(--surface);
+  border-color: #a9cbb7;
+  box-shadow: 0 4px 12px rgba(23, 109, 85, 0.08);
+}
+.mode-icon {
+  font-size: 1.5rem;
+}
+.mode-info {
+  display: grid;
+  gap: 2px;
+}
+.mode-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.mode-btn.active .mode-title {
+  color: var(--green);
+}
+.mode-subtitle {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* Sectional Subject Tabs */
+.sectional-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 22px;
+}
+.sect-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.sect-tab:hover {
+  border-color: #95bba5;
+  color: var(--ink);
+}
+.sect-tab.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+.sect-tab.active .badge-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+.badge-count {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #edf1ed;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.subject-banner {
+  margin: 10px 0 20px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  background: rgba(23, 109, 85, 0.04);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .mock-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .timing-strip { grid-template-columns: repeat(2, 1fr); }
@@ -156,6 +264,9 @@ h2 { margin-bottom: 0; font-size: 1.8rem; }
   .site-header nav { gap: 12px; font-size: .76rem; }
   .page-shell { padding: 28px 14px 50px; }
   .intro-row { align-items: flex-start; flex-direction: column; gap: 17px; }
+  .mode-switch-bar { flex-direction: column; gap: 8px; }
+  .sectional-tabs { gap: 6px; }
+  .sect-tab { flex: 1 1 calc(50% - 6px); justify-content: center; padding: 8px 10px; font-size: .75rem; }
   .exam-facts { width: 100%; }
   .exam-facts div { flex: 1; padding: 6px 8px; }
   .timing-strip > div { min-height: 62px; padding: 10px; grid-template-columns: 26px 1fr; }
