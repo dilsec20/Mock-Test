@@ -220,19 +220,53 @@ h2 { margin-bottom: 0; font-size: 1.8rem; }
   transition: all 0.15s ease;
   font-family: inherit;
 }
-.sect-tab:hover {
+.ch-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.sect-tab:hover, .ch-tab:hover {
   border-color: #95bba5;
   color: var(--ink);
 }
-.sect-tab.active {
+.sect-tab.active, .ch-tab.active {
   background: var(--green);
   border-color: var(--green);
   color: white;
 }
-.sect-tab.active .badge-count {
+.sect-tab.active .badge-count, .ch-tab.active .badge-count {
   background: rgba(255, 255, 255, 0.25);
   color: white;
 }
+.chapter-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.chapter-card {
+  min-height: 176px;
+}
+.chapter-card .ch-sub {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.42;
+}
+.chapter-card .ch-meta {
+  margin-bottom: 12px;
+  color: var(--green);
+  font-size: 0.71rem;
+  font-weight: 700;
+}
+.question-nav { max-height: 430px; overflow-y: auto; padding-right: 2px; }
 .badge-count {
   padding: 2px 7px;
   border-radius: 999px;
@@ -254,6 +288,7 @@ h2 { margin-bottom: 0; font-size: 1.8rem; }
 
 @media (max-width: 900px) {
   .mock-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .chapter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .timing-strip { grid-template-columns: repeat(2, 1fr); }
   .timing-strip > div:nth-child(2) { border-right: 0; }
   .timing-strip > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
@@ -266,7 +301,8 @@ h2 { margin-bottom: 0; font-size: 1.8rem; }
   .intro-row { align-items: flex-start; flex-direction: column; gap: 17px; }
   .mode-switch-bar { flex-direction: column; gap: 8px; }
   .sectional-tabs { gap: 6px; }
-  .sect-tab { flex: 1 1 calc(50% - 6px); justify-content: center; padding: 8px 10px; font-size: .75rem; }
+  .sect-tab, .ch-tab { flex: 1 1 calc(50% - 6px); justify-content: center; padding: 8px 10px; font-size: .75rem; }
+  .chapter-grid { grid-template-columns: 1fr; }
   .exam-facts { width: 100%; }
   .exam-facts div { flex: 1; padding: 6px 8px; }
   .timing-strip > div { min-height: 62px; padding: 10px; grid-template-columns: 26px 1fr; }

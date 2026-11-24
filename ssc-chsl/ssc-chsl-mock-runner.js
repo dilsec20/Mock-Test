@@ -1,16 +1,18 @@
-/* SSC CHSL Tier-I — Unified Mock & Sectional Test Engine */
+/* SSC CHSL Tier-I — Unified Full Mock, Sectional & Chapter-Wise PYQ Engine */
 (function () {
   'use strict';
 
   const MOCK_DATA = globalThis.SSC_CHSL_MOCK_DATA;
   const SECTION_SECONDS = 15 * 60;
+  const CHAPTER_SECONDS = 30 * 60;
   const SESSION_KEY = 'ssc_chsl_active_test_v2';
   const $ = id => document.getElementById(id);
 
   let session = null;
   let timerId = null;
-  let currentMode = 'full'; // 'full' | 'sectional'
+  let currentMode = 'full'; // 'full' | 'sectional' | 'chapter'
   let currentSubject = 'gs'; // 'gs' | 'english' | 'reasoning' | 'quant'
+  let currentChapterSubject = 'gs';
   let currentFilter = 'all';
 
   function escapeHtml(v) {
@@ -74,6 +76,53 @@
     return configs[key] || configs.gs;
   }
 
+  /* ── Subject Configurations for Chapter-Wise PYQ Tests (50 Qs · 30 min · 100 Marks) ── */
+  function getChapterSubjectConfig(key) {
+    const configs = {
+      gs: {
+        id: 'gs',
+        title: 'General Awareness / GS',
+        shortTitle: 'General Awareness',
+        eyebrow: '12 Chapters · 600 PYQs',
+        banner: 'Chapter-by-chapter SSC CHSL/CGL PYQ tests mapped to every GS module: History, Geography & Census 2011, Polity, Economics, Physics, Chemistry, Biology, Art & Culture, Awards & Books, Sports & Days, Environment, and Computer & Space (50 MCQs · 30 min each).',
+        resultsKey: 'ssc_chsl_ch_gs_results_v1',
+        getTests: () => globalThis.SSC_CHSL_CHAPTER_GS_DATA?.tests || []
+      },
+      english: {
+        id: 'english',
+        title: 'English Language',
+        shortTitle: 'English Language',
+        eyebrow: '6 Chapters · 300 PYQs',
+        banner: 'Topic-focused SSC PYQ mastery covering Error Detection & Grammar, Synonyms & Antonyms, Idioms & Phrases, One-Word Substitution, Voice & Direct-Indirect Speech, and Fillers/Improvement/Para Jumbles/Spellings (50 MCQs · 30 min each).',
+        resultsKey: 'ssc_chsl_ch_eng_results_v1',
+        getTests: () => globalThis.SSC_CHSL_CHAPTER_ENG_DATA?.tests || []
+      },
+      reasoning: {
+        id: 'reasoning',
+        title: 'General Intelligence & Reasoning',
+        shortTitle: 'Reasoning',
+        eyebrow: '8 Chapters · 400 PYQs',
+        banner: 'Chapter-wise SSC PYQ practice covering Analogies, Number/Letter Series, Coding-Decoding, Odd One Out & Words, Blood Relations & Ranking, Directions/Clocks/Calendars, Syllogism & Venn Diagrams, and Math Ops/Matrix/Dice (50 MCQs · 30 min each).',
+        resultsKey: 'ssc_chsl_ch_rea_results_v1',
+        getTests: () => globalThis.SSC_CHSL_CHAPTER_REA_DATA?.tests || []
+      },
+      quant: {
+        id: 'quant',
+        title: 'Quantitative Aptitude',
+        shortTitle: 'Quantitative Aptitude',
+        eyebrow: '12 Chapters · 600 PYQs',
+        banner: 'Complete 12-chapter Quant PYQ drills matching your study modules: Number System, LCM/HCF, Percentage, Profit-Loss, Ratio/Avg, SI/CI, Time-Work, TSD, Geometry, Mensuration, Trigonometry, and Algebra & DI (50 MCQs · 30 min each).',
+        resultsKey: 'ssc_chsl_ch_qa_results_v1',
+        getTests: () => globalThis.SSC_CHSL_CHAPTER_QA_DATA?.tests || []
+      }
+    };
+    return configs[key] || configs.gs;
+  }
+
+  function getActiveConfig(rec) {
+    return rec.isChapter ? getChapterSubjectConfig(rec.subjectKey) : getSubjectConfig(rec.subjectKey);
+  }
+
   function getResults(storageKey) {
     try { return JSON.parse(localStorage.getItem(storageKey)) || []; } catch { return []; }
   }
@@ -91,16 +140,19 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /* ── Mode Switching (Full Mock vs Sectional) ── */
+  /* ── Mode Switching (Full Mock vs Sectional vs Chapter-Wise) ── */
   function switchMode(mode) {
     currentMode = mode;
     $('btn-mode-full').classList.toggle('active', mode === 'full');
     $('btn-mode-full').setAttribute('aria-selected', mode === 'full');
     $('btn-mode-sectional').classList.toggle('active', mode === 'sectional');
     $('btn-mode-sectional').setAttribute('aria-selected', mode === 'sectional');
+    $('btn-mode-chapter').classList.toggle('active', mode === 'chapter');
+    $('btn-mode-chapter').setAttribute('aria-selected', mode === 'chapter');
 
     $('full-mock-container').classList.toggle('hidden', mode !== 'full');
     $('sectional-container').classList.toggle('hidden', mode !== 'sectional');
+    $('chapter-container').classList.toggle('hidden', mode !== 'chapter');
 
     if (mode === 'full') {
       $('view-eyebrow').textContent = 'Computer-based mock practice';
@@ -110,14 +162,24 @@
       $('fact-duration').textContent = '60';
       $('fact-marking').textContent = '+2 / −0.5';
       renderFullMockCards();
-    } else {
+    } else if (mode === 'sectional') {
       $('view-eyebrow').textContent = 'Focused subject practice';
       $('view-title').textContent = 'SSC CHSL Sectional Tests';
       $('view-copy').textContent = 'Timed 15-minute drills with 25 questions each across General Awareness, English, Reasoning, and Quantitative Aptitude.';
       $('fact-questions').textContent = '25';
       $('fact-duration').textContent = '15';
       $('fact-marking').textContent = '+2 / −0.5';
+      document.querySelectorAll('.sect-tab').forEach(t => t.classList.toggle('active', t.dataset.subject === currentSubject));
       renderSectionalView();
+    } else {
+      $('view-eyebrow').textContent = 'Chapter-wise PYQ mastery';
+      $('view-title').textContent = 'SSC CHSL Chapter Tests';
+      $('view-copy').textContent = 'Deep 50-MCQ chapter tests built from high-frequency SSC PYQs. Official 2× pace: 30 minutes per 50 questions (+2 / −0.50).';
+      $('fact-questions').textContent = '50';
+      $('fact-duration').textContent = '30';
+      $('fact-marking').textContent = '+2 / −0.5';
+      document.querySelectorAll('.ch-tab').forEach(t => t.classList.toggle('active', t.dataset.subject === currentChapterSubject));
+      renderChapterView();
     }
     updateResumeBanner();
   }
@@ -174,6 +236,41 @@
     });
   }
 
+  /* ── Chapter-Wise PYQ View & Cards ── */
+  function renderChapterView() {
+    const cfg = getChapterSubjectConfig(currentChapterSubject);
+    $('chapter-banner').textContent = cfg.banner;
+    $('ch-heading-eyebrow').textContent = cfg.eyebrow;
+    $('ch-heading-title').textContent = `${cfg.shortTitle} Chapters`;
+
+    const tests = cfg.getTests();
+    const totalQ = tests.reduce((s, t) => s + (t.questions?.length || 0), 0);
+    $('ch-heading-muted').textContent = `${totalQ} PYQ MCQs across ${tests.length} chapters · 30 min each`;
+
+    const results = getResults(cfg.resultsKey);
+    $('chapter-grid').innerHTML = tests.map((ch, idx) => {
+      const chResults = results.filter(r => r.testId === ch.id);
+      const attempts = chResults.length;
+      const bestScore = attempts ? Math.max(...chResults.map(r => r.marks)) : null;
+      const stateLabel = attempts ? `${attempts}x · Best ${Number.isInteger(bestScore) ? bestScore : bestScore.toFixed(1)}/100` : 'READY';
+      return `
+        <article class="mock-card chapter-card">
+          <div class="mock-card-top">
+            <span class="mock-number">${String(idx + 1).padStart(2, '0')}</span>
+            <span class="mock-state">${escapeHtml(stateLabel)}</span>
+          </div>
+          <h3>${escapeHtml(ch.title)}</h3>
+          <p class="ch-sub">${escapeHtml(ch.subtitle || '')}</p>
+          <p class="ch-meta">${ch.questions.length} MCQs · 30 min · 100 Marks</p>
+          <button class="button button-dark start-ch-test" data-test="${ch.id}">Start chapter test →</button>
+        </article>`;
+    }).join('');
+
+    $('chapter-grid').querySelectorAll('.start-ch-test').forEach(btn => {
+      btn.addEventListener('click', () => beginChapterTest(currentChapterSubject, btn.dataset.test));
+    });
+  }
+
   /* ── Resume Banner ── */
   function updateResumeBanner() {
     const active = loadSession();
@@ -181,11 +278,12 @@
       $('resume-banner').classList.add('hidden');
       return;
     }
-    if (active.isSectional) {
-      const cfg = getSubjectConfig(active.subjectKey);
+    if (active.isSectional || active.isChapter) {
+      const cfg = getActiveConfig(active);
       const test = cfg.getTests().find(t => t.id === active.testId);
       if (!test) { localStorage.removeItem(SESSION_KEY); $('resume-banner').classList.add('hidden'); return; }
-      $('resume-copy').textContent = `${test.title} (${cfg.shortTitle}) · Question ${active.questionIndex + 1}/25`;
+      const totalQ = test.questions?.length || (active.isChapter ? 50 : 25);
+      $('resume-copy').textContent = `${test.title} (${cfg.shortTitle}) · Question ${active.questionIndex + 1}/${totalQ}`;
     } else {
       const mock = MOCK_DATA.mocks.find(m => m.id === active.mockId);
       if (!mock) { localStorage.removeItem(SESSION_KEY); $('resume-banner').classList.add('hidden'); return; }
@@ -227,6 +325,7 @@
     localStorage.removeItem(SESSION_KEY);
     session = {
       isSectional: true,
+      isChapter: false,
       subjectKey,
       testId,
       questionIndex: 0,
@@ -242,13 +341,35 @@
     setView('exam-view');
   }
 
+  /* ── Begin Chapter-Wise PYQ Test (50 Qs · 30 min) ── */
+  function beginChapterTest(subjectKey, testId) {
+    if (loadSession() && !confirm('Starting a new chapter test will discard the in-progress session. Continue?')) return;
+    localStorage.removeItem(SESSION_KEY);
+    session = {
+      isSectional: false,
+      isChapter: true,
+      subjectKey,
+      testId,
+      questionIndex: 0,
+      answers: {},
+      flags: {},
+      sectionStartedAt: Date.now(),
+      deadlineAt: Date.now() + CHAPTER_SECONDS * 1000,
+      startedAt: Date.now()
+    };
+    saveSession();
+    startTimer();
+    renderExam();
+    setView('exam-view');
+  }
+
   /* ── Resume Test ── */
   function resumeTest(saved) {
     session = saved;
     const remaining = Math.ceil((session.deadlineAt - Date.now()) / 1000);
     if (remaining <= 0) {
       setView('exam-view');
-      if (session.isSectional) finishSectionalTest(true);
+      if (session.isSectional || session.isChapter) finishSingleStageTest(true);
       else submitFullSection(true);
       return;
     }
@@ -259,15 +380,15 @@
 
   /* ── Helper accessors ── */
   function getCurrentTestObj() {
-    if (session.isSectional) {
-      const cfg = getSubjectConfig(session.subjectKey);
+    if (session.isSectional || session.isChapter) {
+      const cfg = getActiveConfig(session);
       return cfg.getTests().find(t => t.id === session.testId);
     }
     return MOCK_DATA.mocks.find(m => m.id === session.mockId);
   }
 
   function getCurrentQuestions() {
-    if (session.isSectional) {
+    if (session.isSectional || session.isChapter) {
       return getCurrentTestObj()?.questions || [];
     }
     return getCurrentTestObj()?.sections[session.sectionIndex]?.questions || [];
@@ -283,7 +404,7 @@
       const remaining = Math.ceil((session.deadlineAt - Date.now()) / 1000);
       if (remaining <= 0) {
         clearInterval(timerId);
-        if (session.isSectional) finishSectionalTest(true);
+        if (session.isSectional || session.isChapter) finishSingleStageTest(true);
         else submitFullSection(true);
         return;
       }
@@ -306,7 +427,15 @@
     const questions = getCurrentQuestions();
     if (!questions.length) return;
 
-    if (session.isSectional) {
+    if (session.isChapter) {
+      const test = getCurrentTestObj();
+      const cfg = getChapterSubjectConfig(session.subjectKey);
+      $('paper-label').textContent = `${test.title} · Chapter PYQ Test`;
+      $('section-title').textContent = cfg.shortTitle;
+      $('section-subtitle').textContent = `30:00 test clock · ${questions.length} PYQ MCQs · +2 correct · −0.50 incorrect · Max ${questions.length * 2} Marks`;
+      $('stage-track').classList.add('hidden');
+      $('submit-section-btn').innerHTML = 'Submit chapter test <span aria-hidden="true">→</span>';
+    } else if (session.isSectional) {
       const test = getCurrentTestObj();
       const cfg = getSubjectConfig(session.subjectKey);
       $('paper-label').textContent = `${test.title} · Sectional Drill`;
@@ -361,7 +490,7 @@
     if (!q) return;
     const selected = session.answers[answerKey(q)];
 
-    const titlePrefix = session.isSectional ? getSubjectConfig(session.subjectKey).shortTitle : MOCK_DATA.sections[session.sectionIndex].name;
+    const titlePrefix = (session.isSectional || session.isChapter) ? getActiveConfig(session).shortTitle : MOCK_DATA.sections[session.sectionIndex].name;
     $('question-counter').textContent = `${titlePrefix} · Question ${session.questionIndex + 1} of ${questions.length}`;
     $('question-text').textContent = q.question;
 
@@ -412,7 +541,7 @@
     };
 
     $('submit-section-btn').onclick = () => {
-      if (session.isSectional) finishSectionalTest(false);
+      if (session.isSectional || session.isChapter) finishSingleStageTest(false);
       else submitFullSection(false);
     };
   }
@@ -550,15 +679,17 @@
     setView('result-view');
   }
 
-  /* ── Finish Sectional Test ── */
-  function finishSectionalTest(autoSubmitted) {
+  /* ── Finish Single-Stage Test (Sectional 25Q/15m OR Chapter 50Q/30m) ── */
+  function finishSingleStageTest(autoSubmitted) {
     if (!session) return;
-    if (!autoSubmitted && !confirm('Submit this sectional test? You cannot change answers after submission.')) return;
+    const isChapter = Boolean(session.isChapter);
+    if (!autoSubmitted && !confirm(`Submit this ${isChapter ? 'chapter' : 'sectional'} test? You cannot change answers after submission.`)) return;
 
     clearInterval(timerId);
     const test = getCurrentTestObj();
-    const cfg = getSubjectConfig(session.subjectKey);
+    const cfg = getActiveConfig(session);
     const questions = test.questions;
+    const totalDuration = isChapter ? CHAPTER_SECONDS : SECTION_SECONDS;
 
     let correct = 0, incorrect = 0, unanswered = 0;
     const review = questions.map(q => {
@@ -585,31 +716,35 @@
       };
     });
 
+    const total = questions.length;
+    const maxMarks = total * 2;
     const marks = correct * 2 - incorrect * 0.5;
-    const timeTaken = Math.min(SECTION_SECONDS, Math.max(1, Math.round((Date.now() - session.startedAt) / 1000)));
+    const timeTaken = Math.min(totalDuration, Math.max(1, Math.round((Date.now() - session.startedAt) / 1000)));
 
     const record = {
-      id: `ssc-sect-${session.subjectKey}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+      id: `ssc-${isChapter ? 'ch' : 'sect'}-${session.subjectKey}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
       testId: test.id,
       testTitle: test.title,
       subjectKey: session.subjectKey,
       subjectTitle: cfg.shortTitle,
       date: new Date().toISOString(),
-      isSectional: true,
-      total: 25,
+      isSectional: !isChapter,
+      isChapter,
+      total,
+      maxMarks,
       correct,
       incorrect,
       unanswered,
       marks,
       timeTaken,
       autoSubmitted,
-      percentage: Math.round((marks / 50) * 1000) / 10,
+      percentage: Math.round((marks / maxMarks) * 1000) / 10,
       questionResults: review
     };
 
     const history = getResults(cfg.resultsKey);
     history.unshift(record);
-    localStorage.setItem(cfg.resultsKey, JSON.stringify(history.slice(0, 100)));
+    localStorage.setItem(cfg.resultsKey, JSON.stringify(history.slice(0, 150)));
 
     /* Save to MockPrep platform results */
     const topicScores = {};
@@ -635,10 +770,10 @@
       appHistory.unshift({
         ...record,
         company: 'SSC CHSL',
-        section: `${record.testTitle} — ${cfg.shortTitle} (Sectional)`,
-        totalTime: SECTION_SECONDS,
+        section: `${record.testTitle} — ${cfg.shortTitle} (${isChapter ? 'Chapter PYQ' : 'Sectional'})`,
+        totalTime: totalDuration,
         totalMarks: marks,
-        maxMarks: 50,
+        maxMarks,
         topicScores,
         questionResults: sharedQR
       });
@@ -655,13 +790,15 @@
 
   /* ── Render Result View ── */
   function renderResultView(record) {
-    $('result-eyebrow').textContent = record.isSectional ? 'Sectional drill complete' : 'Full mock complete';
-    $('result-title').textContent = `${record.isSectional ? record.testTitle : record.mockTitle} Complete`;
+    const isSingle = Boolean(record.isSectional || record.isChapter);
+    const maxMarks = record.maxMarks || (record.isChapter ? 100 : record.isSectional ? 50 : 200);
+    $('result-eyebrow').textContent = record.isChapter ? 'Chapter PYQ drill complete' : record.isSectional ? 'Sectional drill complete' : 'Full mock complete';
+    $('result-title').textContent = `${isSingle ? record.testTitle : record.mockTitle} Complete`;
     $('result-subtitle').textContent = `${record.correct} correct · ${record.incorrect} incorrect · ${record.unanswered} unattempted · +2 / −0.50 scoring`;
     $('result-marks').textContent = Number.isInteger(record.marks) ? record.marks : record.marks.toFixed(1);
-    $('result-total-label').textContent = record.isSectional ? 'out of 50' : 'out of 200';
+    $('result-total-label').textContent = `out of ${maxMarks}`;
 
-    if (record.isSectional) {
+    if (isSingle) {
       /* Topic breakdown cards */
       const topicMap = {};
       record.questionResults.forEach(item => {
@@ -684,7 +821,7 @@
 
       /* Filter options */
       $('review-filter').innerHTML = `
-        <option value="all">All questions (25)</option>
+        <option value="all">All questions (${record.total})</option>
         <option value="incorrect">Incorrect</option>
         <option value="skipped">Skipped</option>
         <option value="flagged">Marked for review</option>
@@ -719,7 +856,10 @@
     renderReviewList(record);
 
     $('back-tests-btn').onclick = () => {
-      if (record.isSectional) {
+      if (record.isChapter) {
+        currentChapterSubject = record.subjectKey;
+        switchMode('chapter');
+      } else if (record.isSectional) {
         currentSubject = record.subjectKey;
         switchMode('sectional');
       } else {
@@ -731,12 +871,13 @@
 
   /* ── Render Review Cards ── */
   function renderReviewList(record) {
+    const isSingle = Boolean(record.isSectional || record.isChapter);
     const items = record.questionResults.filter(item => {
       if (currentFilter === 'all') return true;
       if (currentFilter === 'incorrect') return !item.correct && !item.skipped;
       if (currentFilter === 'skipped') return item.skipped;
       if (currentFilter === 'flagged') return item.flagged;
-      if (record.isSectional) return item.topic === currentFilter;
+      if (isSingle) return item.topic === currentFilter;
       return item.section === currentFilter;
     });
 
@@ -748,7 +889,7 @@
     $('review-list').innerHTML = items.map(item => {
       const chosen = item.selected < 0 ? 'Not answered' : `${String.fromCharCode(65 + item.selected)}. ${item.options[item.selected]}`;
       const correctChoice = `${String.fromCharCode(65 + item.answer)}. ${item.options[item.answer]}`;
-      const tagText = record.isSectional ? item.topic : `${item.section} · ${item.topic}`;
+      const tagText = isSingle ? item.topic : `${item.section} · ${item.topic}`;
 
       return `
         <article class="review-card">
@@ -782,6 +923,7 @@
     // Mode Buttons
     $('btn-mode-full').addEventListener('click', () => switchMode('full'));
     $('btn-mode-sectional').addEventListener('click', () => switchMode('sectional'));
+    $('btn-mode-chapter').addEventListener('click', () => switchMode('chapter'));
 
     // Sectional Subject Tabs
     document.querySelectorAll('.sect-tab').forEach(tab => {
@@ -793,10 +935,23 @@
       });
     });
 
+    // Chapter Subject Tabs
+    document.querySelectorAll('.ch-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.ch-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentChapterSubject = tab.dataset.subject;
+        renderChapterView();
+      });
+    });
+
     // Check for in-progress session
     const existing = loadSession();
     if (existing) {
-      if (existing.isSectional) {
+      if (existing.isChapter) {
+        currentChapterSubject = existing.subjectKey || 'gs';
+        switchMode('chapter');
+      } else if (existing.isSectional) {
         currentSubject = existing.subjectKey || 'gs';
         switchMode('sectional');
       } else {

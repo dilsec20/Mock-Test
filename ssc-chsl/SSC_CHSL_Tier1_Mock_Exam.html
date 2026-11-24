@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SSC CHSL Tier-I practice: Full-length 60-minute mocks and focused 15-minute sectional practice with detailed review.">
   <title>SSC CHSL Tier-I Mocks &amp; Sectional Practice</title>
-  <link rel="stylesheet" href="ssc-chsl-mock.css">
+  <link rel="stylesheet" href="ssc-chsl-mock.css?v=3.0">
 </head>
 <body>
   <header class="site-header">
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <!-- Mode Switcher: Full vs Sectional -->
+      <!-- Mode Switcher: Full vs Sectional vs Chapter-Wise -->
       <div class="mode-switch-bar" role="tablist" aria-label="Practice Mode Selection">
         <button id="btn-mode-full" class="mode-btn active" type="button" role="tab" aria-selected="true">
           <span class="mode-icon">📚</span>
@@ -46,6 +46,13 @@
           <div class="mode-info">
             <span class="mode-title">Sectional Practice Tests</span>
             <span class="mode-subtitle">40 Tests · 25 Qs · 15 min each (+2 / −0.5)</span>
+          </div>
+        </button>
+        <button id="btn-mode-chapter" class="mode-btn" type="button" role="tab" aria-selected="false">
+          <span class="mode-icon">🎯</span>
+          <div class="mode-info">
+            <span class="mode-title">Chapter-Wise PYQ Tests</span>
+            <span class="mode-subtitle">38 Chapters · 50 MCQs · 30 min (+2 / −0.5)</span>
           </div>
         </button>
       </div>
@@ -104,6 +111,36 @@
           <span class="muted" id="sect-heading-muted">250 questions across 10 tests</span>
         </div>
         <div id="sectional-grid" class="mock-grid"></div>
+      </div>
+
+      <!-- Container: Chapter-Wise PYQ Practice -->
+      <div id="chapter-container" class="hidden">
+        <div class="sectional-tabs" role="tablist" aria-label="Chapter Subject">
+          <button class="ch-tab active" data-subject="gs" type="button">
+            <span>🌍 General Awareness</span>
+            <span class="badge-count">12 Chapters</span>
+          </button>
+          <button class="ch-tab" data-subject="english" type="button">
+            <span>📘 English Language</span>
+            <span class="badge-count">6 Chapters</span>
+          </button>
+          <button class="ch-tab" data-subject="reasoning" type="button">
+            <span>🧠 Reasoning</span>
+            <span class="badge-count">8 Chapters</span>
+          </button>
+          <button class="ch-tab" data-subject="quant" type="button">
+            <span>📐 Quantitative Aptitude</span>
+            <span class="badge-count">12 Chapters</span>
+          </button>
+        </div>
+
+        <div id="chapter-banner" class="subject-banner"></div>
+
+        <div class="section-heading">
+          <div><p class="eyebrow" id="ch-heading-eyebrow">30-minute chapter drill</p><h2 id="ch-heading-title">Chapter PYQ Tests</h2></div>
+          <span class="muted" id="ch-heading-muted">50 MCQs per chapter · 100 Marks</span>
+        </div>
+        <div id="chapter-grid" class="mock-grid chapter-grid"></div>
       </div>
 
       <details class="source-note">
@@ -167,9 +204,13 @@
     <span>Original PYQ-style questions • For preparation use</span>
   </footer>
 
-  <script src="ssc-chsl-mock-data.js"></script>
-  <script src="ssc-chsl-sectional-gs-data.js"></script>
-  <script src="ssc-chsl-sectional-eng-data.js"></script>
-  <script src="ssc-chsl-mock-runner.js"></script>
+  <script src="ssc-chsl-mock-data.js?v=3.0"></script>
+  <script src="ssc-chsl-sectional-gs-data.js?v=3.0"></script>
+  <script src="ssc-chsl-sectional-eng-data.js?v=3.0"></script>
+  <script src="ssc-chsl-chapter-gs-data.js?v=3.0"></script>
+  <script src="ssc-chsl-chapter-eng-data.js?v=3.0"></script>
+  <script src="ssc-chsl-chapter-qa-data.js?v=3.0"></script>
+  <script src="ssc-chsl-chapter-rea-data.js?v=3.0"></script>
+  <script src="ssc-chsl-mock-runner.js?v=3.0"></script>
 </body>
 </html>

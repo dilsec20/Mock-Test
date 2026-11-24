@@ -39,16 +39,16 @@ const COMPANIES = [
     id: 'ssc-chsl',
     name: 'SSC CHSL',
     logo: 'SSC',
-    examDate: null,
+    examDate: '2026-12-23',
     examName: 'SSC Combined Higher Secondary Level Tier-I',
     color: '#176D55',
     sections: ['English Language', 'Reasoning', 'Quantitative Aptitude', 'General Awareness'],
     stats: {
-      questions: '2,000 Pool',
-      duration: '60m / 15m',
-      tests: '10 Full + 40 Sectional'
+      questions: '3,900+ Pool',
+      duration: '60m / 30m / 15m',
+      tests: '10F + 40S + 38Ch'
     },
-    features: ['10 Full-length Tier-I Mocks', '40 Sectional Tests (15 min each)', '25 questions per section', '+2 / −0.50 scoring', 'Detailed answer review']
+    features: ['10 Full Tier-I Mocks (60m)', '40 Sectional Tests (25 Qs · 15m)', '38 Chapter PYQ Tests (50 Qs · 30m)', '+2 / −0.50 scoring', 'Detailed answer review']
   },
   {
     id: 'rrb-ntpc',
